@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { ProjectsService } from '../services/projects.service';
+import { ProjectsService } from '../../services/projects.service';
 
 @Component({
   selector: 'app-project',
