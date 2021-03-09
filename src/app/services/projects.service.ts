@@ -15,7 +15,7 @@ export class ProjectsService {
       description: "Anonacy is a platform built to help people anonymize their information when they use services on the internet. It's core features include email masks, sms aliases, and identity generators.",
       logo: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/anonacy-logo.png?alt=media&token=dedb9e9a-a9f6-4c23-9530-fd59bc0bba45",
       icon: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/anonacy-icon.png?alt=media&token=f93e95c2-36ca-4e23-ace8-b0721eb5ef3a",
-      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/anonacy-splash.png?alt=media&token=2df73a28-e4cb-45e3-b129-78938fe881cf",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/anonacy-splash2.png?alt=media&token=91ff5d9e-4cbd-4abb-b854-6e583fc56540",
       image: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/logo_icon.png?alt=media&token=07901b5e-cb34-4dfb-ba1e-3fdc64821297",
       html: ``
     },

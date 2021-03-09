@@ -1,21 +1,31 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{ project }}</ion-title>
+      <ion-button (click)="navCtrl.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+      </ion-buttons>
+    <ion-title>{{ projectsService.projects[id].name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">{{ project }}</ion-title>
+      <ion-title size="large">{{ projectsService.projects[id].name }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong class="capitalize">{{ project }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div class="web-container ion-padding">
+    <br>
+    <br>
+    <br>
+    <div class="ion-text-center">
+      <img class="small-img" [src]="projectsService.projects[id].icon" />
+      <br>
+      <strong class="capitalize">{{ projectsService.projects[id].name }}</strong>
+    </div>
+    <br>
+    <p class="accent-text">{{ projectsService.projects[id].description }}</p>
   </div>
 </ion-content>

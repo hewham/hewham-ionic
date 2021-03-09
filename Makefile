@@ -15,8 +15,8 @@ v: ## View current version
 tag: ## tag current version and push to repo
 	@git tag ${version_num} && git push origin ${version_num}
 
-set_version: ## Set new version "$ make set_version VERSION=X.X.X"
-	@npm --new-version=$$VERSION run-script set_version
+all: ## push, tag, and deploy
+	@git push && make tag && make deploy
 
 deploy: ## firebase deploy webapp
 	@rm -rf www/ && \

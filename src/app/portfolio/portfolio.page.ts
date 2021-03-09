@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { ProjectsService } from '../services/projects.service';
 
 @Component({
@@ -8,12 +9,13 @@ import { ProjectsService } from '../services/projects.service';
   styleUrls: ['./portfolio.page.scss'],
 })
 export class PortfolioPage implements OnInit {
-  
+
   public portfolio: string;
   Object = Object;
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private navCtrl: NavController,
     public projectsService: ProjectsService
   ) { }
 
@@ -21,4 +23,7 @@ export class PortfolioPage implements OnInit {
     this.portfolio = this.activatedRoute.snapshot.paramMap.get('id');
   }
 
+  viewProject(id) {
+    this.navCtrl.navigateForward(`project/${id}`)
+  }
 }

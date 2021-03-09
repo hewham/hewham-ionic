@@ -25,10 +25,20 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+
+ion-header, ion-toolbar {
+  border-color: rgba(0,0,0,0) !important;
+}
+
 .small-img {
   height: 70px;
   width: 70px;
   border-radius: 50%;
+}
+
+.accent-text {
+  font-size: 0.8em;
+  color: #888;
 }
 
 .web-container {
