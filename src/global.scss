@@ -24,3 +24,48 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.small-img {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+}
+
+.web-container {
+  position: relative;
+  max-width: 768px; 
+  margin: auto; 
+  float: center;
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.space-around {
+  display: flex;
+  justify-content: space-around;
+}
+
+.selectable {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+
+.hor-scroll {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 160px;
+  white-space:nowrap
+}
+
+.hor-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.hor-scroll-item {
+  display:inline-block;
+}

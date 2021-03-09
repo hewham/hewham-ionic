@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Portfolio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Portfolio</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="web-container" id="container">
+    <div *ngFor="let key of Object.keys(projectsService.projects)">
+      <app-project-card [project]="projectsService.projects[key]"></app-project-card>
+    </div>
+  </div>
+</ion-content>
