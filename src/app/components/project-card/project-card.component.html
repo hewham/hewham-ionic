@@ -1,4 +1,4 @@
-<ion-card>
+<!-- <ion-card>
   <img [src]="project.cover" />
   <ion-card-header>
     <ion-card-subtitle>{{ project.subtitle }}</ion-card-subtitle>
@@ -7,4 +7,12 @@
   <ion-card-content>
     {{ project.description }}
   </ion-card-content>
-</ion-card>
+</ion-card> -->
+
+  
+<div class="card">
+  <div class="card_image"> <img [src]="project.cover" /> </div>
+  <div class="card_title title-white">
+    <p>{{ project.name }}</p>
+  </div>
+</div>
