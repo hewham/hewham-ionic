@@ -7,6 +7,14 @@ export class ProjectsService {
   
   constructor(){}
 
+  delay(ms) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, ms)
+    })
+  }
+
   projects = {
     anonacy: {
       id: "anonacy",
@@ -33,14 +41,82 @@ export class ProjectsService {
   }
 
   js = {
-    space: {
-      id: "space",
+    Space: {
+      id: "Space",
       name: "Space.js",
       subtitle: "Blast 'em",
       description: "Asteroids in vanilla js with p5.js. Use arrow keys to move, space bar to shoot. May need to click in frame to gain control.",
-      icon: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/spacejs%202.png?alt=media&token=91ef2047-cf83-4802-99a3-387eac4655b4",
       cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/spacejs.png?alt=media&token=7e6639a9-b086-4ae8-92f7-68f7f064cd2f",
+    },
+    SmartSearchers: {
+      id: "SmartSearchers",
+      name: "SmartSearchers.js",
+      subtitle: "Neural Network",
+      description: "Nueral network created in vanilla js",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/smart-searchers.png?alt=media&token=40e24621-8962-460f-9cf3-7d55a97406bf",
+    },
+    AnimatedText: {
+      id: "AnimatedText",
+      name: "AnimatedText.js",
+      subtitle: "Animated Text",
+      description: "Live text effects on mouse over in vanilla js",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/animated-text.png?alt=media&token=b36c2203-fe5c-437d-ac74-5dde1d8b44f9",
+    },
+    Plinko: {
+      id: "Plinko",
+      name: "Plinko.js",
+      subtitle: "Plinko",
+      description: "Simple gravity simulation in vanilla js",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/Plinko.png?alt=media&token=3fb31228-46c6-42d2-82e9-34fadc3416e3",
+    },
+    SmartRockets: {
+      id: "SmartRockets",
+      name: "SmartRockets.js",
+      subtitle: "Smart Rockets",
+      description: "Nueral network in vanilla js. Rockets are trained to attempt to reach the goal.",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/smart-rockets.png?alt=media&token=78149a20-dc22-4299-ae26-68562a34fed8",
+    },
+    BasketBall: {
+      id: "BasketBall",
+      name: "Basketball.js",
+      subtitle: "Basketball",
+      description: "Simple gravity simulator + ball shooting game. Control angle with arrow keys. Shoot with space bar.",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/basketball.png?alt=media&token=69892103-469b-41e5-b599-ab1bdb20a5d4",
+    },
+    Minesweeper: {
+      id: "Minesweeper",
+      name: "Minesweeper.js",
+      subtitle: "Minesweeper",
+      description: "Minesweeper recreated in vanilla js",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/minesweeper.png?alt=media&token=4ce0100a-87f2-444b-bb13-1a4140ff2a82",
+    },
+    Spiral: {
+      id: "Spiral",
+      name: "Spiral.js",
+      subtitle: "Spiral",
+      description: "Silly code art",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/spiral.png?alt=media&token=838c0d7d-4da6-4f56-86af-448bbcde3c97",
+    },
+    Colonizer: {
+      id: "Colonizer",
+      name: "Colonizer.js",
+      subtitle: "Colonizer",
+      description: "Node connector made in vanilla js",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/coloizer.png?alt=media&token=280f0c68-eb72-4103-ad3e-ee313ae90e7f",
+    },
+    DoublePendulum: {
+      id: "DoublePendulum",
+      name: "DoublePendulum.js",
+      subtitle: "DoublePendulum",
+      description: "Chaos",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/pendulum.png?alt=media&token=e38b8c5b-589d-4546-b27e-a65cf9d0b66f",
+    },
+    FractalTree: {
+      id: "FractalTree",
+      name: "FractalTree.js",
+      subtitle: "FractalTree",
+      description: "Fractal generator in vanilla js",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/fractal.png?alt=media&token=44c9d172-00bc-407d-9215-c770fed47a26",
     }
   }
-
 }

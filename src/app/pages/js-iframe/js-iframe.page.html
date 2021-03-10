@@ -6,6 +6,11 @@
       </ion-button>
     </ion-buttons>
     <ion-title>{{ projectsService.js[id].name }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="refresh()">
+        <ion-icon slot="icon-only" name="refresh-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -16,8 +21,24 @@
     </ion-toolbar>
   </ion-header>
 
-  <iframe *ngIf="id=='space'" class="js-iframe" src="assets/js/space/index.html"></iframe>
+  <div *ngIf="isRefreshing" class="ion-text-center">
+    <div style="height: 100px"></div>
+    <ion-spinner></ion-spinner>
+    <div style="height: 100px"></div>
+  </div>
 
-  <p class="accent-text"> {{ projectsService.js[id].description }}</p>
+  <iframe *ngIf="!isRefreshing && id=='Space'" class="space-iframe" src="assets/js/Space/index.html" frameBorder="0"></iframe>
+  <iframe *ngIf="!isRefreshing && id=='SmartSearchers'" class="js-iframe" src="assets/js/SmartSearchers/index.html" frameBorder="0"></iframe>
+  <iframe *ngIf="!isRefreshing && id=='AnimatedText'" class="js-iframe" src="assets/js/AnimatedText/index.html" frameBorder="0"></iframe>
+  <iframe *ngIf="!isRefreshing && id=='Plinko'" class="js-iframe" src="assets/js/Plinko/index.html" frameBorder="0"></iframe>
+  <iframe *ngIf="!isRefreshing && id=='SmartRockets'" class="js-iframe" src="assets/js/SmartRockets/index.html" frameBorder="0"></iframe>
+  <iframe *ngIf="!isRefreshing && id=='BasketBall'" class="bb-iframe" src="assets/js/BasketBall/index.html" frameBorder="0"></iframe>
+  <iframe *ngIf="!isRefreshing && id=='Minesweeper'" class="js-iframe" src="assets/js/Minesweeper/index.html" frameBorder="0"></iframe>
+  <iframe *ngIf="!isRefreshing && id=='Spiral'" class="space-iframe" src="assets/js/Spiral/index.html" frameBorder="0"></iframe>
+  <iframe *ngIf="!isRefreshing && id=='Colonizer'" class="js-iframe" src="assets/js/Colonizer/index.html" frameBorder="0"></iframe>
+  <iframe *ngIf="!isRefreshing && id=='DoublePendulum'" class="js-iframe" src="assets/js/DoublePendulum/index.html" frameBorder="0"></iframe>
+  <iframe *ngIf="!isRefreshing && id=='FractalTree'" class="js-iframe" src="assets/js/FractalTree/index.html" frameBorder="0"></iframe>
+
+  <p *ngIf="!isRefreshing" class="accent-text"> {{ projectsService.js[id].description }}</p>
 
 </ion-content>

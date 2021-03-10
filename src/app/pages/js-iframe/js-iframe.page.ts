@@ -9,8 +9,10 @@ import { ProjectsService } from '../../services/projects.service';
   styleUrls: ['./js-iframe.page.scss'],
 })
 export class JsIframePage implements OnInit {
+
   public id: string;
   src = "";
+  isRefreshing: Boolean = false;
   Object = Object;
 
   constructor(
@@ -26,6 +28,12 @@ export class JsIframePage implements OnInit {
 
   viewProject(id) {
     this.navCtrl.navigateForward(`js/${id}`)
+  }
+
+  async refresh() {
+    this.isRefreshing = true;
+    await this.projectsService.delay(500);
+    this.isRefreshing = false;
   }
 
 }
