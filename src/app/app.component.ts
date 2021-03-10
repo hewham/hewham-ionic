@@ -35,4 +35,12 @@ export class AppComponent {
       }
     }
   }
+
+  login(bool) {
+    let URL = "login";
+    if(bool){
+      URL += "?login=true"
+    }
+    this.navCtrl.navigateRoot(URL);
+  }
 }

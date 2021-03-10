@@ -21,8 +21,7 @@
       <br>
       <br>
 
-      <form [formGroup]="loginForm">
-
+      <form *ngIf="!isSignUp" [formGroup]="loginForm">
         <ion-item id="phone-input6">
           <ion-label position="floating">Email</ion-label>
           <ion-input 
@@ -50,6 +49,92 @@
             style="padding-top: 24px;">
           </ion-icon>
         </ion-item>
+      </form>
+
+      <form *ngIf="isSignUp" [formGroup]="signupForm">
+
+        <ion-grid class="ion-no-padding ion-no-margin">
+          <ion-row>
+            <ion-col class="ion-no-padding">
+              <ion-item>
+                <ion-label position="floating">First Name</ion-label>
+                <ion-input 
+                  #firstName 
+                  formControlName="firstName" 
+                  type="text"
+                  [class.invalid]="!signupForm.controls.firstName.valid" 
+                  (keypress)="eventHandler($event.keyCode)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <ion-item>
+                <ion-label position="floating">Last Name</ion-label>
+                <ion-input 
+                  #lastName 
+                  formControlName="lastName" 
+                  type="text"
+                  [class.invalid]="!signupForm.controls.lastName.valid" 
+                  (keypress)="eventHandler($event.keyCode)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="ion-no-padding ion-no-margin">
+          <ion-row>
+            <ion-col class="ion-no-padding">
+              <ion-item>
+                <ion-label position="floating">Email</ion-label>
+                <ion-input 
+                  #email 
+                  formControlName="email" 
+                  type="email"
+                  [class.invalid]="!signupForm.controls.email.valid" 
+                  (keypress)="eventHandler($event.keyCode)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <ion-item>
+                <ion-label position="floating">Password</ion-label>
+                <ion-input 
+                  #password 
+                  formControlName="password" 
+                  [type]="showPassword ? 'text' : 'password'"
+                  [class.invalid]="!signupForm.controls.password.valid" 
+                  (keypress)="eventHandler($event.keyCode)">
+                </ion-input>
+                <ion-icon 
+                  slot="end" 
+                  [name]="pwIcon" 
+                  (click)="toggleShowPassword()"
+                  style="padding-top: 24px;">
+                </ion-icon>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <br>
+        <br>
+
+        <ion-item>
+          <ion-label position="fixed">Subdomain</ion-label>
+          <ion-input 
+            class="ion-text-right"
+            #subdomain 
+            formControlName="subdomain" 
+            type="text"
+            [class.invalid]="!signupForm.controls.subdomain.valid" 
+            (keypress)="eventHandler($event.keyCode)">
+          </ion-input>
+          <ion-note slot="end" style="padding-right: 30%;">
+            .penna.io
+          </ion-note>
+        </ion-item>
+
       </form>
       
       

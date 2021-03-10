@@ -119,7 +119,7 @@ export class AuthService {
     await this.auth.signOut();
     // await this.storage.clear();
     // await this.crispService.init();
-    await this.navCtrl.navigateRoot('home');
+    await this.navCtrl.navigateRoot('start');
     this.isIniting = false;
   }
 
@@ -162,17 +162,18 @@ export class AuthService {
     })
   }
   
-  async signup(email, password) {
+  async signup(body) {
+    // @params in body:
+    // email, password, firstName, lastName, subdomain
     let loading = await this.loadingCtrl.create({duration: 10000});
     loading.present();
     return new Promise((resolve) => {
-      this.auth.createUserWithEmailAndPassword(email, password)
+      this.auth.createUserWithEmailAndPassword(body.email, body.password)
       .then(async res => {
-        await this.createNewUser({email}, res.user.uid);
-        await this.initOnAppStartOrLogin();
-        // if(!isModal) {
-        //   await this.navCtrl.navigateRoot('home');
-        // }
+        await this.createNewUser(body, res.user.uid);
+        this.init();
+        this.navCtrl.navigateRoot('start');
+        // await this.initOnAppStartOrLogin();
         loading.dismiss();
         resolve(true);
       }).catch(error => {
@@ -183,25 +184,22 @@ export class AuthService {
     })
   }
 
-  async createNewUser(user, uid) {
-    // const createUserRequest = {
-    //   // firstName: user.firstName,
-    //   // lastName: user.lastName,
-    //   email: user.email,
-    //   // username: user.username,
-    //   authID: uid
-    // };
+  async createNewUser(body, uid) {
+    const createUserRequest = {
+      'firstName': body.firstName,
+      'lastName': body.lastName,
+      'email': body.email,
+      'subdomain': body.subdomain,
+      'uid': uid
+    };
 
-    this.firestore.collection('users').doc(uid).set({'email': user.email})
-
-    // try {
-    //   const userRes = await this.api.post("/users", createUserRequest);
-    //   await this.storage.set('user', userRes);
-    //   return userRes;
-    // } catch (err) {
-    //   this.dialogService.error("Please contact us, your account had an issue when we tried to create it. This may occur if you previously had an account with us. Please include your name, email, and phone number you signed up with in an email to support@anonacy.com")
-    //   return false;
-    // }
+    try {
+      this.firestore.collection('users').doc(uid).set(createUserRequest);
+      return true;
+    } catch (err) {
+      this.dialogService.error("Please contact us, your account had an issue when we tried to create it. This may occur if you previously had an account with us.")
+      return false;
+    }
   }
 
 }
