@@ -1,0 +1,40 @@
+<ion-header [translucent]="true" no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>JavaScript Experiments</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense" no-border>
+    <ion-toolbar>
+      <ion-title size="large">JavaScript Experiments</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid 
+    class="ion-no-padding"
+    fixed>
+    <ion-row>
+      <ion-col 
+        *ngFor="let id of Object.keys(projectsService.js)"
+        (click)="viewProject(id)"
+        class="panel-card-container"
+        size="12" 
+        size-sm="12" 
+        size-md="4" 
+        size-lg="4" 
+        size-xl="4">
+          <app-project-card [project]="projectsService.js[id]"></app-project-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- <div class="web-container projects-container" id="container">
+    <div *ngFor="let key of Object.keys(projectsService.projects)" class="ion-padding">
+      <app-project-card [project]="projectsService.projects[key]"></app-project-card>
+    </div>
+  </div> -->
+</ion-content>

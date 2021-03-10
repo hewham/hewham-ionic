@@ -12,7 +12,8 @@ export class AppComponent {
   version = p.version;
 
   public appPages = [
-    { title: 'Portfolio', url: '', icon: 'library' }
+    { title: 'Portfolio', url: '', icon: 'library' },
+    { title: 'JS Experiments', url: 'js', icon: 'flask' }
   ];
 
   constructor() {}

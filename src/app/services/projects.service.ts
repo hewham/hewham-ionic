@@ -32,4 +32,15 @@ export class ProjectsService {
     },
   }
 
+  js = {
+    space: {
+      id: "space",
+      name: "Space.js",
+      subtitle: "Blast 'em",
+      description: "Asteroids in vanilla js with p5.js. Use arrow keys to move, space bar to shoot. May need to click in frame to gain control.",
+      icon: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/spacejs%202.png?alt=media&token=91ef2047-cf83-4802-99a3-387eac4655b4",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/spacejs.png?alt=media&token=7e6639a9-b086-4ae8-92f7-68f7f064cd2f",
+    }
+  }
+
 }

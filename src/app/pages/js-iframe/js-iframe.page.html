@@ -1,0 +1,23 @@
+<ion-header [translucent]="true" no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="navCtrl.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ projectsService.js[id].name }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense" no-border>
+    <ion-toolbar>
+      <ion-title size="large">{{ projectsService.js[id].name }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <iframe *ngIf="id=='space'" class="js-iframe" src="assets/js/space/index.html"></iframe>
+
+  <p class="accent-text"> {{ projectsService.js[id].description }}</p>
+
+</ion-content>
