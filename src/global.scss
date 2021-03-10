@@ -35,14 +35,34 @@ ion-header, ion-toolbar {
   border: none;
 }
 
-.monospace {
-  font-family: monospace, monospace;
-}
-
 .small-img {
   height: 70px;
   width: 70px;
   border-radius: 50%;
+}
+
+.color-primary {
+  color: var(--ion-color-primary);
+}
+
+.color-secondary {
+  color: var(--ion-color-secondary);
+}
+
+.color-tertiary {
+  color: var(--ion-color-tertiary);
+}
+
+.color-medium {
+  color: var(--ion-color-medium);
+}
+
+.color-danger {
+  color: var(--ion-color-danger);
+}
+
+.monospace {
+  font-family: monospace, monospace;
 }
 
 .accent-text {

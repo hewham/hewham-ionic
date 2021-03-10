@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import p from '../../package.json';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -18,12 +20,19 @@ export class AppComponent {
   ];
 
   constructor(
-    private navCtrl: NavController
+    private router: Router,
+    private navCtrl: NavController,
+    public authService: AuthService
   ) {
     this.initializeApp();
   }
 
-  initializeApp() {
-    this.navCtrl.navigateRoot("p/projects");
+  async initializeApp() {
+    await this.authService.init();
+    if(!this.authService.isLoggedIn) {
+      if(this.router.url != "/login") {
+        this.navCtrl.navigateRoot("start");
+      }
+    }
   }
 }

@@ -1,0 +1,84 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="web-container">
+    <br>
+    <br>
+
+    <div class="ion-text-left web-container">
+      <h1>
+        <span *ngIf="!isSignUp">🎨 Log In</span>
+        <span *ngIf="isSignUp">🥁 Sign Up</span>
+      </h1>
+
+
+      <br>
+      <br>
+
+      <form [formGroup]="loginForm">
+
+        <ion-item id="phone-input6">
+          <ion-label position="floating">Email</ion-label>
+          <ion-input 
+            #email 
+            formControlName="email" 
+            type="email"
+            [class.invalid]="!loginForm.controls.email.valid" 
+            (keypress)="eventHandler($event.keyCode)">
+          </ion-input>
+        </ion-item>
+      
+        <ion-item id="pass-input">
+          <ion-label position="floating">Password</ion-label>
+          <ion-input 
+            #password 
+            formControlName="password" 
+            [type]="showPassword ? 'text' : 'password'"
+            [class.invalid]="!loginForm.controls.password.valid" 
+            (keypress)="eventHandler($event.keyCode)">
+          </ion-input>
+          <ion-icon 
+            slot="end" 
+            [name]="pwIcon" 
+            (click)="toggleShowPassword()"
+            style="padding-top: 24px;">
+          </ion-icon>
+        </ion-item>
+      </form>
+      
+      
+      <div class="spacer" style="height:12px;"></div>
+      
+      <ion-label padding color="danger" style="text-align:center;">{{errorMessage}}</ion-label>
+      
+      <div class="pw-reset">
+        <ion-button (click)="passwordReset()" color="seethrough" style="font-size: 0.7em; color: grey;">
+          <span *ngIf="!isSignUp">Forgot Password?</span>
+          <span *ngIf="isSignUp">&nbsp;</span>
+        </ion-button>
+      </div>
+      
+      <div class="btn-wrapper">
+        <ion-button (click)="submit()" color="seethrough" class="color-primary">
+          <span *ngIf="!isSignUp">Log In</span>
+          <span *ngIf="isSignUp">Sign Up</span>
+        </ion-button>
+      </div>
+
+
+      <div class="ion-text-center">
+        <ion-button (click)="toggleIsSignUp()" color="seethrough" style="font-size: 0.7em; color: grey;">
+          <span *ngIf="!isSignUp">Don't have an account?&nbsp;<span class="color-primary">Sign up</span>&nbsp;instead -></span>
+          <span *ngIf="isSignUp">Already have an account?&nbsp;<span class="color-primary">Log in</span>&nbsp;instead -></span>
+        </ion-button>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
