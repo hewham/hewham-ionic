@@ -12,7 +12,9 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">{{ projectsService.projects[id].name }}</ion-title>
+      <img class="project-logo" [src]="projectsService.projects[id].logo" />
+      <!-- <ion-title size="large">{{ projectsService.projects[id].name }}</ion-title> -->
+      <ion-title></ion-title>
     </ion-toolbar>
   </ion-header>
 

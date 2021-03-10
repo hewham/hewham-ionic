@@ -22,7 +22,7 @@ export class ProjectsService {
       subtitle: "Anonymity + Privacy",
       link: "https://www.anonacy.com",
       description: "Anonacy is a platform built to help people anonymize their information when they use services on the internet. It's core features include email masks, sms aliases, and identity generators.",
-      logo: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/anonacy-logo.png?alt=media&token=dedb9e9a-a9f6-4c23-9530-fd59bc0bba45",
+      logo: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/anonacy-logo2.png?alt=media&token=4e50e2fc-1556-4d8e-b29b-ecec78c7bf1a",
       icon: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/anonacy-icon.png?alt=media&token=f93e95c2-36ca-4e23-ace8-b0721eb5ef3a",
       cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/anonacy-splash2.png?alt=media&token=91ff5d9e-4cbd-4abb-b854-6e583fc56540",
       image: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/logo_icon.png?alt=media&token=07901b5e-cb34-4dfb-ba1e-3fdc64821297",
@@ -51,6 +51,18 @@ export class ProjectsService {
       icon: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/giggot-icon.png?alt=media&token=e267a5da-037e-40e2-a19d-425e4d440391",
       cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/giggot-splash.png?alt=media&token=3b6d4e93-87ee-4cdd-b592-afa06d2ea0ef",
       image: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/giggot_artist.png?alt=media&token=2e95d431-cd96-4c6c-8367-46b7d5b25766",
+      html: ``
+    },
+    zonder: {
+      id: "zonder",
+      name: "Zonder",
+      subtitle: "Explore the world",
+      link: "https://zonderapp.com",
+      description: "A digital travel companion that keeps track of your experiences and rewards you for exploring new places around the world. I was an app developer in charge of all social features a couple years ago.",
+      logo: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/zonder-logo.png?alt=media&token=f86f856a-953c-4f94-a0f6-5e66e518296d",
+      icon: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/zonder-icon.png?alt=media&token=7698f4f8-8b88-42d4-a7e8-4a3d4f60db8d",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/zonder-splash2.png?alt=media&token=32069634-3677-48cf-9992-b73a16446c79",
+      image: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/zonder-splash2.png?alt=media&token=32069634-3677-48cf-9992-b73a16446c79",
       html: ``
     }
   }
