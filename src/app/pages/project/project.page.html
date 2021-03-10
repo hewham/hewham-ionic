@@ -24,6 +24,9 @@
       <img class="small-img" [src]="projectsService.projects[id].icon" />
       <br>
       <strong class="capitalize">{{ projectsService.projects[id].name }}</strong>
+      <br>
+      <br>
+      <a class="monospace" [href]="projectsService.projects[id].link" target="_blank">Visit {{ projectsService.projects[id].name }}</a>
     </div>
     <br>
     <p class="accent-text">{{ projectsService.projects[id].description }}</p>

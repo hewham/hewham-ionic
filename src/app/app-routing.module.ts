@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'js/:id',
     loadChildren: () => import('./pages/js-iframe/js-iframe.module').then( m => m.JsIframePageModule)
+  },
+  {
+    path: 'about',
+    loadChildren: () => import('./pages/about/about.module').then( m => m.AboutPageModule)
   }
 ];
 

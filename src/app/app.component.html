@@ -5,7 +5,9 @@
         <ion-list id="inbox-list">
           <img class="small-img" style="margin-left: 15px;" src="https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/hew_300.jpg?alt=media&token=57ee0222-799b-43ca-b182-04e3ae6eeb43" />
           <ion-list-header>Hew Hamilton</ion-list-header>
-          <ion-note>hew@anonacy.com</ion-note>
+          <br>
+          <br>
+          <!-- <ion-note>hew@anonacy.com</ion-note> -->
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
@@ -16,6 +18,13 @@
         </ion-list>
 
         <div class="version">
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerDirection="root" routerLink="about" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon slot="start" name="person-outline"></ion-icon>
+              <ion-label>About</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
           <p class="accent-text monospace">
             <a href="https://github.com/hewham/hewham-ionic" target="_blank">
             Source&nbsp;Code</a>&nbsp;<ion-icon name="code"></ion-icon>

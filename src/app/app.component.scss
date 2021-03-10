@@ -16,6 +16,14 @@ ion-menu {
   border: none !important;
 }
 
+// space between code
+// mat-nav-list {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   height: calc(100% - 64px) !important;
+// }
+
 ion-menu.ios ion-content {
   --padding-bottom: 20px;
 }
