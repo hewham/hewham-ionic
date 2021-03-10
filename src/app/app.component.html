@@ -26,13 +26,13 @@
           </ion-menu-toggle>
 
           <p 
-            *ngIf="!authService.isLoggedIn"
+            *ngIf="!authService.isLoggedIn && authService.isInitialized"
             class="monospace">
               <span class="color-primary" tappable (click)="login(false)"><u>Sign up</u></span>&nbsp;/&nbsp;<span class="color-primary" tappable (click)="login(true)"><u>Log in</u></span>
           </p>
 
           <p 
-            *ngIf="authService.isLoggedIn"
+            *ngIf="authService.isLoggedIn && authService.isInitialized"
             class="monospace color-primary" 
             tappable 
             (click)="authService.logout()">

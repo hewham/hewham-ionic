@@ -38,10 +38,13 @@ export class AuthService {
     ) {}
 
   async init(){
+    this.isIniting = true;
     if(await this.checkIsLoggedIn()) {
       // return await this.initUser();
     }
     console.log("isLoggedIn: ", this.isLoggedIn);
+    this.isInitialized = true;
+    this.isIniting = false;
     return false;
   }
 
@@ -92,22 +95,6 @@ export class AuthService {
     this.onRefresh.emit();
   }
 
-  async initUser() {
-    try{
-      // let res = await this.api.get("/users?login");
-    //   if(res[0]){
-    //     await this.storage.set("user", res[0])
-    //     this.user = res[0];
-    //     return res[0]
-    //   } else {
-    //     return false;
-    //   }
-    } catch (err) {
-      console.log("initUser error: ",err);
-      return false;
-    }
-  }
-
   async getToken() {
     return (await this.auth.currentUser).getIdToken(/* forceRefresh */ true);
   }
@@ -136,24 +123,15 @@ export class AuthService {
     });
   }
 
-  async login(email, password, isModal=false) {
+  async login(email, password) {
     let loading = await this.loadingCtrl.create({duration: 10000});
     loading.present();
     return new Promise((resolve) => {
     this.auth.signInWithEmailAndPassword(email, password)
       .then(async res => {
-        let userFound = await this.initUser();
-        if(userFound) {
-          await this.initOnAppStartOrLogin();
-          // if(!isModal){
-          //   await this.navCtrl.navigateRoot('home');
-          // }
-          resolve(true);
-        } else {
-          this.dialogService.error("No user found for this account. Please contact support@anonacy.com")
-        }
+        this.init();
+        resolve(true);
         loading.dismiss();
-        resolve(false);
       }).catch(error => {
         this.dialogService.error(error.message);
         loading.dismiss();
