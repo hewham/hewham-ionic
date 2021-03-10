@@ -3,14 +3,14 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{ group.name }}</ion-title>
+    <ion-title *ngIf="group">{{ group.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense" no-border>
     <ion-toolbar>
-      <ion-title size="large">{{ group.name }}</ion-title>
+      <ion-title size="large" *ngIf="group">{{ group.name }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -20,15 +20,15 @@
     fixed>
     <ion-row>
       <ion-col 
-        *ngFor="let key of Object.keys(group.items)"
-        (click)="viewProject(key)"
+        *ngFor="let item of items"
+        (click)="viewProject(item.slug)"
         class="panel-card-container"
         size="12" 
         size-sm="12" 
         size-md="4" 
         size-lg="4" 
         size-xl="4">
-          <app-project-card [project]="group.items[key]" [shape]="group.options.shape"></app-project-card>
+          <app-project-card [project]="item" [shape]="group.options.shape"></app-project-card>
       </ion-col>
     </ion-row>
   </ion-grid>

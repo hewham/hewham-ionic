@@ -6,7 +6,10 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: "root"
 })
-export class PasswordsService {
+export class FirestoreService {
+
+  groups = [];
+  items = [];
 
   constructor(
     private firestore: AngularFirestore,
@@ -15,6 +18,46 @@ export class PasswordsService {
 
   async get() {
     
+  }
+
+  getGroup(slug) {
+    return new Promise((resolve) => {
+      this.firestore.collection('users').doc(this.authService.uid).collection('groups', ref => ref.where("slug", "==", slug)).get().subscribe((snapshot) => {
+        snapshot.docs.forEach((doc) => {
+          resolve({
+            id: doc.id,
+            ...doc.data()
+          });
+        })
+
+      })
+    })
+  }
+
+  getItem(groupID, itemSlug) {
+    return new Promise((resolve) => {
+      this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("items", ref => ref.where("slug", "==", itemSlug)).get().subscribe((snapshot) => {
+        if(snapshot.docs.length == 0) resolve(null);
+        snapshot.docs.forEach((doc) => {
+          resolve({
+            id: doc.id,
+            ...doc.data()
+          });
+        })      
+      })
+    })
+  }
+
+  getItems(groupID) {
+    return new Promise((resolve) => {
+      this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("items").get().subscribe((snapshot) => {
+        let items = [];
+        snapshot.docs.forEach((item) => {
+          items.push(item.data());
+        })
+        resolve(items);
+      })
+    })
   }
 
   async getUserDoc() {

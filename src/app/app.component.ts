@@ -14,10 +14,7 @@ export class AppComponent {
 
   version = p.version;
 
-  public appPages = [
-    { title: 'Projects', url: 'p/projects', icon: 'library' },
-    { title: 'JS Experiments', url: 'p/js', icon: 'flask' }
-  ];
+  public appPages = [];
 
   constructor(
     private router: Router,
@@ -29,11 +26,22 @@ export class AppComponent {
 
   async initializeApp() {
     await this.authService.init();
+    this.setAppPages();
     if(!this.authService.isLoggedIn) {
       if(this.router.url != "/login") {
         this.navCtrl.navigateRoot("start");
       }
     }
+  }
+
+  setAppPages() {
+    this.authService.user.groups.forEach((group) => {
+      this.appPages.push({
+        title: group.name,
+        url: `p/${group.slug}`,
+        icon: group.icon
+      })
+    })
   }
 
   login(bool) {

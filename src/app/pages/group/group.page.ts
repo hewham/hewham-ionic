@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { AuthService } from '../../services/auth.service';
 import { ProjectsService } from '../../services/projects.service';
+import { FirestoreService } from '../../services/firestore.service';
 
 @Component({
   selector: 'app-group',
@@ -11,18 +13,24 @@ import { ProjectsService } from '../../services/projects.service';
 export class GroupPage implements OnInit {
 
   public group: any;
+  public items: any;
   public slug: string;
   Object = Object;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private navCtrl: NavController,
-    public projectsService: ProjectsService
+    public authService: AuthService,
+    public projectsService: ProjectsService,
+    public firestoreService: FirestoreService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.authService.onReady();
+    console.log(this.authService.uid)
     this.slug = this.activatedRoute.snapshot.paramMap.get('group');
-    this.group = this.projectsService.getGroup(this.slug);
+    this.group = await this.firestoreService.getGroup(this.slug);
+    this.items = await this.firestoreService.getItems(this.slug);
   }
 
   viewProject(id) {

@@ -25,6 +25,7 @@ export class AuthService {
   onRefresh: EventEmitter<any> = new EventEmitter()
 
   user: any;
+  // data: any;
   uid: any;
 
   constructor(
@@ -34,23 +35,23 @@ export class AuthService {
       // private crispService: CrispService,
       // private trackingService: TrackingService,
       private firestore: AngularFirestore,
-      private auth: AngularFireAuth
+      private fireauth: AngularFireAuth
     ) {}
 
   async init(){
     this.isIniting = true;
     if(await this.checkIsLoggedIn()) {
-      // return await this.initUser();
+      // user is logged in
+      await this.getUser();
     }
-    console.log("isLoggedIn: ", this.isLoggedIn);
     this.isInitialized = true;
     this.isIniting = false;
-    return false;
+    this.onInit.emit();
   }
 
   async checkIsLoggedIn() {
     return new Promise((resolve) => {
-      this.auth.onAuthStateChanged((user) => {
+      this.fireauth.onAuthStateChanged((user) => {
         if (user) {
           this.uid = user.uid;
           this.isLoggedIn = true;
@@ -63,30 +64,48 @@ export class AuthService {
     })
   }
 
-  async initOnAppStartOrLogin() {
-    this.isIniting = true;
-    if(await this.checkIsLoggedIn()) {
-      let success = await this.init();
-      if(success) {
-        // console.log("initOnAppStartOrLogin: IS LOGGED IN")
-        await this.initForLoggedInUser();
-      }
+  async onReady() {
+    if(this.isInitialized) {
+      return true;
+    } else {
+      return new Promise((resolve) => {
+        this.onInit.subscribe(() => {
+          resolve(true);
+        })
+      })
     }
-    // this.crispService.init();
-    if(!this.isInitialized) {
-      this.onInit.emit();
-    };
-    this.isIniting = false;
-    this.isInitialized = true;
+
   }
 
+  async getUser() {
+    return new Promise(async (resolve) => {
+      this.firestore.collection('users').doc(this.uid).get().subscribe((userDoc) => {
+        this.user = userDoc.data();
+        this.user.groups = [];
+        this.firestore.collection('users').doc(this.uid).collection('groups').get().subscribe((snapshot) => {
+          snapshot.docs.forEach((group) => {
+            this.user.groups.push(group.data());
+            resolve(true);
+          });
+        })
+      });
 
-  async initForLoggedInUser() {
-    // await this.setDataForDisplayInSidemenu();
-    this.isLoggedIn = true;
-    // await this.trackingService.identifyUser(this.user);
-    this.onRefresh.emit();
-    return;
+
+      // this.user.groups[group.data().id].items = {};
+      //       this.firestore.collection('users').doc(this.uid).collection('groups').doc(group.data().id).collection("items").get().subscribe((snapshot3) => {
+      //         snapshot3.docs.forEach((item, j) => {
+      //           console.log(item.data());
+      //           this.user.groups[group.data().id].items[item.data().id] = item.data();
+      //           resolve(true);
+      //         });
+      //       })
+
+
+      // let userRef = await this.firestore.collection('users').doc(this.uid).collection('groups').get();
+      // userRef.subscribe((user) => {
+      //   resolve(user);
+      // });
+    });
   }
 
   async refreshUser() {
@@ -95,15 +114,11 @@ export class AuthService {
     this.onRefresh.emit();
   }
 
-  async getToken() {
-    return (await this.auth.currentUser).getIdToken(/* forceRefresh */ true);
-  }
-
   async logout() {
     this.isIniting = true;
     this.isLoggedIn = false;
     this.user = {};
-    await this.auth.signOut();
+    await this.fireauth.signOut();
     // await this.storage.clear();
     // await this.crispService.init();
     await this.navCtrl.navigateRoot('start');
@@ -113,7 +128,7 @@ export class AuthService {
   resetPassword(email) {
     return new Promise(async (resolve) => {
       try{
-        await this.auth.sendPasswordResetEmail(email);
+        await this.fireauth.sendPasswordResetEmail(email);
         this.dialogService.alert("Check your email for a link to reset your password. After, you may log in with your new password","Email Sent!")
         resolve(true)
       } catch (err) {
@@ -127,7 +142,7 @@ export class AuthService {
     let loading = await this.loadingCtrl.create({duration: 10000});
     loading.present();
     return new Promise((resolve) => {
-    this.auth.signInWithEmailAndPassword(email, password)
+    this.fireauth.signInWithEmailAndPassword(email, password)
       .then(async res => {
         this.init();
         resolve(true);
@@ -146,7 +161,7 @@ export class AuthService {
     let loading = await this.loadingCtrl.create({duration: 10000});
     loading.present();
     return new Promise((resolve) => {
-      this.auth.createUserWithEmailAndPassword(body.email, body.password)
+      this.fireauth.createUserWithEmailAndPassword(body.email, body.password)
       .then(async res => {
         await this.createNewUser(body, res.user.uid);
         this.init();
@@ -172,7 +187,8 @@ export class AuthService {
     };
 
     try {
-      this.firestore.collection('users').doc(uid).set(createUserRequest);
+      await this.firestore.collection('users').doc(uid).set(createUserRequest);
+      await this.firestore.collection('subdomains').doc(body.subdomain).set({'uid': uid});
       return true;
     } catch (err) {
       this.dialogService.error("Please contact us, your account had an issue when we tried to create it. This may occur if you previously had an account with us.")

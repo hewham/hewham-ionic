@@ -5,7 +5,7 @@
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ item.name }}</ion-title>
+    <ion-title *ngIf="item">{{ item.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,12 +13,12 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <!-- <img class="project-logo" [src]="item.logo" /> -->
-      <ion-title size="large">{{ item.name }}</ion-title>
+      <ion-title size="large" *ngIf="item">{{ item.name }}</ion-title>
       <ion-title></ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div class="web-container ion-padding">
+  <div *ngIf="item" class="web-container ion-padding">
     <br>
     <br>
     <br>
@@ -32,5 +32,13 @@
     </div>
     <br>
     <p class="accent-text">{{ item.description }}</p>
+  </div>
+
+  <div *ngIf="item === null" class="web-container ion-padding">
+    <br>
+    <br>
+    <h1>💣 Page not found</h1>
+    <br>
+    <p>It was probably deleted. Sorry :(</p>
   </div>
 </ion-content>
