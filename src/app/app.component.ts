@@ -12,7 +12,7 @@ export class AppComponent {
   version = p.version;
 
   public appPages = [
-    { title: 'Portfolio', url: 'portfolio', icon: 'library' },
+    { title: 'Projects', url: 'projects', icon: 'library' },
     { title: 'JS Experiments', url: 'js', icon: 'flask' }
   ];
 

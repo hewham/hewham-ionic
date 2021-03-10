@@ -10,7 +10,7 @@
 </ion-card> -->
 
   
-<div class="card">
+<div [ngClass]="cardClass">
   <div class="card_image"> <img [src]="project.cover" /> </div>
   <div class="card_title title-white">
     <p>{{ project.name }}</p>

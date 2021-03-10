@@ -24,6 +24,6 @@ export class PortfolioPage implements OnInit {
   }
 
   viewProject(id) {
-    this.navCtrl.navigateForward(`project/${id}`)
+    this.navCtrl.navigateForward(`projects/${id}`)
   }
 }
