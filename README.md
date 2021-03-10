@@ -1,5 +1,5 @@
 # hewhamilton.com
-[hewhamilton.com](hewhamilton.com) source code. Written in ionic-angular.
+[hewhamilton.com](https://hewhamilton.com) source code. Written in ionic-angular.
 
 # Tools used
 - ionic 5

@@ -23,11 +23,7 @@ export class JsIframePage implements OnInit {
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.src = `assets/js/${this.id}/index.html`
-  }
-
-  viewProject(id) {
-    this.navCtrl.navigateForward(`js/${id}`)
+    this.src = `https://github.com/hewham/hewham-ionic/tree/master/src/assets/js/${this.id}`
   }
 
   async refresh() {

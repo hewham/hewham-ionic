@@ -40,5 +40,9 @@
   <iframe *ngIf="!isRefreshing && id=='FractalTree'" class="js-iframe" src="assets/js/FractalTree/index.html" frameBorder="0"></iframe>
 
   <p *ngIf="!isRefreshing" class="accent-text"> {{ projectsService.js[id].description }}</p>
+  <p class="accent-text monospace">
+    <a [href]="src" target="_blank">
+    Source&nbsp;Code</a>&nbsp;<ion-icon name="code"></ion-icon>
+  </p>
 
 </ion-content>
