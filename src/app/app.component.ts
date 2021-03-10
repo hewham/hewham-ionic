@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import p from '../../package.json';
 
 @Component({
@@ -12,9 +13,17 @@ export class AppComponent {
   version = p.version;
 
   public appPages = [
-    { title: 'Projects', url: 'projects', icon: 'library' },
-    { title: 'JS Experiments', url: 'js', icon: 'flask' }
+    { title: 'Projects', url: 'p/projects', icon: 'library' },
+    { title: 'JS Experiments', url: 'p/js', icon: 'flask' }
   ];
 
-  constructor() {}
+  constructor(
+    private navCtrl: NavController
+  ) {
+    this.initializeApp();
+  }
+
+  initializeApp() {
+    this.navCtrl.navigateRoot("p/projects");
+  }
 }

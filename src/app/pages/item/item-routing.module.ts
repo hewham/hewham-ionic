@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { PortfolioPage } from './portfolio.page';
+import { ItemPage } from './item.page';
+import { JsIframePage } from '../js-iframe/js-iframe.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: PortfolioPage
+    component: ItemPage
+  },
+  {
+    path: 'code',
+    component: JsIframePage
   }
 ];
 
@@ -14,4 +19,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class PortfolioPageRoutingModule {}
+export class ItemPageRoutingModule {}

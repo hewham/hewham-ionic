@@ -5,7 +5,7 @@
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ projectsService.js[id].name }}</ion-title>
+    <ion-title>{{ item.name }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="refresh()">
         <ion-icon slot="icon-only" name="refresh-circle-outline"></ion-icon>
@@ -17,7 +17,7 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense" no-border>
     <ion-toolbar>
-      <ion-title size="large">{{ projectsService.js[id].name }}</ion-title>
+      <ion-title size="large">{{ item.name }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -39,7 +39,7 @@
   <iframe *ngIf="!isRefreshing && id=='DoublePendulum'" class="js-iframe" src="assets/js/DoublePendulum/index.html" frameBorder="0"></iframe>
   <iframe *ngIf="!isRefreshing && id=='FractalTree'" class="js-iframe" src="assets/js/FractalTree/index.html" frameBorder="0"></iframe>
 
-  <p *ngIf="!isRefreshing" class="accent-text"> {{ projectsService.js[id].description }}</p>
+  <p *ngIf="!isRefreshing" class="accent-text"> {{ item.description }}</p>
   <p class="accent-text monospace">
     <a [href]="src" target="_blank">
     Source&nbsp;Code</a>&nbsp;<ion-icon name="code"></ion-icon>

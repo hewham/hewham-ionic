@@ -10,7 +10,9 @@ import { ProjectsService } from '../../services/projects.service';
 })
 export class JsIframePage implements OnInit {
 
+  public slug: string;
   public id: string;
+  item: any;
   src = "";
   isRefreshing: Boolean = false;
   Object = Object;
@@ -22,7 +24,9 @@ export class JsIframePage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.slug = this.activatedRoute.snapshot.paramMap.get('group');
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.item = this.projectsService.getItem(this.slug, this.id);
     this.src = `https://github.com/hewham/hewham-ionic/tree/master/src/assets/js/${this.id}`
   }
 

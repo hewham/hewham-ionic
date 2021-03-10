@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="navCtrl.back()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ item.name }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <!-- <img class="project-logo" [src]="item.logo" /> -->
+      <ion-title size="large">{{ item.name }}</ion-title>
+      <ion-title></ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="web-container ion-padding">
+    <br>
+    <br>
+    <br>
+    <div class="ion-text-center">
+      <img class="small-img" [src]="item.icon" />
+      <br>
+      <!-- <strong class="capitalize">{{ item.name }}</strong>
+      <br> -->
+      <br>
+      <a class="monospace" [href]="item.link" target="_blank">Visit {{ item.name }}</a>
+    </div>
+    <br>
+    <p class="accent-text">{{ item.description }}</p>
+  </div>
+</ion-content>
