@@ -64,6 +64,18 @@ export class ProjectsService {
       cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/zonder-splash2.png?alt=media&token=32069634-3677-48cf-9992-b73a16446c79",
       image: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/zonder-splash2.png?alt=media&token=32069634-3677-48cf-9992-b73a16446c79",
       html: ``
+    },
+    nolsoundia: {
+      id: "nolsoundia",
+      name: "Nolsoundia",
+      subtitle: "Emotion through sound",
+      link: "https://nolsoundia.hewhamilton.com",
+      description: "Nolsoundia provides a platform that gets to know you and your past, in order to create soundscapes to help you remember feelings you might have foorgotten. Experiment and discover what Nolsoundia can remind you of.",
+      logo: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/nolsoundia-logo.png?alt=media&token=6ada4ee6-2bf6-449a-8108-32c1ac0a8045",
+      icon: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/nolsoundia-icon.png?alt=media&token=1e5ac347-ff9c-43c6-a633-75f517920e1b",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/nolsoundia-splash.png?alt=media&token=9e78a7b7-2670-4da2-93c9-44f05e1955e7",
+      image: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/nolsoundia-splash.png?alt=media&token=9e78a7b7-2670-4da2-93c9-44f05e1955e7",
+      html: ``
     }
   }
 

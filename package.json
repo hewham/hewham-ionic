@@ -1,8 +1,8 @@
 {
-  "name": "hewhamilton-ionic",
-  "version": "0.1.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "name": "hewham-ionic",
+  "version": "0.1.2",
+  "author": "hewham",
+  "homepage": "https://hewhamilton.com",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
