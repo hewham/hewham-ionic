@@ -27,6 +27,18 @@ export class ProjectsService {
       image: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/logo_icon.png?alt=media&token=07901b5e-cb34-4dfb-ba1e-3fdc64821297",
       html: ``
     },
+    todoolie: {
+      id: "todoolie",
+      name: "ToDoolie",
+      subtitle: "ToDoolie is a quick and easy way for homeowners to book jobs",
+      description: "I am Vice President of Technology at ToDoolie, a Detroit based start up designed to let homeowners book students to do simple tasks around the house.",
+      logo: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/todoolie-logo-blue.png?alt=media&token=5005a929-2744-46e4-bfc9-cd1877e26574",
+      icon: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/todoolie-icon.png?alt=media&token=540f2324-6137-4470-9f36-6529530ab12c",
+      cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/todoolie-splash-gif.gif?alt=media&token=5ce7dfbd-89b1-4617-9a40-a0d05eb68d50",
+      // cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/todoolie-splash1.png?alt=media&token=68807064-97e8-42d4-963a-942bd3b793ce",
+      image: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/todoolie-icon.png?alt=media&token=540f2324-6137-4470-9f36-6529530ab12c",
+      html: ``
+    },
     giggot: {
       id: "giggot",
       name: "GigGot",
@@ -37,7 +49,7 @@ export class ProjectsService {
       cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/giggot-splash.png?alt=media&token=3b6d4e93-87ee-4cdd-b592-afa06d2ea0ef",
       image: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/giggot_artist.png?alt=media&token=2e95d431-cd96-4c6c-8367-46b7d5b25766",
       html: ``
-    },
+    }
   }
 
   js = {
