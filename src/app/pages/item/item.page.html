@@ -6,7 +6,7 @@
       </ion-button>
     </ion-buttons>
     <ion-title *ngIf="item">{{ item.name }}</ion-title>
-    <ion-buttons slot="end" *ngIf="authService.isLoggedIn">
+    <ion-buttons slot="end" *ngIf="authService.isOwner">
       <ion-button (click)="delete()">
         <ion-icon slot="icon-only" name="trash-outline" color="danger"></ion-icon>
       </ion-button>

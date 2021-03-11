@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { environment } from '../environments/environment';
 import p from '../../package.json';
 import { AuthService } from './services/auth.service';
 
@@ -27,23 +28,27 @@ export class AppComponent {
   }
 
   async initializeApp() {
-    console.log("URL: ", (window as any).location.href);
-    var subdomain = /:\/\/([^\/]+)/.exec((window as any).location.href)[1];
-    console.log("subdomain: ", subdomain);
-
     await this.authService.init();
-    if(this.authService.isLoggedIn) {
-      this.setAppPages();
-      if(this.appPages.length > 0) {
-        this.navCtrl.navigateRoot(this.appPages[0].url);
-      } else {
-        this.navCtrl.navigateRoot("start");
-      }
+
+    this.setAppPages();
+    if(this.appPages.length > 0) {
+      this.navCtrl.navigateRoot(this.appPages[0].url);
     } else {
-      if(this.router.url != "/login" && this.router.url != "/login?login=true") {
-        this.navCtrl.navigateRoot("start");
-      }
+      this.navCtrl.navigateRoot("start");
     }
+
+    // if(this.authService.isLoggedIn) {
+    //   this.setAppPages();
+    //   if(this.appPages.length > 0) {
+    //     this.navCtrl.navigateRoot(this.appPages[0].url);
+    //   } else {
+    //     this.navCtrl.navigateRoot("start");
+    //   }
+    // } else {
+    //   if(this.router.url != "/login" && this.router.url != "/login?login=true") {
+    //     this.navCtrl.navigateRoot("start");
+    //   }
+    // }
   }
 
   setAppPages() {

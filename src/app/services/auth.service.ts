@@ -18,6 +18,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class AuthService {
 
   isLoggedIn: Boolean = false;
+  isOwner: Boolean = false;
   isIniting: Boolean = true;
   isInitialized: Boolean = false;
 
@@ -28,6 +29,7 @@ export class AuthService {
   user: any;
   // data: any;
   uid: any;
+  pageuid: any;
 
   constructor(
       private navCtrl: NavController,
@@ -41,10 +43,12 @@ export class AuthService {
 
   async init(){
     this.isIniting = true;
-    if(await this.checkIsLoggedIn()) {
-      // user is logged in
-      await this.getUser();
-    }
+    await this.setPageUid();
+    await this.checkIsLoggedIn();
+    await this.getUser();
+    if(this.pageuid == this.uid) this.isOwner = true;
+    // console.log("isOwner: ", this.isOwner)
+    // console.log("isLoggedIn: ", this.isLoggedIn)
     this.isInitialized = true;
     this.isIniting = false;
     this.onInit.emit();
@@ -53,12 +57,15 @@ export class AuthService {
   async checkIsLoggedIn() {
     return new Promise((resolve) => {
       this.fireauth.onAuthStateChanged((user) => {
+        console.log("user: ", user);
         if (user) {
           this.uid = user.uid;
           this.isLoggedIn = true;
+          if(this.pageuid == this.uid) this.isOwner = true;
           resolve(true);
         } else {
           this.isLoggedIn = false;
+          this.isOwner = false;
           resolve(false);
         }
       })
@@ -80,10 +87,11 @@ export class AuthService {
 
   async getUser() {
     return new Promise(async (resolve) => {
-      this.firestore.collection('users').doc(this.uid).get().subscribe((userDoc) => {
+      this.firestore.collection('users').doc(this.pageuid).get().subscribe((userDoc) => {
         this.user = userDoc.data();
         this.user.groups = [];
-        this.firestore.collection('users').doc(this.uid).collection('groups').get().subscribe((snapshot) => {
+        this.firestore.collection('users').doc(this.pageuid).collection('groups').get().subscribe((snapshot) => {
+          if(snapshot.docs.length == 0) resolve(true);
           snapshot.docs.forEach((group) => {
             this.user.groups.push(group.data());
             resolve(true);
@@ -112,6 +120,34 @@ export class AuthService {
     // await this.navCtrl.navigateRoot('start');
     this.onAuthChange.emit();
     this.isIniting = false;
+  }
+
+  setPageUid() {
+    return new Promise((resolve) => {
+      let fulldomain = /:\/\/([^\/]+)/.exec((window as any).location.href)[1];
+      let subdomain = fulldomain.split(".")[0];
+      subdomain = "www";
+      const reservedNames = ['www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads'];
+      let isReserved = (reservedNames.indexOf(subdomain) > -1)
+      if(isReserved) {
+        this.pageuid = environment.PENNA_UID;
+        resolve(this.pageuid)
+      } else {
+        this.firestore.collection("users", ref => ref.where("subdomain", "==", subdomain)).get().subscribe((snapshot) => {
+          if(snapshot.docs.length == 0) {
+            if(environment.production) {
+              (window as any).open('https://www.penna.io','_self');
+            }
+          } else {
+            snapshot.docs.forEach((doc) => {
+              this.pageuid = doc.id
+              resolve(this.pageuid);
+            })
+          }
+        });
+      }
+    });
+
   }
 
   resetPassword(email) {

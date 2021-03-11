@@ -12,7 +12,7 @@
     <ion-toolbar>
       <ion-title size="large" *ngIf="group">{{ group.name }}</ion-title>
       <ion-buttons slot="end">
-        <ion-button (click)="add()">
+        <ion-button (click)="add()" *ngIf="authService.isOwner">
           <ion-icon slot="icon-only" name="add"></ion-icon>
         </ion-button>
       </ion-buttons>

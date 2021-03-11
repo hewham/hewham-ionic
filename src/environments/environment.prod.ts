@@ -9,5 +9,6 @@ const firebaseConfig = {
 
 export const environment = {
   production: true,
+  PENNA_UID: "Wu1qbpZm5mR4DFzoXoilA9exKDG3",
   firebaseConfig
 };

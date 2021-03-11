@@ -3,8 +3,8 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <img class="small-img" style="margin-left: 15px;" src="https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/hew_300.jpg?alt=media&token=57ee0222-799b-43ca-b182-04e3ae6eeb43" />
-          <ion-list-header>Hew Hamilton</ion-list-header>
+          <img class="small-img" style="margin-left: 15px;" [src]="authService.user.avatar ? authService.user.avatar : 'assets/imgs.default.png'" />
+          <ion-list-header>{{ authService.user.firstName }} {{ authService.user.lastName }}</ion-list-header>
           <br>
           <br>
           <!-- <ion-note>hew@anonacy.com</ion-note> -->
@@ -16,7 +16,7 @@
             </ion-item>
           </ion-menu-toggle>
 
-          <ion-menu-toggle auto-hide="false">
+          <ion-menu-toggle *ngIf="authService.isOwner" auto-hide="false">
             <ion-item (click)="navCtrl.navigateForward('add')" button lines="none" detail="false" tappable class="selected">
               <ion-icon slot="start" name="add-outline" size="small"></ion-icon>
               <ion-label style="font-size: 0.7em;"><span class="monospace"><u>Add Group</u></span></ion-label>
@@ -40,7 +40,7 @@
           </p>
 
           <p 
-            *ngIf="authService.isLoggedIn && authService.isInitialized"
+            *ngIf="authService.isOwner && authService.isInitialized"
             class="monospace color-primary" 
             tappable 
             (click)="authService.logout()">

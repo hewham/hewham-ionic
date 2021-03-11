@@ -26,7 +26,7 @@ export class FirestoreService {
 
   getGroup(slug) {
     return new Promise((resolve) => {
-      this.firestore.collection('users').doc(this.authService.uid).collection('groups', ref => ref.where("slug", "==", slug)).get().subscribe((snapshot) => {
+      this.firestore.collection('users').doc(this.authService.pageuid).collection('groups', ref => ref.where("slug", "==", slug)).get().subscribe((snapshot) => {
         snapshot.docs.forEach((doc) => {
           resolve({
             id: doc.id,
@@ -44,7 +44,7 @@ export class FirestoreService {
 
   getItem(groupID, itemSlug) {
     return new Promise((resolve) => {
-      this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("items", ref => ref.where("slug", "==", itemSlug)).get().subscribe((snapshot) => {
+      this.firestore.collection('users').doc(this.authService.pageuid).collection('groups').doc(groupID).collection("items", ref => ref.where("slug", "==", itemSlug)).get().subscribe((snapshot) => {
         if(snapshot.docs.length == 0) resolve(null);
         snapshot.docs.forEach((doc) => {
           resolve({
@@ -58,7 +58,7 @@ export class FirestoreService {
 
   getItems(groupID) {
     return new Promise((resolve) => {
-      this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("items").get().subscribe((snapshot) => {
+      this.firestore.collection('users').doc(this.authService.pageuid).collection('groups').doc(groupID).collection("items").get().subscribe((snapshot) => {
         let items = [];
         snapshot.docs.forEach((item) => {
           items.push({
@@ -83,16 +83,5 @@ export class FirestoreService {
     await this.imageService.deletePhoto(item.cover);
     return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('items').doc(item.id).delete();
   }
-
-
-  async getUserDoc() {
-    return new Promise(async (resolve) => {
-      let userRef = await this.firestore.collection('users').doc(this.authService.user.authID).get();
-      userRef.subscribe((user) => {
-        resolve(user.data());
-      });
-    });
-  }
-
 
 }
