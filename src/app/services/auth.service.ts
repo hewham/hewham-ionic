@@ -126,6 +126,8 @@ export class AuthService {
     return new Promise((resolve) => {
       let fulldomain = /:\/\/([^\/]+)/.exec((window as any).location.href)[1];
       let subdomain = fulldomain.split(".")[0];
+      console.log("fulldomain: ", fulldomain)
+      console.log("subdomain: ", subdomain)
       const reservedNames = ['localhost:8100', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads'];
       let isReserved = (reservedNames.indexOf(subdomain) > -1)
       if(isReserved) {
@@ -134,8 +136,10 @@ export class AuthService {
       } else {
         this.firestore.collection("users", ref => ref.where("subdomain", "==", subdomain)).get().subscribe((snapshot) => {
           if(snapshot.docs.length == 0) {
+            console.log("Should redirect")
             if(environment.production) {
-              (window as any).open('https://www.penna.io', '_self');
+              console.log("redirecting...");
+              <any>window.open('https://www.penna.io', '_self');
             }
           } else {
             snapshot.docs.forEach((doc) => {
