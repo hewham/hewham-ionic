@@ -146,7 +146,7 @@ export class LoginPage implements OnInit {
     const MAX_LENGTH = 32;
     const ALPHA_NUMERIC_REGEX = /^[a-z][a-z\-]*[a-z0-9]*$/;
     const START_END_HYPHEN_REGEX = /\A[^-].*[^-]\z/i;
-    const reservedNames = ['www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you'];
+    const reservedNames = this.authService.reservedNames;
 
      //if is reserved...
      if (reservedNames.includes(subdomain)) {

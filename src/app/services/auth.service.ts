@@ -22,6 +22,7 @@ export class AuthService {
   isIniting: Boolean = true;
   isInitialized: Boolean = false;
   subdomain: any;
+  reservedNames = ['localhost:8100', 'penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you'];
 
   onInit: EventEmitter<any> = new EventEmitter()
   onRefresh: EventEmitter<any> = new EventEmitter()
@@ -141,10 +142,9 @@ export class AuthService {
       let fulldomain = /:\/\/([^\/]+)/.exec((window as any).location.href)[1];
       let subdomain = fulldomain.split(".")[0];
       this.subdomain = subdomain;
-      // console.log("fulldomain: ", fulldomain)
-      // console.log("subdomain: ", subdomain)
-      const reservedNames = ['localhost:8100', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you'];
-      let isReserved = (reservedNames.indexOf(subdomain) > -1)
+      console.log("fulldomain: ", fulldomain)
+      console.log("subdomain: ", subdomain)
+      let isReserved = (this.reservedNames.indexOf(subdomain) > -1)
       if(isReserved) {
         this.pageuid = environment.PENNA_UID;
         resolve(this.pageuid)
