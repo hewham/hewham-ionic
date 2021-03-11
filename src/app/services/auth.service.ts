@@ -89,28 +89,15 @@ export class AuthService {
           });
         })
       });
-
-
-      // this.user.groups[group.data().id].items = {};
-      //       this.firestore.collection('users').doc(this.uid).collection('groups').doc(group.data().id).collection("items").get().subscribe((snapshot3) => {
-      //         snapshot3.docs.forEach((item, j) => {
-      //           console.log(item.data());
-      //           this.user.groups[group.data().id].items[item.data().id] = item.data();
-      //           resolve(true);
-      //         });
-      //       })
-
-
-      // let userRef = await this.firestore.collection('users').doc(this.uid).collection('groups').get();
-      // userRef.subscribe((user) => {
-      //   resolve(user);
-      // });
     });
   }
 
   async refreshUser() {
-    // this.user = await this.api.get("/users/" + this.user.id);
-    // await this.storage.set("user", this.user);
+    await this.getUser();
+    this.onRefresh.emit();
+  }
+
+  async refreshAll() {
     this.onRefresh.emit();
   }
 

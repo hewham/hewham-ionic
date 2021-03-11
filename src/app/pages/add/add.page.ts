@@ -38,6 +38,7 @@ export class AddPage implements OnInit {
       name : ['', Validators.compose([Validators.minLength(1), Validators.required])],
       slug : ['', Validators.compose([Validators.minLength(1), Validators.required])],
       tag : ['', Validators.compose([Validators.minLength(1), Validators.required])],
+      link : ['', Validators.compose([Validators.minLength(0), Validators.required])],
       description : ['', Validators.compose([Validators.minLength(1), Validators.required])]
     });
   }
@@ -60,6 +61,7 @@ export class AddPage implements OnInit {
       let success: any = false;
       success = await this.firestoreService.addItem(body, this.groupSlug);
       if(success) {
+        this.authService.refreshAll();
         this.navCtrl.navigateRoot(`p/${this.groupSlug}`);
       }
       this.isLoading = false;
@@ -73,6 +75,7 @@ export class AddPage implements OnInit {
       name: this.form.controls.name.value,
       slug: this.form.controls.slug.value,
       tag: this.form.controls.tag.value,
+      link: this.form.controls.link.value,
       description: this.form.controls.description.value,
       tile: this.images.tileURL,
       cover: this.images.coverURL
@@ -87,7 +90,6 @@ export class AddPage implements OnInit {
 
   imageSelected(photoFile, type) {
     this.images[type] = photoFile;
-    console.log("images: ", this.images);
   }
 
   validate() {
@@ -113,10 +115,25 @@ export class AddPage implements OnInit {
       this.errorMessage = 'Please add a cover image';
       return false; 
     }
-    return this.validateSlug(this.form.controls.slug.value);
 
-    this.errorMessage = "";
-    return true;
+    if(this.form.controls.link.value) {
+      if(!this.isValidHttpUrl(this.form.controls.link.value)) {
+        this.errorMessage = 'Project link is not a valid url (Must begin with https:// or http://)';
+        return false; 
+      }
+    }
+
+    return this.validateSlug(this.form.controls.slug.value);
+  }
+
+  isValidHttpUrl(string) {
+    let url;
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false;  
+    }
+    return url.protocol === "http:" || url.protocol === "https:";
   }
 
   validateSlug(slug) {

@@ -4,6 +4,7 @@ import { NavController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 import { ProjectsService } from '../../services/projects.service';
 import { FirestoreService } from '../../services/firestore.service';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-item',
@@ -21,7 +22,8 @@ export class ItemPage implements OnInit {
     public navCtrl: NavController,
     public authService: AuthService,
     public projectsService: ProjectsService,
-    public firestoreService: FirestoreService
+    public firestoreService: FirestoreService,
+    public imageService: ImageService
   ) { }
 
   async ngOnInit() {
@@ -31,6 +33,16 @@ export class ItemPage implements OnInit {
     this.group = await this.firestoreService.getGroup(this.slug);
     this.item = await this.firestoreService.getItem(this.group.id, this.id);
     // this.item = this.projectsService.getItem(this.slug, this.id);
+  }
+
+  async delete() {
+    try {
+      await this.firestoreService.deleteItem(this.group.id, this.item);
+    } catch (e) {
+      return;
+    }
+    this.authService.refreshAll();
+    this.navCtrl.navigateRoot(`p/${this.slug}`);
   }
 
 }

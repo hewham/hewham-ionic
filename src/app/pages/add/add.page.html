@@ -9,19 +9,64 @@
 </ion-header>
 
 <ion-content>
-  <div class="web-container">
+  <br>
+  <br>
+
+  <div *ngIf="isLoading" class="ion-text-center">
+    <div style="height: 100px"></div>
+    <ion-spinner></ion-spinner>
+    <div style="height: 100px"></div>
+  </div>
+
+  <div *ngIf="!isLoading" class="ion-text-left web-container">
+    <h1>✨ Add Item</h1>
+
     <br>
     <br>
 
-    <div *ngIf="isLoading" class="ion-text-center">
-      <div style="height: 100px"></div>
-      <ion-spinner></ion-spinner>
-      <div style="height: 100px"></div>
-    </div>
+    <ion-grid class="ion-no-padding ion-no-margin">
+      <ion-row>
+        <ion-col class="ion-no-padding">
+          <app-image-upload (onDone)="imageSelected($event, 'tile')" customID="tile-image"></app-image-upload>
+          <div class="ion-text-center opacity-half">Icon</div>
+        </ion-col>
+        <ion-col class="ion-no-padding">
+          <app-image-upload (onDone)="imageSelected($event, 'cover')" customID="cover-image"></app-image-upload>
+          <div class="ion-text-center opacity-half">Cover</div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-    <div class="ion-text-left web-container">
-      <h1>✨ Add Item</h1>
+    <form [formGroup]="form">
 
+      <ion-grid class="ion-no-padding ion-no-margin">
+        <ion-row>
+          <ion-col class="ion-no-padding">
+            <ion-item>
+              <ion-label position="floating">Name</ion-label>
+              <ion-input 
+                #name 
+                formControlName="name" 
+                type="text"
+                [class.invalid]="!form.controls.name.valid" 
+                (keypress)="eventHandler($event.keyCode)">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col class="ion-no-padding">
+            <ion-item>
+              <ion-label position="floating">Tag</ion-label>
+              <ion-input 
+                #tag 
+                formControlName="tag" 
+                type="text"
+                [class.invalid]="!form.controls.tag.valid" 
+                (keypress)="eventHandler($event.keyCode)">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 
       <br>
       <br>
@@ -29,88 +74,58 @@
       <ion-grid class="ion-no-padding ion-no-margin">
         <ion-row>
           <ion-col class="ion-no-padding">
-            <app-image-upload (onDone)="imageSelected($event, 'tile')" customID="tile-image"></app-image-upload>
-            <div class="ion-text-center opacity-half">Icon</div>
+            <ion-item>
+              <ion-label position="stacked">URL Slug</ion-label>
+              <ion-input 
+                #slug 
+                formControlName="slug" 
+                type="text"
+                [class.invalid]="!form.controls.slug.valid" 
+                (keypress)="eventHandler($event.keyCode)">
+                <span style="opacity: 0.5;">/p/{{ groupSlug }}/</span>
+              </ion-input>
+            </ion-item>
           </ion-col>
           <ion-col class="ion-no-padding">
-            <app-image-upload (onDone)="imageSelected($event, 'cover')" customID="cover-image"></app-image-upload>
-            <div class="ion-text-center opacity-half">Cover</div>
+            <ion-item>
+              <ion-label position="floating">External Link URL</ion-label>
+              <ion-input 
+                #link 
+                formControlName="link" 
+                type="text"
+                [class.invalid]="!form.controls.link.valid" 
+                (keypress)="eventHandler($event.keyCode)">
+              </ion-input>
+            </ion-item>
           </ion-col>
         </ion-row>
       </ion-grid>
 
-      <form [formGroup]="form">
+      <br>
 
-        <ion-grid class="ion-no-padding ion-no-margin">
-          <ion-row>
-            <ion-col class="ion-no-padding">
-              <ion-item>
-                <ion-label position="floating">Name</ion-label>
-                <ion-input 
-                  #name 
-                  formControlName="name" 
-                  type="text"
-                  [class.invalid]="!form.controls.name.valid" 
-                  (keypress)="eventHandler($event.keyCode)">
-                </ion-input>
-              </ion-item>
-            </ion-col>
-            <ion-col class="ion-no-padding">
-              <ion-item>
-                <ion-label position="floating">Tag</ion-label>
-                <ion-input 
-                  #tag 
-                  formControlName="tag" 
-                  type="text"
-                  [class.invalid]="!form.controls.tag.valid" 
-                  (keypress)="eventHandler($event.keyCode)">
-                </ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-input 
+          #description 
+          formControlName="description" 
+          type="text"
+          [class.invalid]="!form.controls.description.valid" 
+          (keypress)="eventHandler($event.keyCode)">
+        </ion-input>
+      </ion-item>
+    </form>
 
-        <br>
-        <br>
-
-        <ion-item>
-          <ion-label position="stacked">URL Slug</ion-label>
-          <ion-input 
-            #slug 
-            formControlName="slug" 
-            type="text"
-            [class.invalid]="!form.controls.slug.valid" 
-            (keypress)="eventHandler($event.keyCode)">
-            <span style="opacity: 0.5;">/p/{{ groupSlug }}/</span>
-          </ion-input>
-        </ion-item>
-
-        <br>
-
-        <ion-item>
-          <ion-label position="floating">Description</ion-label>
-          <ion-input 
-            #description 
-            formControlName="description" 
-            type="text"
-            [class.invalid]="!form.controls.description.valid" 
-            (keypress)="eventHandler($event.keyCode)">
-          </ion-input>
-        </ion-item>
-      </form>
-
-      
-      
-      <div class="spacer" style="height:12px;"></div>
-      
-      <ion-label padding color="danger" style="text-align:center;">{{errorMessage}}</ion-label>
-      
-      <div class="btn-wrapper">
-        <ion-button (click)="submit()" color="seethrough" class="color-primary">
-          Create
-        </ion-button>
-      </div>
-
+    
+    
+    <div class="spacer" style="height:12px;"></div>
+    
+    <ion-label padding color="danger" style="text-align:center;">{{errorMessage}}</ion-label>
+    
+    <div class="btn-wrapper">
+      <ion-button (click)="submit()" color="seethrough" class="color-primary">
+        Create
+      </ion-button>
     </div>
+
   </div>
 </ion-content>

@@ -27,7 +27,7 @@ export class GroupPage implements OnInit {
 
   async ngOnInit() {
     await this.authService.onReady();
-    console.log(this.authService.uid)
+    this.authService.onRefresh.subscribe(() => this.ngOnInit());
     this.slug = this.activatedRoute.snapshot.paramMap.get('group');
     this.group = await this.firestoreService.getGroup(this.slug);
     this.items = await this.firestoreService.getItems(this.slug);

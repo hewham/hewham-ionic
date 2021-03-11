@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
+import { DialogService } from './dialog.service';
+import { ImageService } from './image.service';
 
 @Injectable({
   providedIn: "root"
@@ -14,6 +16,8 @@ export class FirestoreService {
   constructor(
     private firestore: AngularFirestore,
     private authService: AuthService,
+    private dialogService: DialogService,
+    private imageService: ImageService,
   ) {}
 
   async get() {
@@ -53,7 +57,10 @@ export class FirestoreService {
       this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("items").get().subscribe((snapshot) => {
         let items = [];
         snapshot.docs.forEach((item) => {
-          items.push(item.data());
+          items.push({
+            id: item.id,
+            ...item.data()
+          });
         })
         resolve(items);
       })
@@ -64,6 +71,13 @@ export class FirestoreService {
     const group:any = await this.getGroup(groupSlug);
     const groupID = group.id;
     return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('items').add(item);
+  }
+
+  async deleteItem(groupID, item) {
+    if(!await this.dialogService.prompt("Are you sure? You can't undo this action.", "Nevermind", "Delete", "Confirm Delete")) return;
+    await this.imageService.deletePhoto(item.tile);
+    await this.imageService.deletePhoto(item.cover);
+    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('items').doc(item.id).delete();
   }
 
 

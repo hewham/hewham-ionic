@@ -32,6 +32,13 @@ export class ImageService {
     });
   }
 
+  async deletePhoto(url) {
+    try {
+      await firebase.storage().refFromURL(url).delete();
+    } catch (e) {}
+    return;
+  }
+
   convertFileToBase64(photoFile){
     return new Promise((resolve) => {
       var reader = new FileReader();

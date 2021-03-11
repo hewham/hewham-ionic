@@ -19,14 +19,10 @@ export class ImageUploadComponent implements OnInit{
     private imageService: ImageService
   ) {}
 
-  ngOnInit() {
-    console.log("customID: ", this.customID)
-  }
+  ngOnInit() {}
   
   // PHOTO
   async changedPhoto(){
-    console.log("customID: ", this.customID)
-    console.log("a: ",(document.getElementById(this.customID) as any))
     var photo = await this.imageService.convertFileToBase64((document.getElementById(this.customID) as any).files[0]);
     this.photoPreview = photo;
     this.photoChanged = true;
