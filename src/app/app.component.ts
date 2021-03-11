@@ -21,15 +21,17 @@ export class AppComponent {
     private navCtrl: NavController,
     public authService: AuthService
   ) {
+    this.authService.onAuthChange.subscribe(() => this.initializeApp())
     this.initializeApp();
   }
 
   async initializeApp() {
+    this.appPages = [];
     await this.authService.init();
     if(this.authService.isLoggedIn) {
       this.setAppPages();
     } else {
-      if(this.router.url != "/login") {
+      if(this.router.url != "/login" && this.router.url != "/login?login=true") {
         this.navCtrl.navigateRoot("start");
       }
     }
@@ -42,7 +44,12 @@ export class AppComponent {
         url: `p/${group.slug}`,
         icon: group.icon
       })
-    })
+    });
+    if(this.appPages.length > 0) {
+      this.navCtrl.navigateRoot(this.appPages[0].url);
+    } else {
+      this.navCtrl.navigateRoot("start");
+    }
   }
 
   login(bool) {

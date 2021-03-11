@@ -23,6 +23,7 @@ export class AuthService {
 
   onInit: EventEmitter<any> = new EventEmitter()
   onRefresh: EventEmitter<any> = new EventEmitter()
+  onAuthChange: EventEmitter<any> = new EventEmitter()
 
   user: any;
   // data: any;
@@ -108,7 +109,8 @@ export class AuthService {
     await this.fireauth.signOut();
     // await this.storage.clear();
     // await this.crispService.init();
-    await this.navCtrl.navigateRoot('start');
+    // await this.navCtrl.navigateRoot('start');
+    this.onAuthChange.emit();
     this.isIniting = false;
   }
 
@@ -131,9 +133,10 @@ export class AuthService {
     return new Promise((resolve) => {
     this.fireauth.signInWithEmailAndPassword(email, password)
       .then(async res => {
-        this.init();
+        // this.init();
         resolve(true);
         loading.dismiss();
+        this.onAuthChange.emit();
       }).catch(error => {
         this.dialogService.error(error.message);
         loading.dismiss();
@@ -151,10 +154,11 @@ export class AuthService {
       this.fireauth.createUserWithEmailAndPassword(body.email, body.password)
       .then(async res => {
         await this.createNewUser(body, res.user.uid);
-        this.init();
-        this.navCtrl.navigateRoot('start');
+        // this.init();
+        // this.navCtrl.navigateRoot('start');
         // await this.initOnAppStartOrLogin();
         loading.dismiss();
+        this.onAuthChange.emit();
         resolve(true);
       }).catch(error => {
         this.dialogService.error(error.message);

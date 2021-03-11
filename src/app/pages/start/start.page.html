@@ -10,7 +10,7 @@
   <br>
   <br>
 
-  <div class="ion-text-left web-container">
+  <div *ngIf="!authService.isLoggedIn" class="ion-text-left web-container">
     <h1>🚀 Getting Started</h1>
     <br>
     <br>
@@ -30,6 +30,17 @@
       &nbsp;|&nbsp;
       <a href="/login?login=true" target="_self">Log in</a>
     </p>
+  </div>
 
+  <div *ngIf="authService.isLoggedIn" class="ion-text-left web-container">
+    <h1>🚀 Getting Started</h1>
+    <br>
+    <br>
+    <p>
+      Add a <span class="monospace">Group</span> in the left sidebar.
+    </p>
+    <p>
+      <span class="monospace">Groups</span> can be protfolios, galleries, collections, showcases, or anything else.
+    </p>
   </div>
 </ion-content>
