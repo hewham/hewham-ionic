@@ -36,10 +36,14 @@ export class GroupPage implements OnInit {
   viewProject(id) {
     let URL = `p/${this.slug}/${id}`
     if(this.group.options.type) {
-      if(this.group.options.type != "project") {
+      if(this.group.options.type == "code") {
         URL += '/code';
       }
     }
     this.navCtrl.navigateForward(URL)
+  }
+
+  add() {
+    this.navCtrl.navigateForward(`add/${this.slug}`)
   }
 }

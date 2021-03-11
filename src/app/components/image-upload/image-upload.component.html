@@ -1,0 +1,14 @@
+<div style="width: 100%; text-align: center; position: relative;">
+  <img [ngClass]="customID" [src]="photoPreview ? photoPreview : 'assets/imgs/default.png'" />
+
+  <button class='img-button' ion-button icon-only>
+    <ion-icon name='camera'></ion-icon>
+    <input 
+      ion-button 
+      [id]="customID"
+      type="file" 
+      accept="image/x-png,image/gif,image/jpeg" 
+      class="ghost-input" 
+      (change)='changedPhoto()'/>
+  </button>
+</div>

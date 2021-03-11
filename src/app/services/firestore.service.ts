@@ -60,6 +60,13 @@ export class FirestoreService {
     })
   }
 
+  async addItem(item, groupSlug) {
+    const group:any = await this.getGroup(groupSlug);
+    const groupID = group.id;
+    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('items').add(item);
+  }
+
+
   async getUserDoc() {
     return new Promise(async (resolve) => {
       let userRef = await this.firestore.collection('users').doc(this.authService.user.authID).get();

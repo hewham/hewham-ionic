@@ -30,7 +30,7 @@ export class ItemPage implements OnInit {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     this.group = await this.firestoreService.getGroup(this.slug);
     this.item = await this.firestoreService.getItem(this.group.id, this.id);
-    this.item = this.projectsService.getItem(this.slug, this.id);
+    // this.item = this.projectsService.getItem(this.slug, this.id);
   }
 
 }
