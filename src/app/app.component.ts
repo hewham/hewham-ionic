@@ -14,7 +14,8 @@ import { AuthService } from './services/auth.service';
 export class AppComponent {
 
   version = p.version;
-
+  environment = environment;
+  
   public appPages = [];
 
   constructor(

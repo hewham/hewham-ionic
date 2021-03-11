@@ -3,8 +3,10 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <img class="small-img" style="margin-left: 15px;" [src]="authService.user.avatar ? authService.user.avatar : 'assets/imgs.default.png'" />
-          <ion-list-header>{{ authService.user.firstName }} {{ authService.user.lastName }}</ion-list-header>
+          <div *ngIf="authService.user">
+            <img class="small-img" style="margin-left: 15px;" [src]="authService.user.avatar ? authService.user.avatar : 'assets/imgs.default.png'" />
+            <ion-list-header>{{ authService.user.firstName }} {{ authService.user.lastName }}</ion-list-header>
+          </div>
           <br>
           <br>
           <!-- <ion-note>hew@anonacy.com</ion-note> -->
@@ -26,6 +28,13 @@
 
         <div class="version">
 
+          <ion-menu-toggle *ngIf="authService.pageuid == environment.PENNA_UID" auto-hide="false">
+            <ion-item routerDirection="root" routerLink="start" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon slot="start" name="rocket-outline"></ion-icon>
+              <ion-label>Get Started</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
           <ion-menu-toggle auto-hide="false">
             <ion-item routerDirection="root" routerLink="about" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon slot="start" name="person-outline"></ion-icon>
@@ -40,7 +49,7 @@
           </p>
 
           <p 
-            *ngIf="authService.isOwner && authService.isInitialized"
+            *ngIf="authService.isOwner && authService.isInitialized || authService.isLoggedIn && authService.pageuid == environment.PENNA_UID"
             class="monospace color-primary" 
             tappable 
             (click)="authService.logout()">
