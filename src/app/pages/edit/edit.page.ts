@@ -7,18 +7,16 @@ import { FirestoreService } from '../../services/firestore.service'
 import { ImageService } from '../../services/image.service'
 
 @Component({
-  selector: 'app-add',
-  templateUrl: './add.page.html',
-  styleUrls: ['./add.page.scss'],
+  selector: 'app-edit',
+  templateUrl: './edit.page.html',
+  styleUrls: ['./edit.page.scss'],
 })
-export class AddPage implements OnInit {
+export class EditPage implements OnInit {
 
   errorMessage='';
+  groupSlug: any;
   form: FormGroup;
   isLoading: boolean = false;
-
-  showIcons: boolean = false;
-  icon = "heart";
 
   images:any =  {
     tile: null,
@@ -38,37 +36,33 @@ export class AddPage implements OnInit {
 
     this.form = this.formBuilder.group({
       name : ['', Validators.compose([Validators.minLength(1), Validators.required])],
-      slug : ['', Validators.compose([Validators.minLength(1), Validators.required])]
+      slug : ['', Validators.compose([Validators.minLength(1), Validators.required])],
+      tag : ['', Validators.compose([Validators.minLength(1), Validators.required])],
+      link : ['', Validators.compose([Validators.minLength(0), Validators.required])],
+      description : ['', Validators.compose([Validators.minLength(1), Validators.required])]
     });
   }
 
   ngOnInit() {
+    this.groupSlug = this.activatedRoute.snapshot.paramMap.get('group');
   }
 
   eventHandler(keyCode) { //function gets called on every keypress in phone number text box
     if (keyCode == 13) //13 is key code for enter
       this.submit();
   }
-
-  toggleIcons() {
-    this.showIcons = !this.showIcons;
-  }
-
-  selectIcon(icon) {
-    this.icon = icon;
-    this.toggleIcons();
-  }
     
   async submit() {
     // this.trackingService.track("login_page_submit");
     if(this.validate()) {
       this.isLoading = true;
+      await this.uploadImages();
       let body = this.getBody();
       let success: any = false;
-      success = await this.firestoreService.addGroup(body);
+      success = await this.firestoreService.addItem(body, this.groupSlug);
       if(success) {
-        await this.authService.refreshUser();
-        this.navCtrl.navigateRoot(`p/${body.slug}`);
+        this.authService.refreshAll();
+        this.navCtrl.navigateRoot(`p/${this.groupSlug}`);
       }
       this.isLoading = false;
     } else {
@@ -80,12 +74,22 @@ export class AddPage implements OnInit {
     return {
       name: this.form.controls.name.value,
       slug: this.form.controls.slug.value,
-      icon: this.icon,
-      options: {
-        shape: "long",
-        type: "project"
-      }
+      tag: this.form.controls.tag.value,
+      link: this.form.controls.link.value,
+      description: this.form.controls.description.value,
+      tile: this.images.tileURL,
+      cover: this.images.coverURL
     }
+  }
+
+  async uploadImages() {
+    this.images.tileURL = await (this.imageService.uploadPhoto(this.images.tile) as any);
+    this.images.coverURL = await (this.imageService.uploadPhoto(this.images.cover) as any);
+    return;
+  }
+
+  imageSelected(photoFile, type) {
+    this.images[type] = photoFile;
   }
 
   validate() {
@@ -93,12 +97,43 @@ export class AddPage implements OnInit {
       if(this.form.controls.name.valid == false){
         this.errorMessage = 'Please enter a name';
         return false;
+      } else if(this.form.controls.tag.valid == false){
+        this.errorMessage = 'Please enter a tag';
+        return false; 
       } else if(this.form.controls.slug.valid == false){
         this.errorMessage = 'Please enter a URL slug';
         return false;
+      }else if(this.form.controls.description.valid == false){
+        this.errorMessage = 'Please enter a description';
+        return false; 
       }
     }
+    if(!this.images.tile) {
+      this.errorMessage = 'Please add an icon image';
+      return false; 
+    } else if(!this.images.cover) {
+      this.errorMessage = 'Please add a cover image';
+      return false; 
+    }
+
+    if(this.form.controls.link.value) {
+      if(!this.isValidHttpUrl(this.form.controls.link.value)) {
+        this.errorMessage = 'Project link is not a valid url (Must begin with https:// or http://)';
+        return false; 
+      }
+    }
+
     return this.validateSlug(this.form.controls.slug.value);
+  }
+
+  isValidHttpUrl(string) {
+    let url;
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false;  
+    }
+    return url.protocol === "http:" || url.protocol === "https:";
   }
 
   validateSlug(slug) {
@@ -122,4 +157,6 @@ export class AddPage implements OnInit {
     this.errorMessage = "";
     return true;
   }
+
+
 }

@@ -44,6 +44,6 @@ export class GroupPage implements OnInit {
   }
 
   add() {
-    this.navCtrl.navigateForward(`add/${this.slug}`)
+    this.navCtrl.navigateForward(`edit/${this.slug}`)
   }
 }

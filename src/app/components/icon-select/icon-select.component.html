@@ -1,0 +1,7 @@
+<ion-grid>
+  <ion-row>
+    <ion-col *ngFor="let icon of icons">
+      <ion-icon tappable (click)="select(icon)" size="1" name="{{ icon }}-outline" color="primary"></ion-icon>
+    </ion-col>
+  </ion-row>
+</ion-grid>

@@ -32,7 +32,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'add/:group',
+    path: 'edit/:group',
+    loadChildren: () => import('./pages/edit/edit.module').then( m => m.EditPageModule)
+  },
+  {
+    path: 'add',
     loadChildren: () => import('./pages/add/add.module').then( m => m.AddPageModule)
   }
 ];

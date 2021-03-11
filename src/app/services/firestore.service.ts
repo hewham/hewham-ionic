@@ -38,6 +38,10 @@ export class FirestoreService {
     })
   }
 
+  async addGroup(body) {
+    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').add(body)
+  }
+
   getItem(groupID, itemSlug) {
     return new Promise((resolve) => {
       this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("items", ref => ref.where("slug", "==", itemSlug)).get().subscribe((snapshot) => {

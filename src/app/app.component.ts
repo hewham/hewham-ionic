@@ -18,18 +18,23 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private navCtrl: NavController,
+    public navCtrl: NavController,
     public authService: AuthService
   ) {
     this.authService.onAuthChange.subscribe(() => this.initializeApp())
+    this.authService.onRefresh.subscribe(() => this.setAppPages())
     this.initializeApp();
   }
 
   async initializeApp() {
-    this.appPages = [];
     await this.authService.init();
     if(this.authService.isLoggedIn) {
       this.setAppPages();
+      if(this.appPages.length > 0) {
+        this.navCtrl.navigateRoot(this.appPages[0].url);
+      } else {
+        this.navCtrl.navigateRoot("start");
+      }
     } else {
       if(this.router.url != "/login" && this.router.url != "/login?login=true") {
         this.navCtrl.navigateRoot("start");
@@ -38,6 +43,7 @@ export class AppComponent {
   }
 
   setAppPages() {
+    this.appPages = [];
     this.authService.user.groups.forEach((group) => {
       this.appPages.push({
         title: group.name,
@@ -45,18 +51,6 @@ export class AppComponent {
         icon: group.icon
       })
     });
-    if(this.appPages.length > 0) {
-      this.navCtrl.navigateRoot(this.appPages[0].url);
-    } else {
-      this.navCtrl.navigateRoot("start");
-    }
   }
 
-  login(bool) {
-    let URL = "login";
-    if(bool){
-      URL += "?login=true"
-    }
-    this.navCtrl.navigateRoot(URL);
-  }
 }

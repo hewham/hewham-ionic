@@ -15,9 +15,17 @@
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="navCtrl.navigateForward('add')" button lines="none" detail="false" tappable class="selected">
+              <ion-icon slot="start" name="add-outline" size="small"></ion-icon>
+              <ion-label style="font-size: 0.7em;"><span class="monospace"><u>Add Group</u></span></ion-label>
+            </ion-item>
+          </ion-menu-toggle>
         </ion-list>
 
         <div class="version">
+
           <ion-menu-toggle auto-hide="false">
             <ion-item routerDirection="root" routerLink="about" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon slot="start" name="person-outline"></ion-icon>
@@ -28,7 +36,7 @@
           <p 
             *ngIf="!authService.isLoggedIn && authService.isInitialized"
             class="monospace">
-              <span class="color-primary" tappable (click)="login(false)"><u>Sign up</u></span>&nbsp;|&nbsp;<span class="color-primary" tappable (click)="login(true)"><u>Log in</u></span>
+              <span class="color-primary" tappable (click)="navCtrl.navigateRoot('login')"><u>Sign up</u></span>&nbsp;|&nbsp;<span class="color-primary" tappable (click)="navCtrl.navigateRoot('login?login=true')"><u>Log in</u></span>
           </p>
 
           <p 
