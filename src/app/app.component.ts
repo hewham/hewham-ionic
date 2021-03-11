@@ -27,6 +27,10 @@ export class AppComponent {
   }
 
   async initializeApp() {
+    console.log("URL: ", (window as any).location.href);
+    var subdomain = /:\/\/([^\/]+)/.exec((window as any).location.href)[1];
+    console.log("subdomain: ", subdomain);
+
     await this.authService.init();
     if(this.authService.isLoggedIn) {
       this.setAppPages();
