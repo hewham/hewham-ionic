@@ -26,8 +26,9 @@ export class AppComponent {
 
   async initializeApp() {
     await this.authService.init();
-    this.setAppPages();
-    if(!this.authService.isLoggedIn) {
+    if(this.authService.isLoggedIn) {
+      this.setAppPages();
+    } else {
       if(this.router.url != "/login") {
         this.navCtrl.navigateRoot("start");
       }
