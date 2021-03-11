@@ -21,12 +21,14 @@ export class AuthService {
   isOwner: Boolean = false;
   isIniting: Boolean = true;
   isInitialized: Boolean = false;
+  subdomain: any;
 
   onInit: EventEmitter<any> = new EventEmitter()
   onRefresh: EventEmitter<any> = new EventEmitter()
   onAuthChange: EventEmitter<any> = new EventEmitter()
 
   user: any;
+  authUser: any;
   // data: any;
   uid: any;
   pageuid: any;
@@ -46,6 +48,9 @@ export class AuthService {
     await this.setPageUid();
     await this.checkIsLoggedIn();
     await this.getUser();
+    if(this.isLoggedIn) {
+      this.getAuthUser()
+    }
     if(this.pageuid == this.uid) this.isOwner = true;
     // console.log("isOwner: ", this.isOwner)
     // console.log("isLoggedIn: ", this.isLoggedIn)
@@ -101,6 +106,15 @@ export class AuthService {
     });
   }
 
+  getAuthUser() {
+    return new Promise(async (resolve) => {
+      this.firestore.collection('users').doc(this.uid).get().subscribe((userDoc) => {
+        this.authUser = userDoc.data();
+        resolve(userDoc.data())
+      });
+    });
+  }
+
   async refreshUser() {
     await this.getUser();
     this.onRefresh.emit();
@@ -126,9 +140,10 @@ export class AuthService {
     return new Promise((resolve) => {
       let fulldomain = /:\/\/([^\/]+)/.exec((window as any).location.href)[1];
       let subdomain = fulldomain.split(".")[0];
+      this.subdomain = subdomain;
       // console.log("fulldomain: ", fulldomain)
       // console.log("subdomain: ", subdomain)
-      const reservedNames = ['localhost:8100', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads'];
+      const reservedNames = ['localhost:8100', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you'];
       let isReserved = (reservedNames.indexOf(subdomain) > -1)
       if(isReserved) {
         this.pageuid = environment.PENNA_UID;
@@ -148,7 +163,14 @@ export class AuthService {
         });
       }
     });
+  }
 
+  async redirectToUserSubdomain(subdomain) {
+    if(await this.dialogService.prompt(`Would you like to go to your site at ${subdomain}.penna.io now?`, "No", "Yes", "Logged In")) {
+      <any>window.open(`https://${subdomain}.penna.io`, "_self");
+    } else {
+      this.navCtrl.navigateRoot("start");
+    }
   }
 
   resetPassword(email) {
@@ -171,9 +193,12 @@ export class AuthService {
     this.fireauth.signInWithEmailAndPassword(email, password)
       .then(async res => {
         // this.init();
-        resolve(true);
+        let user:any = await this.getAuthUser();
+        console.log("GOT USER: ", user);
         loading.dismiss();
+        await this.redirectToUserSubdomain(user.subdomain);
         this.onAuthChange.emit();
+        resolve(true);
       }).catch(error => {
         this.dialogService.error(error.message);
         loading.dismiss();
@@ -195,6 +220,7 @@ export class AuthService {
         // this.navCtrl.navigateRoot('start');
         // await this.initOnAppStartOrLogin();
         loading.dismiss();
+        this.redirectToUserSubdomain(body.subdomain);
         this.onAuthChange.emit();
         resolve(true);
       }).catch(error => {

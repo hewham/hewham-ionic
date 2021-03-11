@@ -18,7 +18,8 @@
       Just sign up to create your free site.
     </p>
     <p>
-      You'll get a free subdomain at <span class="monospace">your-choice.penna.io</span>, to use your own domain is pretty cheap.
+      You'll get a free subdomain at <span class="monospace">you.penna.io</span>
+      <!-- , to use your own domain is pretty cheap. -->
     </p>
     <p>
       Here's a <a class="monospace" href="https://hewhamilton.com" target="_blank">demo</a>, if you want to see what it looks like.
@@ -36,11 +37,18 @@
     <h1>🚀 Get Started</h1>
     <br>
     <br>
-    <p>
-      Add a <span class="monospace">Group</span> in the left sidebar.
-    </p>
-    <p>
-      <span class="monospace">Groups</span> can be protfolios, galleries, collections, showcases, or anything else.
-    </p>
+    <div *ngIf="authService.isOwner">
+      <p>
+        Add a <span class="monospace">Group</span> in the left sidebar.
+      </p>
+      <p>
+        <span class="monospace">Groups</span> can be protfolios, galleries, collections, showcases, or anything else.
+      </p>
+    </div>
+    <strong *ngIf="!authService.isOwner">
+      This isn't your site! You can't edit this site, but will remain logged in.
+      <br>
+      Navigate to your site -> <a class="monospace" *ngIf="authService.authUser" [href]="'https://' + authService.authUser.subdomain + '.penna.io'">{{ authService.authUser.subdomain}}.penna.io</a>
+    </strong>
   </div>
 </ion-content>

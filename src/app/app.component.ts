@@ -30,12 +30,13 @@ export class AppComponent {
 
   async initializeApp() {
     await this.authService.init();
-
     this.setAppPages();
     if(this.appPages.length > 0) {
       this.navCtrl.navigateRoot(this.appPages[0].url);
     } else {
-      this.navCtrl.navigateRoot("start");
+      if(this.router.url != "/login" && this.router.url != "/login?login=true") {
+        this.navCtrl.navigateRoot("start");
+      }
     }
 
     // if(this.authService.isLoggedIn) {
