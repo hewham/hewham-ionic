@@ -31,6 +31,7 @@ export class AppComponent {
   async initializeApp() {
     await this.authService.init();
     this.setAppPages();
+    console.log("this.router.url: ", this.router.url);
     if (this.router.url == "/start"
     || this.router.url == "/login"
     || this.router.url == "/login?login=true") {
@@ -38,7 +39,7 @@ export class AppComponent {
     } else if (this.appPages.length > 0) {
       this.navCtrl.navigateRoot(this.appPages[0].url);
     } else {
-      if(this.router.url == "") {
+      if(this.router.url == "/") {
         this.navCtrl.navigateRoot("start");
       }
     }
