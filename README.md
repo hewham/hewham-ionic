@@ -1,12 +1,7 @@
-# hewhamilton.com
-[hewhamilton.com](https://hewhamilton.com) source code. Written in ionic-angular.
+# penna.io
+[penna.io](https://penna.io) is a ultra-fast website building tool. Rethink website hosting. Build a website in less than 5 minutes.
 
 # Tools used
-- ionic 5
-- angular 11
+- Ionic 5
+- Angular 11
 - Firebase
-- p5.js
-
-This site is here to showcase / archive the many code things i've created over the years.
-
-Also serves as a playground to try out some random stuff.
