@@ -238,10 +238,17 @@ export class AuthService {
     return new Promise(async (resolve) => {
       if(!environment.production) this.subdomain = this.TEST_SUBDOMAIN;
       let user:any = await this.getUserForSubdomain(this.subdomain);
-      if(email == user.email || this.isReserved) {
+      if(this.isReserved) {
         resolve(true);
+      } else if(user) {
+        if(email == user.email) {
+          resolve(true);
+        } else {
+          this.dialogService.alert("This email is not authenticated to access this site.", "Incorrect Email");
+          resolve(false);
+        }
       } else {
-        this.dialogService.alert("This email is not authenticated to access this site.", "Incorrect Email")
+        this.dialogService.alert("This site does not exist", "Invalid Site");
         resolve(false);
       }
     });

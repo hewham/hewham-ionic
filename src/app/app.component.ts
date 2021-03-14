@@ -31,7 +31,6 @@ export class AppComponent {
   async initializeApp() {
     await this.authService.init();
     this.setAppPages();
-    console.log("this.router.url: ", this.router.url);
     if (this.router.url == "/start"
     || this.router.url == "/login"
     || this.router.url == "/login?login=true") {
