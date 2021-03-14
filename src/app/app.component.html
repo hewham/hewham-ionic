@@ -4,7 +4,7 @@
       <ion-content>
         <ion-list id="inbox-list">
           <div *ngIf="authService.user">
-            <img class="small-img" style="margin-left: 15px;" [src]="authService.user.avatar ? authService.user.avatar : 'assets/imgs.default.png'" />
+            <img class="small-img" style="margin-left: 15px;" [src]="authService.user.avatar ? authService.user.avatar : 'assets/imgs/default.png'" />
             <ion-list-header>{{ authService.user.firstName }} {{ authService.user.lastName }}</ion-list-header>
           </div>
           <br>
@@ -28,22 +28,22 @@
 
         <div class="version">
 
-          <ion-menu-toggle *ngIf="authService.pageuid == environment.PENNA_UID" auto-hide="false">
+          <ion-menu-toggle *ngIf="authService.uid == environment.PENNA_UID" auto-hide="false">
             <ion-item routerDirection="root" routerLink="start" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon slot="start" name="rocket-outline"></ion-icon>
               <ion-label>Get Started</ion-label>
             </ion-item>
           </ion-menu-toggle>
 
-          <ion-menu-toggle auto-hide="false">
+          <!-- <ion-menu-toggle auto-hide="false">
             <ion-item routerDirection="root" routerLink="about" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon slot="start" name="person-outline"></ion-icon>
               <ion-label>About</ion-label>
             </ion-item>
-          </ion-menu-toggle>
+          </ion-menu-toggle> -->
 
           <p 
-            *ngIf="!authService.isLoggedIn && authService.isInitialized"
+            *ngIf="!authService.isLoggedIn && authService.isInitialized && authService.isReserved"
             class="monospace">
               <span class="color-primary" tappable (click)="navCtrl.navigateRoot('login')"><u>Sign up</u></span>&nbsp;|&nbsp;<span class="color-primary" tappable (click)="navCtrl.navigateRoot('login?login=true')"><u>Log in</u></span>
           </p>

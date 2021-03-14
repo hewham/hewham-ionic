@@ -31,26 +31,17 @@ export class AppComponent {
   async initializeApp() {
     await this.authService.init();
     this.setAppPages();
-    if(this.appPages.length > 0) {
+    if(this.router.url == "/start"
+    || this.router.url == "/login"
+    || this.router.url == "/login?login=true") {
+      // Do Nothing...
+    } else if(this.appPages.length > 0) {
       this.navCtrl.navigateRoot(this.appPages[0].url);
     } else {
-      if(this.router.url != "/login" && this.router.url != "/login?login=true") {
+      if(this.router.url == "") {
         this.navCtrl.navigateRoot("start");
       }
     }
-
-    // if(this.authService.isLoggedIn) {
-    //   this.setAppPages();
-    //   if(this.appPages.length > 0) {
-    //     this.navCtrl.navigateRoot(this.appPages[0].url);
-    //   } else {
-    //     this.navCtrl.navigateRoot("start");
-    //   }
-    // } else {
-    //   if(this.router.url != "/login" && this.router.url != "/login?login=true") {
-    //     this.navCtrl.navigateRoot("start");
-    //   }
-    // }
   }
 
   setAppPages() {

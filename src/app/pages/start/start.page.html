@@ -10,19 +10,19 @@
   <br>
   <br>
 
-  <div *ngIf="!authService.isLoggedIn" class="ion-text-left web-container">
+  <div *ngIf="!authService.isLoggedIn && authService.isReserved" class="ion-text-left web-container">
     <h1>🚀 Get Started</h1>
     <br>
     <br>
     <p>
-      Just sign up to create your free site.
+      Sign up to create your free site.
     </p>
     <p>
-      You'll get a free subdomain at <span class="monospace">you.penna.io</span>
+      You'll get a free domain like -> <span class="monospace">you.penna.io</span>
       <!-- , to use your own domain is pretty cheap. -->
     </p>
     <p>
-      Here's a <a class="monospace" href="https://hewhamilton.com" target="_blank">demo</a>, if you want to see what it looks like.
+      Here's a <a class="monospace" href="https://hewhamilton.com" target="_blank">demo</a>.
     </p>
     <br>
     <br>
@@ -30,6 +30,21 @@
       <a href="/login" target="_self">Sign up</a>
       &nbsp;|&nbsp;
       <a href="/login?login=true" target="_self">Log in</a>
+    </p>
+  </div>
+
+  <div *ngIf="!authService.isLoggedIn && !authService.isReserved" class="ion-text-left web-container">
+    <h1>🚀 Get Started</h1>
+    <br>
+    <br>
+    <p>
+      If this is your site, you can -> <a class="monospace" href="/login?login=true" target="_self">Log in</a>
+    </p>
+    <!-- <p class="monospace">
+      <a href="/login?login=true" target="_self">Log in</a>
+    </p> -->
+    <p>
+      If it isn't, you can create your own for free at -> <a class="monospace" href="https://penna.io" target="_blank">penna.io</a>
     </p>
   </div>
 

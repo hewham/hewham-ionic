@@ -157,7 +157,7 @@
       </div>
 
 
-      <div class="ion-text-center">
+      <div class="ion-text-center" *ngIf="authService.isReserved">
         <ion-button (click)="toggleIsSignUp()" color="seethrough" style="font-size: 0.7em; color: grey;">
           <span *ngIf="!isSignUp">Don't have an account?&nbsp;<span class="color-primary">Sign up</span>&nbsp;instead -></span>
           <span *ngIf="isSignUp">Already have an account?&nbsp;<span class="color-primary">Log in</span>&nbsp;instead -></span>

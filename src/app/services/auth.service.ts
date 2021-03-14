@@ -18,21 +18,22 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class AuthService {
 
   isLoggedIn: Boolean = false;
-  isOwner: Boolean = false;
+  isOwner: Boolean = false; // auth user owns site
+  isReserved: Boolean = false; // is a penna reserved site
   isIniting: Boolean = true;
   isInitialized: Boolean = false;
-  subdomain: any;
-  reservedNames = ['localhost:8100', 'penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you'];
+  subdomain: any; // current site subdomain
+  reservedNames = ['penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you']; // reserved subdomains
 
   onInit: EventEmitter<any> = new EventEmitter()
   onRefresh: EventEmitter<any> = new EventEmitter()
   onAuthChange: EventEmitter<any> = new EventEmitter()
 
-  user: any;
-  authUser: any;
+  user: any; // page user
+  authUser: any; // authenticated (logged in) user
   // data: any;
-  uid: any;
-  pageuid: any;
+  uid: any; // page firebase uid
+  authuid: any; // authenticated user's firebase uid
 
   constructor(
       private navCtrl: NavController,
@@ -46,13 +47,13 @@ export class AuthService {
 
   async init(){
     this.isIniting = true;
-    await this.setPageUid();
+    await this.setuid();
     await this.checkIsLoggedIn();
     await this.getUser();
     if(this.isLoggedIn) {
       this.getAuthUser()
     }
-    if(this.pageuid == this.uid) this.isOwner = true;
+    if(this.uid == this.authuid) this.isOwner = true;
     // console.log("isOwner: ", this.isOwner)
     // console.log("isLoggedIn: ", this.isLoggedIn)
     this.isInitialized = true;
@@ -63,11 +64,11 @@ export class AuthService {
   async checkIsLoggedIn() {
     return new Promise((resolve) => {
       this.fireauth.onAuthStateChanged((user) => {
-        console.log("user: ", user);
+        // console.log("user: ", user);
         if (user) {
-          this.uid = user.uid;
+          this.authuid = user.uid;
           this.isLoggedIn = true;
-          if(this.pageuid == this.uid) this.isOwner = true;
+          if(this.uid == this.authuid) this.isOwner = true;
           resolve(true);
         } else {
           this.isLoggedIn = false;
@@ -93,10 +94,10 @@ export class AuthService {
 
   async getUser() {
     return new Promise(async (resolve) => {
-      this.firestore.collection('users').doc(this.pageuid).get().subscribe((userDoc) => {
+      this.firestore.collection('users').doc(this.uid).get().subscribe((userDoc) => {
         this.user = userDoc.data();
         this.user.groups = [];
-        this.firestore.collection('users').doc(this.pageuid).collection('groups').get().subscribe((snapshot) => {
+        this.firestore.collection('users').doc(this.uid).collection('groups').get().subscribe((snapshot) => {
           if(snapshot.docs.length == 0) resolve(true);
           snapshot.docs.forEach((group) => {
             this.user.groups.push(group.data());
@@ -109,7 +110,7 @@ export class AuthService {
 
   getAuthUser() {
     return new Promise(async (resolve) => {
-      this.firestore.collection('users').doc(this.uid).get().subscribe((userDoc) => {
+      this.firestore.collection('users').doc(this.authuid).get().subscribe((userDoc) => {
         this.authUser = userDoc.data();
         resolve(userDoc.data())
       });
@@ -129,6 +130,7 @@ export class AuthService {
     this.isIniting = true;
     this.isLoggedIn = false;
     this.user = {};
+    this.authuid = null;
     await this.fireauth.signOut();
     // await this.storage.clear();
     // await this.crispService.init();
@@ -137,8 +139,13 @@ export class AuthService {
     this.isIniting = false;
   }
 
-  setPageUid() {
-    return new Promise((resolve) => {
+  setuid() {
+    if(!environment.production) {
+      this.isReserved = false;
+      this.uid = environment.PENNA_UID;
+      return this.uid;
+    }
+    return new Promise(async (resolve) => {
       let fulldomain = /:\/\/([^\/]+)/.exec((window as any).location.href)[1];
       let subdomain = fulldomain.split(".")[0];
       this.subdomain = subdomain;
@@ -146,31 +153,47 @@ export class AuthService {
       console.log("subdomain: ", subdomain)
       let isReserved = (this.reservedNames.indexOf(subdomain) > -1)
       if(isReserved) {
-        this.pageuid = environment.PENNA_UID;
-        resolve(this.pageuid)
+        if(fulldomain != "penna.io") {
+          // if its reserved, redirect to penna.io
+          <any>window.open('https://penna.io', '_self');
+        } else {
+          // default page
+          this.isReserved = true;
+          this.uid = environment.PENNA_UID;
+          resolve(this.uid);
+        }
       } else {
-        this.firestore.collection("users", ref => ref.where("subdomain", "==", subdomain)).get().subscribe((snapshot) => {
-          if(snapshot.docs.length == 0) {
-            if(environment.production) {
-              <any>window.open('https://www.penna.io', '_self');
-            }
-          } else {
-            snapshot.docs.forEach((doc) => {
-              this.pageuid = doc.id
-              resolve(this.pageuid);
-            })
+        let user:any = await this.getUserForSubdomain(subdomain);
+        if(user) {
+          this.isReserved = false;
+          this.uid = user.id;
+          resolve(this.uid);
+        } else {
+          if(environment.production) {
+            // if no users found for entered subdomain, redirect to penna.io
+            // TODO: make a note explaining the redirect
+            <any>window.open('https://penna.io', '_self');
           }
-        });
+        }
       }
     });
   }
 
-  async redirectToUserSubdomain(subdomain) {
-    if(await this.dialogService.prompt(`Would you like to go to your site at ${subdomain}.penna.io now?`, "No", "Yes", "Logged In")) {
-      <any>window.open(`https://${subdomain}.penna.io`, "_self");
-    } else {
-      this.navCtrl.navigateRoot("start");
-    }
+  getUserForSubdomain(subdomain) {
+    return new Promise((resolve) => {
+      this.firestore.collection("users", ref => ref.where("subdomain", "==", subdomain)).get().subscribe((snapshot) => {
+        if(snapshot.docs.length == 0) {
+          resolve(null);
+        } else {
+          // load user for subdomain
+          snapshot.docs.forEach((doc) => {
+            let data:any = doc.data();
+            data.id = doc.id
+            resolve (data)
+          });
+        }
+      });
+    });
   }
 
   resetPassword(email) {
@@ -189,12 +212,15 @@ export class AuthService {
   async login(email, password) {
     let loading = await this.loadingCtrl.create({duration: 10000});
     loading.present();
+    if(!await this.checkSiteOwnerBeforeLogin(email)) {
+      loading.dismiss();
+      return;
+    }
     return new Promise((resolve) => {
     this.fireauth.signInWithEmailAndPassword(email, password)
       .then(async res => {
         // this.init();
         let user:any = await this.getAuthUser();
-        console.log("GOT USER: ", user);
         loading.dismiss();
         await this.redirectToUserSubdomain(user.subdomain);
         this.onAuthChange.emit();
@@ -205,6 +231,33 @@ export class AuthService {
         resolve(false);
       });
     })
+  }
+
+  async checkSiteOwnerBeforeLogin(email) {
+    return new Promise(async (resolve) => {
+      if(!environment.production) this.subdomain = 'hew';
+      let user:any = await this.getUserForSubdomain(this.subdomain);
+      if(email == user.email || this.isReserved) {
+        resolve(true);
+      } else {
+        this.dialogService.alert("This email is not authenticated to access this site.", "Incorrect Email")
+        resolve(false);
+      }
+    });
+  }
+
+  async redirectToUserSubdomain(subdomain) {
+    if(this.subdomain == subdomain){
+      // already on user's site
+      this.navCtrl.navigateRoot("start");
+    } else {
+      if(await this.dialogService.prompt(`Would you like to go to your site at ${subdomain}.penna.io now?`, "No", "Yes", "Logged In")) {
+        <any>window.open(`https://${subdomain}.penna.io`, "_self");
+      } else {
+        this.navCtrl.navigateRoot("start");
+      }
+    }
+
   }
   
   async signup(body) {

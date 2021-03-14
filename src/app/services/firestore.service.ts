@@ -26,7 +26,7 @@ export class FirestoreService {
 
   getGroup(slug) {
     return new Promise((resolve) => {
-      this.firestore.collection('users').doc(this.authService.pageuid).collection('groups', ref => ref.where("slug", "==", slug)).get().subscribe((snapshot) => {
+      this.firestore.collection('users').doc(this.authService.uid).collection('groups', ref => ref.where("slug", "==", slug)).get().subscribe((snapshot) => {
         snapshot.docs.forEach((doc) => {
           resolve({
             id: doc.id,
@@ -39,12 +39,12 @@ export class FirestoreService {
   }
 
   async addGroup(body) {
-    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').add(body)
+    return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').add(body)
   }
 
   getItem(groupID, itemSlug) {
     return new Promise((resolve) => {
-      this.firestore.collection('users').doc(this.authService.pageuid).collection('groups').doc(groupID).collection("items", ref => ref.where("slug", "==", itemSlug)).get().subscribe((snapshot) => {
+      this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("items", ref => ref.where("slug", "==", itemSlug)).get().subscribe((snapshot) => {
         if(snapshot.docs.length == 0) resolve(null);
         snapshot.docs.forEach((doc) => {
           resolve({
@@ -58,7 +58,7 @@ export class FirestoreService {
 
   getItems(groupID) {
     return new Promise((resolve) => {
-      this.firestore.collection('users').doc(this.authService.pageuid).collection('groups').doc(groupID).collection("items").get().subscribe((snapshot) => {
+      this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("items").get().subscribe((snapshot) => {
         let items = [];
         snapshot.docs.forEach((item) => {
           items.push({
@@ -74,14 +74,14 @@ export class FirestoreService {
   async addItem(item, groupSlug) {
     const group:any = await this.getGroup(groupSlug);
     const groupID = group.id;
-    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('items').add(item);
+    return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').add(item);
   }
 
   async deleteItem(groupID, item) {
     if(!await this.dialogService.prompt("Are you sure? You can't undo this action.", "Nevermind", "Delete", "Confirm Delete")) return;
     await this.imageService.deletePhoto(item.tile);
     await this.imageService.deletePhoto(item.cover);
-    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('items').doc(item.id).delete();
+    return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(item.id).delete();
   }
 
 }
