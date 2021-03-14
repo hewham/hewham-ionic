@@ -49,7 +49,7 @@
           </p>
 
           <p 
-            *ngIf="authService.isOwner && authService.isInitialized || authService.isLoggedIn && authService.pageuid == environment.PENNA_UID"
+            *ngIf="authService.isOwner && authService.isInitialized || authService.isLoggedIn && authService.uid == environment.PENNA_UID"
             class="monospace color-primary" 
             tappable 
             (click)="authService.logout()">
