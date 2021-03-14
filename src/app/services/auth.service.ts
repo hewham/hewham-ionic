@@ -260,7 +260,7 @@ export class AuthService {
       this.navCtrl.navigateRoot("start");
     } else {
       if(await this.dialogService.prompt(`Would you like to go to your site at ${subdomain}.penna.io now?`, "No", "Yes", "Logged In")) {
-        <any>window.open(`https://${subdomain}.penna.io`, "_self");
+        <any>window.open(`https://${subdomain}.penna.io/start`, "_self");
       } else {
         this.navCtrl.navigateRoot("start");
       }
