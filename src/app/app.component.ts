@@ -31,11 +31,11 @@ export class AppComponent {
   async initializeApp() {
     await this.authService.init();
     this.setAppPages();
-    if(this.router.url == "/start"
+    if (this.router.url == "/start"
     || this.router.url == "/login"
     || this.router.url == "/login?login=true") {
       // Do Nothing...
-    } else if(this.appPages.length > 0) {
+    } else if (this.appPages.length > 0) {
       this.navCtrl.navigateRoot(this.appPages[0].url);
     } else {
       if(this.router.url == "") {

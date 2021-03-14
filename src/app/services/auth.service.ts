@@ -25,6 +25,9 @@ export class AuthService {
   subdomain: any; // current site subdomain
   reservedNames = ['penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you']; // reserved subdomains
 
+  TEST_FULLDOMAIN = 'kai.penna.io';
+  TEST_SUBDOMAIN = 'kai';
+
   onInit: EventEmitter<any> = new EventEmitter()
   onRefresh: EventEmitter<any> = new EventEmitter()
   onAuthChange: EventEmitter<any> = new EventEmitter()
@@ -140,13 +143,11 @@ export class AuthService {
   }
 
   setuid() {
-    if(!environment.production) {
-      this.isReserved = false;
-      this.uid = environment.PENNA_UID;
-      return this.uid;
-    }
     return new Promise(async (resolve) => {
       let fulldomain = /:\/\/([^\/]+)/.exec((window as any).location.href)[1];
+      if(!environment.production) {
+        fulldomain = this.TEST_FULLDOMAIN;
+      }
       let subdomain = fulldomain.split(".")[0];
       this.subdomain = subdomain;
       console.log("fulldomain: ", fulldomain)
@@ -235,7 +236,7 @@ export class AuthService {
 
   async checkSiteOwnerBeforeLogin(email) {
     return new Promise(async (resolve) => {
-      if(!environment.production) this.subdomain = 'hew';
+      if(!environment.production) this.subdomain = this.TEST_SUBDOMAIN;
       let user:any = await this.getUserForSubdomain(this.subdomain);
       if(email == user.email || this.isReserved) {
         resolve(true);
