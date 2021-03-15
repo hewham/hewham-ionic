@@ -17,7 +17,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
       <!-- <img class="project-logo" [src]="item.logo" /> -->
@@ -25,6 +25,9 @@
       <ion-title></ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <span class="monospace" style="font-size: 0.3em; padding-left: 20px;" *ngIf="item"><a [href]="'/p/' + slug">{{ group.name }}</a> > {{ item.name }}</span>
+
 
   <div *ngIf="item" class="web-container ion-padding">
     <br>

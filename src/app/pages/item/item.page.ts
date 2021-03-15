@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { ProjectsService } from '../../services/projects.service';
 import { FirestoreService } from '../../services/firestore.service';
 import { ImageService } from '../../services/image.service';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-item',
@@ -23,7 +24,8 @@ export class ItemPage implements OnInit {
     public authService: AuthService,
     public projectsService: ProjectsService,
     public firestoreService: FirestoreService,
-    public imageService: ImageService
+    public imageService: ImageService,
+    public dialogService: DialogService
   ) { }
 
   ngOnInit(){}
@@ -46,13 +48,15 @@ export class ItemPage implements OnInit {
   }
 
   async delete() {
+    if(!await this.dialogService.prompt("Are you sure? You can't undo this action.", "Nevermind", "Delete", "Confirm Delete")) return;
     try {
       await this.firestoreService.deleteItem(this.group.id, this.item);
+      this.authService.refreshAll();
+      this.navCtrl.navigateRoot(`p/${this.slug}`);
     } catch (e) {
       return;
     }
-    this.authService.refreshAll();
-    this.navCtrl.navigateRoot(`p/${this.slug}`);
+
   }
 
 }

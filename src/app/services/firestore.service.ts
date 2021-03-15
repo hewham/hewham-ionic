@@ -87,7 +87,6 @@ export class FirestoreService {
   }
 
   async deleteItem(groupID, item) {
-    if(!await this.dialogService.prompt("Are you sure? You can't undo this action.", "Nevermind", "Delete", "Confirm Delete")) return;
     await this.imageService.deletePhoto(item.tile);
     await this.imageService.deletePhoto(item.cover);
     return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(item.id).delete();
