@@ -16,6 +16,8 @@ export class EditPage implements OnInit {
   errorMessage='';
   groupSlug: any;
   itemSlug: any;
+  groupID: any;
+  itemID: any;
   form: FormGroup;
   isLoading: boolean = false;
   content: any = "";
@@ -65,6 +67,8 @@ export class EditPage implements OnInit {
   async setEditData() {
     let group:any = await this.firestoreService.getGroup(this.groupSlug);
     let item:any = await this.firestoreService.getItem(group.id, this.itemSlug);
+    this.groupID = group.id;
+    this.itemID = item.id;
     this.images.tileURL = item.tile,
     this.images.coverURL = item.cover,
     this.form.controls.name.setValue(item.name);
@@ -107,7 +111,7 @@ export class EditPage implements OnInit {
       await this.uploadImages();
       let body = this.getBody();
       let success: any = false;
-      success = await this.firestoreService.editItem(body, this.groupSlug, this.itemSlug);
+      success = await this.firestoreService.editItem(body, this.groupID, this.itemID);
       if(success) {
         await this.authService.refreshAll();
         this.navCtrl.back();

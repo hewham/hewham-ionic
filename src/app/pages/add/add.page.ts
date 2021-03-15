@@ -16,6 +16,9 @@ export class AddPage implements OnInit {
   errorMessage='';
   form: FormGroup;
   isLoading: boolean = false;
+  isEditing: boolean = false;
+  groupSlug: any;
+  groupID: any;
 
   showIcons: boolean = false;
   icon = "heart";
@@ -35,7 +38,6 @@ export class AddPage implements OnInit {
     private firestoreService: FirestoreService,
     private imageService: ImageService,
   ) {
-
     this.form = this.formBuilder.group({
       name : ['', Validators.compose([Validators.minLength(1), Validators.required])],
       slug : ['', Validators.compose([Validators.minLength(1), Validators.required])]
@@ -43,6 +45,19 @@ export class AddPage implements OnInit {
   }
 
   ngOnInit() {
+    this.groupSlug = this.activatedRoute.snapshot.paramMap.get('group');
+    if(this.groupSlug) {
+      this.isEditing = true;
+      this.setEditData();
+    }
+  }
+
+  async setEditData() {
+    let group:any = await this.firestoreService.getGroup(this.groupSlug);
+    this.groupID = group.id;
+    this.form.controls.name.setValue(group.name);
+    this.form.controls.slug.setValue(group.slug);
+    this.icon = group.icon;
   }
 
   eventHandler(keyCode) { //function gets called on every keypress in phone number text box
@@ -65,7 +80,11 @@ export class AddPage implements OnInit {
       this.isLoading = true;
       let body = this.getBody();
       let success: any = false;
-      success = await this.firestoreService.addGroup(body);
+      if(this.isEditing) {
+        success = await this.firestoreService.editGroup(body, this.groupID);
+      } else {
+        success = await this.firestoreService.addGroup(body);
+      }
       if(success) {
         await this.authService.refreshUser();
         this.navCtrl.navigateRoot(`p/${body.slug}`);

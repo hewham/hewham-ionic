@@ -12,16 +12,34 @@
           <!-- <ion-note>hew@anonacy.com</ion-note> -->
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+
+            <ion-item *ngIf="!isEditing" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="authService.isOwner && isEditing" (click)="edit(p.slug)" button lines="none" detail="false">
+              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+              <ion-icon slot="end" *ngIf="isEditing" (click)="edit(p.slug)" name="create-outline" color="primary"></ion-icon>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle *ngIf="authService.isOwner && isEditing" auto-hide="false">
+            <ion-item (click)="navCtrl.navigateForward('add')" button lines="none" detail="false" tappable class="selected">
+              <ion-icon slot="start" name="add-outline" size="small"></ion-icon>
+              <ion-label style="font-size: 0.7em;"><span class="monospace"><u>Add Group</u></span></ion-label>
             </ion-item>
           </ion-menu-toggle>
 
           <ion-menu-toggle *ngIf="authService.isOwner" auto-hide="false">
-            <ion-item (click)="navCtrl.navigateForward('add')" button lines="none" detail="false" tappable class="selected">
-              <ion-icon slot="start" name="add-outline" size="small"></ion-icon>
-              <ion-label style="font-size: 0.7em;"><span class="monospace"><u>Add Group</u></span></ion-label>
+            <ion-item (click)="toggleEditing()" button lines="none" detail="false" tappable class="selected">
+              <ion-icon *ngIf="!isEditing" slot="start" name="create-outline" size="small"></ion-icon>
+              <ion-icon *ngIf="isEditing" slot="start" name="close-outline" size="small"></ion-icon>
+              <ion-label style="font-size: 0.7em;"><span class="monospace"><u>
+                <span *ngIf="!isEditing">Edit Groups</span>
+                <span *ngIf="isEditing">Stop Editing</span>
+              </u></span></ion-label>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>

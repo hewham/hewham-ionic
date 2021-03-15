@@ -15,6 +15,7 @@ export class AppComponent {
 
   version = p.version;
   environment = environment;
+  isEditing: boolean = false;
   
   public appPages = [];
 
@@ -50,9 +51,18 @@ export class AppComponent {
       this.appPages.push({
         title: group.name,
         url: `p/${group.slug}`,
-        icon: group.icon
+        icon: group.icon,
+        slug: group.slug
       })
     });
+  }
+
+  edit(slug) {
+    this.navCtrl.navigateForward(`add/${slug}`)
+  }
+
+  toggleEditing() {
+    this.isEditing = !this.isEditing;
   }
 
 }

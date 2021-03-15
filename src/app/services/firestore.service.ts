@@ -42,6 +42,11 @@ export class FirestoreService {
     return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').add(body)
   }
 
+  async editGroup(body, groupID) {
+    await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).set(body);
+    return true;
+  }
+
   getItem(groupID, itemSlug) {
     return new Promise((resolve) => {
       this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("items", ref => ref.where("slug", "==", itemSlug)).get().subscribe((snapshot) => {
@@ -77,8 +82,12 @@ export class FirestoreService {
     return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').add(item);
   }
   
+  async editItem(body, groupID, itemID) {
+    await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(itemID).set(body);
+    return true;
+  }  
 
-  async editItem(body, groupSlug, itemSlug) {
+  async editItemBySlugs(body, groupSlug, itemSlug) {
     const group:any = await this.getGroup(groupSlug);
     const groupID = group.id;
     const item:any = await this.getItem(groupID, itemSlug);

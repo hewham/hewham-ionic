@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: AddPage
+  },
+  {
+    path: ':group',
+    component: AddPage
   }
 ];
 

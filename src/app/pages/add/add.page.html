@@ -19,7 +19,8 @@
   </div>
 
   <div *ngIf="!isLoading" class="ion-text-left web-container">
-    <h1>🌱 Add Group</h1>
+    <h1 *ngIf="!isEditing">🌱 Add Group</h1>
+    <h1 *ngIf="isEditing">✏️ Edit Group</h1>
 
     <br>
     <br>
@@ -75,8 +76,11 @@
     <ion-label padding color="danger" style="text-align:center;">{{errorMessage}}</ion-label>
     
     <div class="btn-wrapper">
-      <ion-button *ngIf="!showIcons" (click)="submit()" color="seethrough" class="color-primary">
+      <ion-button *ngIf="!showIcons && !isEditing" (click)="submit()" color="seethrough" class="color-primary">
         Create
+      </ion-button>
+      <ion-button *ngIf="!showIcons && isEditing" (click)="submit()" color="seethrough" class="color-primary">
+        Save
       </ion-button>
     </div>
 
