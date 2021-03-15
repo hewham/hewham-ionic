@@ -9,7 +9,7 @@ const firebaseConfig = {
 
 export const environment = {
   production: false,
-  // PENNA_UID: "Wu1qbpZm5mR4DFzoXoilA9exKDG3",
-  PENNA_UID: "a0R3FbLBTnOzbEFlIH657yi4vb63",
+  PENNA_UID: "Wu1qbpZm5mR4DFzoXoilA9exKDG3", // penna uid
+  // PENNA_UID: "a0R3FbLBTnOzbEFlIH657yi4vb63", // hew uid
   firebaseConfig
 };

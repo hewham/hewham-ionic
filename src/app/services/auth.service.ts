@@ -25,8 +25,8 @@ export class AuthService {
   subdomain: any; // current site subdomain
   reservedNames = ['penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you']; // reserved subdomains
 
-  TEST_FULLDOMAIN = 'kai.penna.io';
-  TEST_SUBDOMAIN = 'kai';
+  TEST_FULLDOMAIN = 'penna.io';
+  TEST_SUBDOMAIN = 'penna';
 
   onInit: EventEmitter<any> = new EventEmitter()
   onRefresh: EventEmitter<any> = new EventEmitter()

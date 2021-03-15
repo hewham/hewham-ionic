@@ -60,10 +60,14 @@
         <span class="monospace">Groups</span> can be protfolios, galleries, collections, showcases, or anything else.
       </p>
     </div>
-    <strong *ngIf="!authService.isOwner">
-      This isn't your site! You can't edit this site, but will remain logged in.
-      <br>
-      Navigate to your site -> <a class="monospace" *ngIf="authService.authUser" [href]="'https://' + authService.authUser.subdomain + '.penna.io/start'">{{ authService.authUser.subdomain}}.penna.io</a>
-    </strong>
+    <div *ngIf="!authService.isOwner">
+      <p>
+        This isn't your site!
+      </p>
+      <strong>
+        Navigate to your site -> <a class="monospace" *ngIf="authService.authUser" [href]="'https://' + authService.authUser.subdomain + '.penna.io/start'">{{ authService.authUser.subdomain}}.penna.io</a>
+      </strong>
+      <p>p.s. you may need to log in again</p>
+    </div>
   </div>
 </ion-content>
