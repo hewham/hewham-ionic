@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 import { ComponentsModule } from '../../components/components.module';
+import { QuillModule } from 'ngx-quill';
 
 import { EditPageRoutingModule } from './edit-routing.module';
 
@@ -16,7 +17,8 @@ import { EditPage } from './edit.page';
     ReactiveFormsModule,
     IonicModule,
     ComponentsModule,
-    EditPageRoutingModule
+    EditPageRoutingModule,
+    QuillModule
   ],
   declarations: [EditPage]
 })

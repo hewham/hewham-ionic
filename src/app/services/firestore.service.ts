@@ -76,6 +76,15 @@ export class FirestoreService {
     const groupID = group.id;
     return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').add(item);
   }
+  
+
+  async editItem(body, groupSlug, itemSlug) {
+    const group:any = await this.getGroup(groupSlug);
+    const groupID = group.id;
+    const item:any = await this.getItem(groupID, itemSlug);
+    await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(item.id).set(body);
+    return true;
+  }
 
   async deleteItem(groupID, item) {
     if(!await this.dialogService.prompt("Are you sure? You can't undo this action.", "Nevermind", "Delete", "Confirm Delete")) return;

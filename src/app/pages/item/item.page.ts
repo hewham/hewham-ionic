@@ -26,13 +26,23 @@ export class ItemPage implements OnInit {
     public imageService: ImageService
   ) { }
 
-  async ngOnInit() {
+  ngOnInit(){}
+
+  async ionViewWillEnter() {
     await this.authService.onReady();
     this.slug = this.activatedRoute.snapshot.paramMap.get('group');
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     this.group = await this.firestoreService.getGroup(this.slug);
     this.item = await this.firestoreService.getItem(this.group.id, this.id);
     // this.item = this.projectsService.getItem(this.slug, this.id);
+  }
+
+  back() {
+    this.navCtrl.navigateRoot(`p/${this.slug}`)
+  }
+
+  async edit() {
+    this.navCtrl.navigateForward(`edit/${this.slug}/${this.item.slug}`)
   }
 
   async delete() {

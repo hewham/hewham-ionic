@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: EditPage
+  },
+  {
+    path: ':item',
+    component: EditPage
+  },
+  {
+    path: ':item',
+    component: EditPage
   }
 ];
 

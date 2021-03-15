@@ -1,6 +1,6 @@
 {
   "name": "hewham-ionic",
-  "version": "0.3.12",
+  "version": "0.4.0",
   "author": "hewham",
   "homepage": "https://hewhamilton.com",
   "scripts": {
@@ -23,7 +23,8 @@
     "@angular/router": "~11.2.0",
     "@ionic/angular": "^5.5.2",
     "firebase": "^7.9.3",
-    "rxjs": "~6.6.0",
+    "ngx-quill": "^13.2.0",
+    "rxjs": "^6.6.6",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

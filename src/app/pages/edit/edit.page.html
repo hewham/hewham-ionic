@@ -1,14 +1,31 @@
-<ion-header no-border>
+<ion-header [translucent]="true" no-border>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="navCtrl.back()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-title>
+      <span *ngIf="!isEditing">✨ Add</span>
+      <span *ngIf="isEditing">🎈 Edit</span>
+      Item
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">
+        <span *ngIf="!isEditing">✨ Add</span>
+        <span *ngIf="isEditing"><span style="font-size: 0.9em;">🎈</span> Edit</span>
+        Item
+      </ion-title>
+      <ion-title></ion-title>
+    </ion-toolbar>
+  </ion-header>
+
   <br>
   <br>
 
@@ -19,19 +36,16 @@
   </div>
 
   <div *ngIf="!isLoading" class="ion-text-left web-container">
-    <h1>✨ Add Item</h1>
-
-    <br>
     <br>
 
     <ion-grid class="ion-no-padding ion-no-margin">
       <ion-row>
         <ion-col class="ion-no-padding">
-          <app-image-upload (onDone)="imageSelected($event, 'tile')" customID="tile-image"></app-image-upload>
+          <app-image-upload [photo]="this.images.tileURL" (onDone)="imageSelected($event, 'tile')" customID="tile-image"></app-image-upload>
           <div class="ion-text-center opacity-half">Icon</div>
         </ion-col>
         <ion-col class="ion-no-padding">
-          <app-image-upload (onDone)="imageSelected($event, 'cover')" customID="cover-image"></app-image-upload>
+          <app-image-upload [photo]="this.images.coverURL" (onDone)="imageSelected($event, 'cover')" customID="cover-image"></app-image-upload>
           <div class="ion-text-center opacity-half">Cover</div>
         </ion-col>
       </ion-row>
@@ -100,20 +114,25 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-
-      <br>
-
-      <ion-item>
-        <ion-label position="floating">Description</ion-label>
-        <ion-input 
-          #description 
-          formControlName="description" 
-          type="text"
-          [class.invalid]="!form.controls.description.valid" 
-          (keypress)="eventHandler($event.keyCode)">
-        </ion-input>
-      </ion-item>
     </form>
+
+    <br>
+    <br>
+
+    <h2 class="opacity-half">Content</h2>
+    <quill-editor [(ngModel)]="content"></quill-editor>
+
+<!-- <ion-item>
+      <ion-label position="floating">Description</ion-label>
+      <ion-input 
+        #description 
+        formControlName="description" 
+        type="text"
+        [class.invalid]="!form.controls.description.valid" 
+        (keypress)="eventHandler($event.keyCode)">
+      </ion-input>
+      <quill-editor [(ngModel)]="item.description"></quill-editor>
+    </ion-item> -->
 
     
     
@@ -122,10 +141,16 @@
     <ion-label padding color="danger" style="text-align:center;">{{errorMessage}}</ion-label>
     
     <div class="btn-wrapper">
-      <ion-button (click)="submit()" color="seethrough" class="color-primary">
+      <ion-button *ngIf="!isEditing" (click)="submit()" color="seethrough" class="color-primary">
         Create
       </ion-button>
+      <ion-button *ngIf="isEditing" (click)="submit()" color="seethrough" class="color-primary">
+        Save
+      </ion-button>
     </div>
+
+    <br>
+    <br>
 
   </div>
 </ion-content>

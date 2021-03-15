@@ -10,9 +10,9 @@ export class ImageUploadComponent implements OnInit{
 
   @Input('photo') photo: any;
   @Input('customID') customID: any;
+  @Input('photo') photoPreview: any;
   @Output() onDone: EventEmitter<any> = new EventEmitter();
 
-  photoPreview: any;
   photoChanged: boolean = false;;
 
   constructor(

@@ -1,12 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="navCtrl.back()">
+      <ion-button (click)="back()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title *ngIf="item">{{ item.name }}</ion-title>
     <ion-buttons slot="end" *ngIf="authService.isOwner">
+      <ion-button (click)="edit()">
+        <ion-icon slot="icon-only" name="create-outline" color="primary"></ion-icon>
+      </ion-button>
       <ion-button (click)="delete()">
         <ion-icon slot="icon-only" name="trash-outline" color="danger"></ion-icon>
       </ion-button>
@@ -37,7 +40,7 @@
       <strong *ngIf="!item.link" class="capitalize">{{ item.name }}</strong>
     </div>
     <br>
-    <p class="accent-text">{{ item.description }}</p>
+    <quill-view-html [content]="item.content"></quill-view-html>
   </div>
 
   <div *ngIf="item === null" class="web-container ion-padding">

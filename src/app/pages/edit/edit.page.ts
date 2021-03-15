@@ -15,14 +15,19 @@ export class EditPage implements OnInit {
 
   errorMessage='';
   groupSlug: any;
+  itemSlug: any;
   form: FormGroup;
   isLoading: boolean = false;
+  content: any = "";
+  isEditing: boolean = false;
 
   images:any =  {
     tile: null,
     tileURL: "",
+    tileChanged: false,
     cover: null,
-    coverURL: ""
+    coverURL: "",
+    coverChanged: false
   }
 
   constructor(
@@ -39,17 +44,34 @@ export class EditPage implements OnInit {
       slug : ['', Validators.compose([Validators.minLength(1), Validators.required])],
       tag : ['', Validators.compose([Validators.minLength(1), Validators.required])],
       link : ['', Validators.compose([Validators.minLength(0), Validators.required])],
-      description : ['', Validators.compose([Validators.minLength(1), Validators.required])]
+      // description : ['', Validators.compose([Validators.minLength(1), Validators.required])]
     });
   }
 
   ngOnInit() {
     this.groupSlug = this.activatedRoute.snapshot.paramMap.get('group');
+    this.itemSlug = this.activatedRoute.snapshot.paramMap.get('item');
+    if(this.itemSlug) {
+      this.isEditing = true;
+      this.setEditData();
+    }
   }
 
   eventHandler(keyCode) { //function gets called on every keypress in phone number text box
     if (keyCode == 13) //13 is key code for enter
       this.submit();
+  }
+
+  async setEditData() {
+    let group:any = await this.firestoreService.getGroup(this.groupSlug);
+    let item:any = await this.firestoreService.getItem(group.id, this.itemSlug);
+    this.images.tileURL = item.tile,
+    this.images.coverURL = item.cover,
+    this.form.controls.name.setValue(item.name);
+    this.form.controls.tag.setValue(item.tag);
+    this.form.controls.slug.setValue(item.slug);
+    this.form.controls.link.setValue(item.link);
+    this.content = item.content;
   }
     
   async submit() {
@@ -59,10 +81,37 @@ export class EditPage implements OnInit {
       await this.uploadImages();
       let body = this.getBody();
       let success: any = false;
-      success = await this.firestoreService.addItem(body, this.groupSlug);
+      if(this.isEditing){
+        success = await this.firestoreService.editItem(body, this.groupSlug, this.itemSlug);
+      } else {
+        success = await this.firestoreService.addItem(body, this.groupSlug);
+      }
       if(success) {
-        this.authService.refreshAll();
-        this.navCtrl.navigateRoot(`p/${this.groupSlug}`);
+        await this.authService.refreshAll();
+        if(this.isEditing){
+          this.navCtrl.navigateRoot(`p/${this.groupSlug}/${body.slug}`)
+        } else {
+          this.navCtrl.navigateRoot(`p/${this.groupSlug}`);
+        }
+      }
+      this.isLoading = false;
+    } else {
+      // this.trackingService.track("login_page_invalid", { email : this.loginForm.controls.email.value, password: this.loginForm.controls.password.value } );
+    }
+  }   
+
+  async save() {
+    // this.trackingService.track("login_page_submit");
+    if(this.validate()) {
+      this.isLoading = true;
+      await this.uploadImages();
+      let body = this.getBody();
+      let success: any = false;
+      success = await this.firestoreService.editItem(body, this.groupSlug, this.itemSlug);
+      if(success) {
+        await this.authService.refreshAll();
+        this.navCtrl.back();
+        // this.navCtrl.navigateRoot(`p/${this.groupSlug}/${this.itemSlug}`);
       }
       this.isLoading = false;
     } else {
@@ -76,19 +125,25 @@ export class EditPage implements OnInit {
       slug: this.form.controls.slug.value,
       tag: this.form.controls.tag.value,
       link: this.form.controls.link.value,
-      description: this.form.controls.description.value,
+      // description: this.form.controls.description.value,
+      content: String(this.content),
       tile: this.images.tileURL,
       cover: this.images.coverURL
     }
   }
 
   async uploadImages() {
-    this.images.tileURL = await (this.imageService.uploadPhoto(this.images.tile) as any);
-    this.images.coverURL = await (this.imageService.uploadPhoto(this.images.cover) as any);
+    if(this.images.tileChanged){
+      this.images.tileURL = await (this.imageService.uploadPhoto(this.images.tile) as any);
+    }
+    if(this.images.coverChanged) {
+      this.images.coverURL = await (this.imageService.uploadPhoto(this.images.cover) as any);
+    }
     return;
   }
 
   imageSelected(photoFile, type) {
+    this.images[type + "Changed"] = true;
     this.images[type] = photoFile;
   }
 
@@ -103,16 +158,22 @@ export class EditPage implements OnInit {
       } else if(this.form.controls.slug.valid == false){
         this.errorMessage = 'Please enter a URL slug';
         return false;
-      }else if(this.form.controls.description.valid == false){
-        this.errorMessage = 'Please enter a description';
-        return false; 
       }
+      // else if(this.form.controls.description.valid == false){
+      //   this.errorMessage = 'Please enter a description';
+      //   return false; 
+      // }
     }
-    if(!this.images.tile) {
+    if(!this.images.tile && !this.images.tileURL) {
       this.errorMessage = 'Please add an icon image';
       return false; 
-    } else if(!this.images.cover) {
+    } else if(!this.images.cover && !this.images.coverURL) {
       this.errorMessage = 'Please add a cover image';
+      return false; 
+    }
+
+    if(this.content.length == 0) {
+      this.errorMessage = 'Please enter a page body';
       return false; 
     }
 
