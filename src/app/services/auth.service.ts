@@ -102,8 +102,11 @@ export class AuthService {
         this.user.groups = [];
         this.firestore.collection('users').doc(this.uid).collection('groups').get().subscribe((snapshot) => {
           if(snapshot.docs.length == 0) resolve(true);
-          snapshot.docs.forEach((group) => {
-            this.user.groups.push(group.data());
+          snapshot.docs.forEach((groupDoc) => {
+            this.user.groups.push({
+              id: groupDoc.id,
+              ...groupDoc.data()
+            });
             resolve(true);
           });
         })

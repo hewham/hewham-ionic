@@ -101,4 +101,9 @@ export class FirestoreService {
     return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(item.id).delete();
   }
 
+  async reorderGroups(groupOrderArray) {
+    await this.firestore.collection('users').doc(this.authService.authuid).update({groupOrder: groupOrderArray})
+    return true;
+  }
+
 }
