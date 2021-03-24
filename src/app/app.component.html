@@ -5,6 +5,13 @@
         <ion-list id="inbox-list">
           <div *ngIf="authService.user">
             <img class="small-img" style="margin-left: 15px;" [src]="authService.user.avatar ? authService.user.avatar : 'assets/imgs/default.png'" />
+            <ion-icon 
+              *ngIf="authService.isOwner"
+              class="settings-position animated fadeIn" 
+              (click)="navCtrl.navigateRoot('settings')"
+              name="cog-outline"
+              tappable>
+            </ion-icon>
             <ion-list-header>{{ authService.user.firstName }} {{ authService.user.lastName }}</ion-list-header>
           </div>
           <br>
@@ -22,10 +29,10 @@
             <ion-reorder-group *ngIf="authService.isOwner && isEditing" (ionItemReorder)="doReorder($event)" disabled="false">
               <!-- <ion-item *ngFor="let p of appPages" (click)="edit(p.slug)" button lines="none" detail="false"> -->
               <ion-item *ngFor="let p of appPages">
-                <ion-reorder slot="start"></ion-reorder>
                 <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
                 <ion-icon slot="end" *ngIf="isEditing" (click)="edit(p.slug)" name="create-outline" color="primary"></ion-icon>
+                <ion-reorder slot="end"></ion-reorder>
               </ion-item>
           </ion-reorder-group>
 

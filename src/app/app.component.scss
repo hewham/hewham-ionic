@@ -4,6 +4,15 @@
   left: 12px;
 }
 
+.settings-position {
+  height: 40px;
+  right: 84px;
+  top: 0;
+  // color: var(--ion-color-light-tint);
+  color: #ddd;
+  font-size: 2em;
+}
+
 ion-split-pane {
   --side-max-width: 70px;
 }

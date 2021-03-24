@@ -1,6 +1,7 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 
+import { AuthService } from './auth.service';
 import { DialogService } from './dialog.service';
 import * as firebase from 'firebase/app';
 
@@ -12,13 +13,15 @@ export class ImageService {
 
   constructor(
     private dialogService: DialogService,
+    private authService: AuthService,
     private fireStorage: AngularFireStorage,
   ) {}
 
   uploadPhoto(photoFile){
     return new Promise((resolve) => {
       let date = new Date();
-      let ref = firebase.storage().ref().child(date.toISOString());
+      let name = `${date.toISOString()}_${this.authService.user.email}`;
+      let ref = firebase.storage().ref().child(name);
       try {
         ref.put(photoFile).then(function(snapshot) {
           let url = ref.getDownloadURL()

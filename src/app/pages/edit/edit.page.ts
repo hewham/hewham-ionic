@@ -104,25 +104,6 @@ export class EditPage implements OnInit {
     }
   }   
 
-  async save() {
-    // this.trackingService.track("login_page_submit");
-    if(this.validate()) {
-      this.isLoading = true;
-      await this.uploadImages();
-      let body = this.getBody();
-      let success: any = false;
-      success = await this.firestoreService.editItem(body, this.groupID, this.itemID);
-      if(success) {
-        await this.authService.refreshAll();
-        this.navCtrl.back();
-        // this.navCtrl.navigateRoot(`p/${this.groupSlug}/${this.itemSlug}`);
-      }
-      this.isLoading = false;
-    } else {
-      // this.trackingService.track("login_page_invalid", { email : this.loginForm.controls.email.value, password: this.loginForm.controls.password.value } );
-    }
-  }
-
   getBody() {
     return {
       name: this.form.controls.name.value,

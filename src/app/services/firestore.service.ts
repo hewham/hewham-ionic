@@ -85,6 +85,12 @@ export class FirestoreService {
   async editItem(body, groupID, itemID) {
     await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(itemID).set(body);
     return true;
+  }
+
+  async editUser(body) {
+    console.log("BODY: ", body);
+    await this.firestore.collection('users').doc(this.authService.authuid).update(body);
+    return true;
   }  
 
   async editItemBySlugs(body, groupSlug, itemSlug) {
