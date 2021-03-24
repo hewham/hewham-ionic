@@ -23,7 +23,7 @@ export class AuthService {
   isIniting: Boolean = true;
   isInitialized: Boolean = false;
   subdomain: any; // current site subdomain
-  reservedNames = ['penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you']; // reserved subdomains
+  reservedNames = ['penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you', 'demo']; // reserved subdomains
 
   TEST_FULLDOMAIN = 'penna.io';
   TEST_SUBDOMAIN = 'penna';
