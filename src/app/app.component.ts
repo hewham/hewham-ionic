@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { NavController, IonReorderGroup } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
 import { environment } from '../environments/environment';
@@ -26,6 +27,7 @@ export class AppComponent {
 
   constructor(
     private router: Router,
+    private angularTitle: Title,
     public navCtrl: NavController,
     public authService: AuthService,
     private firestoreService: FirestoreService
@@ -39,8 +41,8 @@ export class AppComponent {
     await this.authService.init();
     this.setAppPages();
     if (this.router.url == "/start"
-    || this.router.url == "/login"
-    || this.router.url == "/login?login=true") {
+      || this.router.url == "/login"
+      || this.router.url == "/login?login=true") {
       // Do Nothing...
     } else if (this.appPages.length > 0) {
       this.navCtrl.navigateRoot(this.appPages[0].url);
@@ -49,6 +51,7 @@ export class AppComponent {
         this.navCtrl.navigateRoot("start");
       }
     }
+    this.angularTitle.setTitle(`${this.authService.user.firstName} ${this.authService.user.lastName} | Penna`);
   }
 
   setAppPages() {

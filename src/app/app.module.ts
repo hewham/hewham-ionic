@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -59,7 +59,8 @@ let quillModules = {
     QuillModule.forRoot({modules: quillModules})
   ],
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Title
   ],
   bootstrap: [AppComponent],
 })
