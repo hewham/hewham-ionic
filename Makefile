@@ -1,4 +1,5 @@
 version_num := $(shell node -p "require('./package.json').version")
+keys := $(shell node -p "require('./keys.json')")
 
 help: ## Display help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -23,8 +24,18 @@ deploy: ## firebase deploy webapp
 		ionic build --prod && \
 		firebase deploy --only hosting:hewham-ionic
 
-function: ## deploy firebase functions
-	firebase deploy --only functions
+f: ## deploy firebase functions
+	@firebase deploy --only functions
+
+keys: ## set firebase function configs
+	@firebase functions:config:set keys.vercel="${keys.vercel_key}" && \
+	make f
+
+serve: ## serve firebase functions
+	@cd functions && \
+	npm run-script build && \
+	cd ../ && \
+	firebase serve --only functions
 
 icons: ## generate ios and android resources
 	@npx cordova-res ios --skip-config --copy && \
