@@ -22,6 +22,7 @@ export class AuthService {
   isReserved: Boolean = false; // is a penna reserved site
   isIniting: Boolean = true;
   isInitialized: Boolean = false;
+  fulldomain: any; // current site fulldomain
   subdomain: any; // current site subdomain
   reservedNames = ['penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you', 'demo']; // reserved subdomains
 
@@ -152,6 +153,7 @@ export class AuthService {
         fulldomain = this.TEST_FULLDOMAIN;
       }
       let subdomain = fulldomain.split(".")[0];
+      this.fulldomain = fulldomain;
       this.subdomain = subdomain;
       console.log("fulldomain: ", fulldomain)
       console.log("subdomain: ", subdomain)
@@ -167,7 +169,7 @@ export class AuthService {
           resolve(this.uid);
         }
       } else {
-        let user:any = await this.getUserForSubdomain(subdomain);
+        let user:any = await this.getUserForDomain(fulldomain);
         if(user) {
           this.isReserved = false;
           this.uid = user.id;
@@ -183,9 +185,9 @@ export class AuthService {
     });
   }
 
-  getUserForSubdomain(subdomain) {
+  getUserForDomain(domain) {
     return new Promise((resolve) => {
-      this.firestore.collection("users", ref => ref.where("subdomain", "==", subdomain)).get().subscribe((snapshot) => {
+      this.firestore.collection("users", ref => ref.where("domains", "array-contains", domain)).get().subscribe((snapshot) => {
         if(snapshot.docs.length == 0) {
           resolve(null);
         } else {
@@ -239,8 +241,8 @@ export class AuthService {
 
   async checkSiteOwnerBeforeLogin(email) {
     return new Promise(async (resolve) => {
-      if(!environment.production) this.subdomain = this.TEST_SUBDOMAIN;
-      let user:any = await this.getUserForSubdomain(this.subdomain);
+      if(!environment.production) this.fulldomain = this.TEST_FULLDOMAIN;
+      let user:any = await this.getUserForDomain(this.fulldomain);
       if(this.isReserved) {
         resolve(true);
       } else if(user) {
@@ -301,6 +303,7 @@ export class AuthService {
       'lastName': body.lastName,
       'email': body.email,
       'subdomain': body.subdomain,
+      'domains': [`${body.subdomain}.penna.io`],
       'uid': uid
     };
 
