@@ -186,7 +186,6 @@ export class AuthService {
   }
 
   getUserForDomain(domain) {
-    console.log("getUserForDomain(domain): ", domain)
     return new Promise((resolve) => {
       this.firestore.collection("users", ref => ref.where("domains", "array-contains", domain)).get().subscribe((snapshot) => {
         if(snapshot.docs.length == 0) {
@@ -202,25 +201,6 @@ export class AuthService {
       });
     });
   }
-
-  // getUserForSubdomain(subdomain) {
-  //   // .whereField("vitamins", arrayContains: "B6")
-  //   // .whereField("domains", arrayContains: "domain")
-  //   return new Promise((resolve) => {
-  //     this.firestore.collection("users", ref => ref.where("subdomain", "==", subdomain)).get().subscribe((snapshot) => {
-  //       if(snapshot.docs.length == 0) {
-  //         resolve(null);
-  //       } else {
-  //         // load user for subdomain
-  //         snapshot.docs.forEach((doc) => {
-  //           let data:any = doc.data();
-  //           data.id = doc.id
-  //           resolve (data)
-  //         });
-  //       }
-  //     });
-  //   });
-  // }
 
   resetPassword(email) {
     return new Promise(async (resolve) => {
