@@ -23,6 +23,9 @@ deploy: ## firebase deploy webapp
 		ionic build --prod && \
 		firebase deploy --only hosting:hewham-ionic
 
+function: ## deploy firebase functions
+	firebase deploy --only functions
+
 icons: ## generate ios and android resources
 	@npx cordova-res ios --skip-config --copy && \
 		npx cordova-res android --skip-config --copy
