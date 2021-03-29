@@ -1,6 +1,7 @@
 /* eslint-disable */
 import * as functions from "firebase-functions";
 import * as request from "request";
+// import * as cors from "cors";
 // import * as rp from "request-promise";
 
 // const VERCEL_KEY = functions.config().keys.vercel;
@@ -10,12 +11,14 @@ const VERCEL_BASEURL = "https://api.vercel.com";
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 
-// export const helloWorld = functions.https.onRequest((request, res) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   res.send("Hello from Firebase!");
-// });
+export const helloWorld = functions.https.onRequest((request, res) => {
+  functions.logger.info("Hello logs!", {structuredData: true});
+  res.send("Hello from Firebase!");
+});
 
 export const addDomain = functions.https.onRequest(async (req, res) => {
+  // res.set('Access-Control-Allow-Headers','Content-Type')
+
   const domain = req.body.domain;
   console.log("domain: ", domain);
 

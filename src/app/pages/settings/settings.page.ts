@@ -104,7 +104,12 @@ export class SettingsPage implements OnInit {
     if(this.validateService.isValidDomainName(this.customdomain)) {
       this.errorMessage = "";
       // console.log("true")
-      let res = await this.functionsService.post("addDomain", { domain: this.customdomain });
+      try{
+        let res = await this.functionsService.call("addDomain", { domain: this.customdomain });
+        console.log("res: ", res)
+      } catch (err) {
+        this.errorMessage = "Something went wrong";
+      }
     } else {
       this.errorMessage = "Please enter a valid domain name";
     }
