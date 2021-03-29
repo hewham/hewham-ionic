@@ -23,6 +23,10 @@ export class SettingsPage implements OnInit {
 
   subdomain: any = "";
   customdomain: any = null;
+  hasCustomDomain: boolean = false;
+  isDomainLoading: boolean = true;
+  isDomainVerified: boolean = false;
+  domainVerifyData = {};
 
   images:any =  {
     avatar: null,
@@ -66,13 +70,28 @@ export class SettingsPage implements OnInit {
   }
 
   async setDomains() {
+    this.isDomainLoading = true;
     for (let domain of this.authService.user.domains) {
       if(domain.slice(domain.length - 8) == 'penna.io') {
         this.subdomain = domain.substr(0, domain.length - 9);
       } else {
+        this.hasCustomDomain = true;
         this.customdomain = domain;
       }
     }
+    console.log("this.customdomain: ", this.customdomain);
+    if(this.customdomain) {
+      let res:any = await this.functionsService.call("verifyDomain", { domain: this.customdomain });
+      console.log("RES: ", res);
+      if(res.success) {
+        this.isDomainVerified = true;
+        this.domainVerifyData = res.data;
+      } else {
+        this.isDomainVerified = false;
+        this.domainVerifyData = res.error;
+      }
+    }
+    this.isDomainLoading = false;
   }
     
   async submit() {

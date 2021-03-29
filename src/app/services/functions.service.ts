@@ -17,15 +17,15 @@ export class FunctionsService {
     private firebaseFunctions: AngularFireFunctions
   ) {}
 
-  call(name, body) {
+  call(name, body = {}) {
     return new Promise((resolve,reject) => {
       this.firebaseFunctions.httpsCallable(name)(body).toPromise()
         .then((res) => {
-          console.log("FUCK: ", res);
+          console.log("BOOP: ", res);
           resolve(res);
         })
         .catch((err) => {
-          console.log("BITCH: ", err);
+          console.log("SCOOOT: ", err);
           reject(err);
         })
     })

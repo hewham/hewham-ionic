@@ -1,5 +1,6 @@
 version_num := $(shell node -p "require('./package.json').version")
-keys := $(shell node -p "require('./keys.json')")
+vercel_key := $(shell node -p "require('./keys.json').vercel_key")
+vercel_penna_id := $(shell node -p "require('./keys.json').vercel_penna_id")
 
 help: ## Display help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -28,13 +29,11 @@ f: ## deploy firebase functions
 	@firebase deploy --only functions
 
 keys: ## set firebase function configs
-	@firebase functions:config:set keys.vercel="${keys.vercel_key}" && \
+	@echo "\n Setting keys: \n keys.vercel=${vercel_key} \n keys.vercel_penna_id=${vercel_penna_id} \n"
+	firebase functions:config:set keys.vercel="${vercel_key}" keys.vercel_penna_id="${vercel_penna_id}" && \
 	make f
 
 serve: ## serve firebase functions
-	@cd functions && \
-	npm run-script build && \
-	cd ../ && \
 	firebase serve --only functions
 
 icons: ## generate ios and android resources
