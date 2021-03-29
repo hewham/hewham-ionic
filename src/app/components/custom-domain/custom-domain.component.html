@@ -1,0 +1,100 @@
+<div class="item-box">
+
+  <br>
+  <div *ngIf="!hasCustomDomain">
+    <br>
+
+    <div *ngIf="customdomain == null" class="ion-text-center"> Add your own domain below</div>
+    <ion-item>
+      <ion-label position="stacked">Custom Domain</ion-label>
+      <ion-input [(ngModel)]="customdomain" placeholder="example.com"></ion-input>
+    </ion-item>
+
+    <br>
+
+    <div class="btn-wrapper ion-text-center">
+      <ion-button (click)="updateCustomDomain()" color="seethrough" class="color-primary">
+        Add
+      </ion-button>
+    </div>
+  </div>
+  
+  <div *ngIf="hasCustomDomain">
+    <ion-item lines="none">
+      <ion-label position="stacked"><b>Custom Domain:</b>&nbsp;<ion-chip>{{ customdomain }}</ion-chip></ion-label>
+      <ion-spinner *ngIf="isDomainLoading">
+      </ion-spinner>
+      <div *ngIf="!isDomainLoading">
+        <div *ngIf="!isDomainVerified">
+          <ion-icon name="close-circle-outline" color="danger"></ion-icon>
+          <span class="accent-text">The domain <span class="monospace">{{ customdomain }}</span> is not yet linked.</span>
+          <br>
+          <br>
+
+          <span class="monospace"><b>Method 1</b>: "<b>A</b>" DNS Record</span>&nbsp;<span class="accent-text">(<span class="color-primary">Recommended</span>)</span>
+          <div class="accent-text">
+            Set the following record on your DNS provider to continue:
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <b>Type</b>
+                  <br>
+                  <span class="monospace">A</span>
+                </ion-col>
+                <ion-col>
+                  <b>Name</b>
+                  <br>
+                  @
+                </ion-col>
+                <ion-col>
+                  <b>Value</b>
+                  <br>
+                  <span class="monospace">76.76.21.21</span>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+
+          
+            <br>
+            <hr style="border-top: solid lightgrey 1px;">
+            <br>
+
+          <span class="monospace"><b>Method 2</b>: "<b>NS</b>" Nameservers</span>
+          <div class="accent-text">
+            Please change your nameservers on your domain registrar's website:
+            <ion-grid>
+              <ion-row>
+                <ion-col size="6">
+                  <ion-icon name="checkmark-circle-outline" color="primary"></ion-icon>&nbsp;<span class="monospace color-primary">Penna Nameservers</span>
+                  <div *ngFor="let ns of domainVerifyData.nsVerification.intendedNameservers">
+                    <ion-chip color="primary">{{ ns }}</ion-chip>
+                  </div>
+                </ion-col>
+                <ion-col size="6" style="border-left: solid lightgrey 1px; padding-left: 30px;">
+                  <ion-icon name="close-circle-outline" color="danger"></ion-icon>&nbsp;<span class="monospace color-danger">Current Nameservers</span>
+                  <div *ngFor="let ns of domainVerifyData.nsVerification.nameservers">
+                    <ion-chip color="danger">{{ ns }}</ion-chip>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <br>
+            <hr style="border-top: solid lightgrey 1px;">
+            <br>
+            Changes make take 1-2 days to take effect.
+          </div>
+
+        </div>
+
+        <div class="accent-text" *ngIf="isDomainVerified">
+          <ion-icon name="checkmark-circle-outline" color="primary"></ion-icon>
+          Set Up Successfully
+        </div>
+      </div>
+    </ion-item>
+    <br>
+  </div>
+
+</div>

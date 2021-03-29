@@ -21,11 +21,11 @@ export class FunctionsService {
     return new Promise((resolve,reject) => {
       this.firebaseFunctions.httpsCallable(name)(body).toPromise()
         .then((res) => {
-          console.log("BOOP: ", res);
+          console.log("RES: ", res);
           resolve(res);
         })
         .catch((err) => {
-          console.log("SCOOOT: ", err);
+          console.log("ERROR: ", err);
           reject(err);
         })
     })

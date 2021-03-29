@@ -46,6 +46,12 @@ ion-header, ion-toolbar {
   object-fit: cover;
 }
 
+.item-box {
+  background: rgba(0,0,0,0.05);
+  border-radius: 20px;
+  padding: 8px;
+}
+
 .opacity-half {
   opacity: 0.5;
 }
