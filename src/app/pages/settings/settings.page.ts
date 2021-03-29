@@ -5,6 +5,8 @@ import { NavController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service'
 import { FirestoreService } from '../../services/firestore.service'
 import { ImageService } from '../../services/image.service'
+import { FunctionsService } from '../../services/functions.service'
+import { ValidateService } from '../../services/validate.service'
 
 @Component({
   selector: 'app-settings',
@@ -19,6 +21,13 @@ export class SettingsPage implements OnInit {
   content: any = "";
   isEditing: boolean = false;
 
+  subdomain: any = "";
+  customdomain: any = null;
+  hasCustomDomain: boolean = false;
+  isDomainLoading: boolean = true;
+  isDomainVerified: boolean = false;
+  domainVerifyData = {};
+
   images:any =  {
     avatar: null,
     avatarURL: null,
@@ -29,9 +38,11 @@ export class SettingsPage implements OnInit {
     public navCtrl: NavController,
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private authService: AuthService,
+    public authService: AuthService,
     private firestoreService: FirestoreService,
     private imageService: ImageService,
+    private functionsService: FunctionsService,
+    private validateService: ValidateService,
   ) {
 
     this.form = this.formBuilder.group({
@@ -43,6 +54,7 @@ export class SettingsPage implements OnInit {
   async ngOnInit() {
     await this.authService.onReady();
     this.setEditData();
+    this.setDomains();
     this.isLoading = false;
   }
 
@@ -55,6 +67,31 @@ export class SettingsPage implements OnInit {
     this.images.avatarURL = this.authService.user.avatar,
     this.form.controls.firstName.setValue(this.authService.user.firstName);
     this.form.controls.lastName.setValue(this.authService.user.lastName);
+  }
+
+  async setDomains() {
+    this.isDomainLoading = true;
+    for (let domain of this.authService.user.domains) {
+      if(domain.slice(domain.length - 8) == 'penna.io') {
+        this.subdomain = domain.substr(0, domain.length - 9);
+      } else {
+        this.hasCustomDomain = true;
+        this.customdomain = domain;
+      }
+    }
+    console.log("this.customdomain: ", this.customdomain);
+    if(this.customdomain) {
+      let res:any = await this.functionsService.call("verifyDomain", { domain: this.customdomain });
+      console.log("RES: ", res);
+      if(res.success) {
+        this.isDomainVerified = true;
+        this.domainVerifyData = res.data;
+      } else {
+        this.isDomainVerified = false;
+        this.domainVerifyData = res.error;
+      }
+    }
+    this.isDomainLoading = false;
   }
     
   async submit() {
@@ -71,6 +108,29 @@ export class SettingsPage implements OnInit {
         this.images.avatarChanged = false;
       }
       this.isLoading = false;
+    }
+  }
+
+  updateSubdomain() {
+    let res:any = this.validateService.validateSubdomain(this.subdomain)
+    this.errorMessage = res.errorMessage;
+    if(res.success) {
+      // do stuff
+    }
+  }
+
+  async updateCustomDomain() {
+    if(this.validateService.isValidDomainName(this.customdomain)) {
+      this.errorMessage = "";
+      // console.log("true")
+      try{
+        let res = await this.functionsService.call("addDomain", { domain: this.customdomain });
+        console.log("res: ", res)
+      } catch (err) {
+        this.errorMessage = "Something went wrong";
+      }
+    } else {
+      this.errorMessage = "Please enter a valid domain name";
     }
   }
 

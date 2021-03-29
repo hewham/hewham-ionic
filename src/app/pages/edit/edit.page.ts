@@ -5,6 +5,7 @@ import { NavController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service'
 import { FirestoreService } from '../../services/firestore.service'
 import { ImageService } from '../../services/image.service'
+import { ValidateService } from '../../services/validate.service'
 
 @Component({
   selector: 'app-edit',
@@ -39,6 +40,7 @@ export class EditPage implements OnInit {
     private authService: AuthService,
     private firestoreService: FirestoreService,
     private imageService: ImageService,
+    private validateService: ValidateService,
   ) {
 
     this.form = this.formBuilder.group({
@@ -163,46 +165,15 @@ export class EditPage implements OnInit {
     }
 
     if(this.form.controls.link.value) {
-      if(!this.isValidHttpUrl(this.form.controls.link.value)) {
+      if(!this.validateService.isValidHttpUrl(this.form.controls.link.value)) {
         this.errorMessage = 'Project link is not a valid url (Must begin with https:// or http://)';
         return false; 
       }
     }
 
-    return this.validateSlug(this.form.controls.slug.value);
+    let res:any = this.validateService.validateSlug(this.form.controls.slug.value);
+    this.errorMessage = res.errorMessage;
+    return res.success;
   }
-
-  isValidHttpUrl(string) {
-    let url;
-    try {
-      url = new URL(string);
-    } catch (_) {
-      return false;  
-    }
-    return url.protocol === "http:" || url.protocol === "https:";
-  }
-
-  validateSlug(slug) {
-    const MIN_LENGTH = 1;
-    const MAX_LENGTH = 32;
-    const ALPHA_NUMERIC_REGEX = /^[a-z][a-z\-]*[a-z0-9]*$/;
-    const START_END_HYPHEN_REGEX = /\A[^-].*[^-]\z/i;
-
-    //if is too small or too big...
-    if (slug.length < MIN_LENGTH || slug.length > MAX_LENGTH) {
-      this.errorMessage = `Slug must have between ${MIN_LENGTH} and ${MAX_LENGTH} characters`;
-      return false;
-    }
-
-    //if slug is started/ended with hyphen or is not alpha numeric
-    if (!ALPHA_NUMERIC_REGEX.test(slug)) {
-      this.errorMessage = 'Slug must only contain lowercase letters or numbers';
-      return false;
-    }
-
-    this.errorMessage = "";
-    return true;
-  }
-
 
 }

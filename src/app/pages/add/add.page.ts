@@ -5,6 +5,7 @@ import { NavController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service'
 import { FirestoreService } from '../../services/firestore.service'
 import { ImageService } from '../../services/image.service'
+import { ValidateService } from '../../services/validate.service'
 
 @Component({
   selector: 'app-add',
@@ -37,6 +38,7 @@ export class AddPage implements OnInit {
     private authService: AuthService,
     private firestoreService: FirestoreService,
     private imageService: ImageService,
+    private validateService: ValidateService,
   ) {
     this.form = this.formBuilder.group({
       name : ['', Validators.compose([Validators.minLength(1), Validators.required])],
@@ -117,28 +119,9 @@ export class AddPage implements OnInit {
         return false;
       }
     }
-    return this.validateSlug(this.form.controls.slug.value);
+    let res:any = this.validateService.validateSlug(this.form.controls.slug.value);
+    this.errorMessage = res.errorMessage;
+    return res.success;
   }
 
-  validateSlug(slug) {
-    const MIN_LENGTH = 1;
-    const MAX_LENGTH = 32;
-    const ALPHA_NUMERIC_REGEX = /^[a-z][a-z\-]*[a-z0-9]*$/;
-    const START_END_HYPHEN_REGEX = /\A[^-].*[^-]\z/i;
-
-    //if is too small or too big...
-    if (slug.length < MIN_LENGTH || slug.length > MAX_LENGTH) {
-      this.errorMessage = `Slug must have between ${MIN_LENGTH} and ${MAX_LENGTH} characters`;
-      return false;
-    }
-
-    //if slug is started/ended with hyphen or is not alpha numeric
-    if (!ALPHA_NUMERIC_REGEX.test(slug)) {
-      this.errorMessage = 'Slug must only contain lowercase letters or numbers';
-      return false;
-    }
-
-    this.errorMessage = "";
-    return true;
-  }
 }

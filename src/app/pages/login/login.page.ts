@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Platform } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service'
+import { ValidateService } from '../../services/validate.service'
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,7 @@ export class LoginPage implements OnInit {
     private platform: Platform,
     private formBuilder: FormBuilder,
     public authService: AuthService,
+    private validateService: ValidateService,
   ) {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.email, Validators.minLength(1), Validators.required])],
@@ -109,7 +111,10 @@ export class LoginPage implements OnInit {
           return false; 
         }
       }
-      return this.validateSubdomain(String(this.signupForm.controls.subdomain.value));
+
+      let res:any = this.validateService.validateSubdomain(String(this.signupForm.controls.subdomain.value));
+      this.errorMessage = res.errorMessage;
+      return res.success;
     } else {
       if(!this.loginForm.valid){
         if(this.loginForm.controls.email.valid == false){
@@ -140,34 +145,4 @@ export class LoginPage implements OnInit {
       this.pwIcon = 'eye';
     }
   }
-
-  validateSubdomain(subdomain) {
-    const MIN_LENGTH = 3;
-    const MAX_LENGTH = 32;
-    const ALPHA_NUMERIC_REGEX = /^[a-z][a-z\-]*[a-z0-9]*$/;
-    const START_END_HYPHEN_REGEX = /\A[^-].*[^-]\z/i;
-    const reservedNames = this.authService.reservedNames;
-
-     //if is reserved...
-     if (reservedNames.includes(subdomain)) {
-      this.errorMessage = 'Subdomain cannot be a reserved name';
-      return false;
-     }
-
-    //if is too small or too big...
-    if (subdomain.length < MIN_LENGTH || subdomain.length > MAX_LENGTH) {
-      this.errorMessage = `Subdomain must have between ${MIN_LENGTH} and ${MAX_LENGTH} characters`;
-      return false;
-    }
-
-    //if subdomain is started/ended with hyphen or is not alpha numeric
-    if (!ALPHA_NUMERIC_REGEX.test(subdomain)) {
-      this.errorMessage = 'Subdomain must only contain lowercase letters or numbers';
-      return false;
-    }
-
-    this.errorMessage = "";
-    return true;
-  }
-
 }
