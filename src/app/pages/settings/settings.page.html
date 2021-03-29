@@ -18,6 +18,10 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-chip *ngIf="errorMessage" class="error-message" color="danger">
+    {{errorMessage}}
+  </ion-chip>
+
   <br>
   <br>
 
@@ -30,51 +34,102 @@
   <div *ngIf="!isLoading" class="ion-text-left web-container">
     <br>
 
-    <app-image-upload [photo]="this.images.avatarURL" (onDone)="imageSelected($event, 'avatar')" customID="tile-image"></app-image-upload>
-    <div class="ion-text-center opacity-half">Avatar</div>
+    <div class="item-box">
+      <app-image-upload [photo]="this.images.avatarURL" (onDone)="imageSelected($event, 'avatar')" customID="tile-image"></app-image-upload>
+      <div class="ion-text-center opacity-half">Avatar</div>
 
-    <form [formGroup]="form">
-      <ion-grid>
-        <ion-row>
-          <ion-col class="ion-no-padding">
-            <ion-item>
-              <ion-label position="floating">First Name</ion-label>
-              <ion-input 
-                #firstName 
-                formControlName="firstName" 
-                type="text"
-                [class.invalid]="!form.controls.firstName.valid" 
-                (keypress)="eventHandler($event.keyCode)">
-              </ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col class="ion-no-padding">
-            <ion-item>
-              <ion-label position="floating">Last Name</ion-label>
-              <ion-input 
-                #lastName 
-                formControlName="lastName" 
-                type="text"
-                [class.invalid]="!form.controls.lastName.valid" 
-                (keypress)="eventHandler($event.keyCode)">
-              </ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </form>
+      <form [formGroup]="form">
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-no-padding">
+              <ion-item>
+                <ion-label position="floating">First Name</ion-label>
+                <ion-input 
+                  #firstName 
+                  formControlName="firstName" 
+                  type="text"
+                  [class.invalid]="!form.controls.firstName.valid" 
+                  (keypress)="eventHandler($event.keyCode)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <ion-item>
+                <ion-label position="floating">Last Name</ion-label>
+                <ion-input 
+                  #lastName 
+                  formControlName="lastName" 
+                  type="text"
+                  [class.invalid]="!form.controls.lastName.valid" 
+                  (keypress)="eventHandler($event.keyCode)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+
+      <div class="spacer" style="height:12px;"></div>
     
+      <!-- <ion-label padding color="danger" style="text-align:center;">{{errorMessage}}</ion-label> -->
+      
+      <div class="btn-wrapper">
+        <ion-button (click)="submit()" color="seethrough" class="color-primary">
+          Save
+        </ion-button>
+      </div>
+
+    </div>
     
-    <div class="spacer" style="height:12px;"></div>
-    
-    <ion-label padding color="danger" style="text-align:center;">{{errorMessage}}</ion-label>
-    
-    <div class="btn-wrapper">
-      <ion-button (click)="submit()" color="seethrough" class="color-primary">
-        Save
-      </ion-button>
+    <br>
+    <br>
+
+    <div class="item-box">
+
+      <br>
+      <br>
+
+      <ion-item>
+        <ion-label position="fixed">Subdomain</ion-label>
+        <ion-input [(ngModel)]="subdomain" class="ion-text-right"></ion-input>
+        <ion-note slot="end" style="padding-right: 30%;">
+          .penna.io
+        </ion-note>
+      </ion-item>
+
+      <br>
+
+      <div class="btn-wrapper">
+        <ion-button (click)="updateSubdomain()" color="seethrough" class="color-primary">
+          Save
+        </ion-button>
+      </div>
     </div>
 
+    <br>
+    <br>
+
+    <div class="item-box">
+
+      <br>
+      <br>
+
+      <div *ngIf="customdomain == null" class="ion-text-center"> Add your own domain below</div>
+      <ion-item>
+        <ion-label position="stacked">Custom Domain</ion-label>
+        <ion-input [(ngModel)]="customdomain" placeholder="example.com">
+        </ion-input>
+      </ion-item>
+
+      <br>
+
+      <div class="btn-wrapper">
+        <ion-button (click)="updateCustomDomain()" color="seethrough" class="color-primary">
+          Save
+        </ion-button>
+      </div>
+    </div>
+    
     <br>
     <br>
 
