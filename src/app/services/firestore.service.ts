@@ -95,13 +95,9 @@ export class FirestoreService {
 
   async addDomainToUser(domain) {
     let domains = this.authService.user.domains;
-
-    console.log("domains: ", domains)
     if(domains.indexOf(domain) === -1) {
       domains.push(domain);
     }
-    console.log("domains 2: ", domains)
-
     await this.firestore.collection("users").doc(this.authService.authuid).update({
       domains: domains
     });
@@ -120,6 +116,17 @@ export class FirestoreService {
     await this.imageService.deletePhoto(item.tile);
     await this.imageService.deletePhoto(item.cover);
     return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(item.id).delete();
+  }
+
+  async deleteGroup(groupID) {
+    if(!await this.dialogService.prompt("Deleting this group will also delete all of it's contents. This action is irreversible.", "Nevermind", "Delete", "Confirm Delete")){
+      return false;
+    } else {
+      let groupOrder = this.authService.user.groupOrder.filter(e => e !== groupID); // remove from groupOrder array
+      await this.reorderGroups(groupOrder);
+      await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).delete();
+      return true;
+    }
   }
 
   async reorderGroups(groupOrderArray) {

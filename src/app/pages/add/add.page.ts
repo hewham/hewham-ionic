@@ -124,4 +124,12 @@ export class AddPage implements OnInit {
     return res.success;
   }
 
+  async delete() {
+    let deleted = await this.firestoreService.deleteGroup(this.groupID);
+    if(deleted) {
+      this.authService.refreshUser();
+      this.navCtrl.navigateRoot("start");
+    }
+  }
+
 }
