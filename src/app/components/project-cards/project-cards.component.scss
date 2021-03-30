@@ -2,6 +2,10 @@ img {
   max-width: 400px;
 }
 
+.projects-container {
+  display: flex;
+}
+
 .cards-list {
   z-index: 0;
   width: 100%;

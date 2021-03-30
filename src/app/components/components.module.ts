@@ -6,14 +6,16 @@ import { FormsModule } from '@angular/forms';
 import { CustomDomainComponent } from './custom-domain/custom-domain.component';
 import { IconSelectComponent } from './icon-select/icon-select.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
-import { ProjectCardComponent } from './project-card/project-card.component';
+import { ItemGalleryComponent } from './item-gallery/item-gallery.component';
+import { ProjectCardsComponent } from './project-cards/project-cards.component';
 
 @NgModule({
 	declarations: [
 		CustomDomainComponent,
 		IconSelectComponent,
 		ImageUploadComponent,
-		ProjectCardComponent
+		ItemGalleryComponent,
+		ProjectCardsComponent
 	],
 	imports: [
 		CommonModule,
@@ -24,7 +26,8 @@ import { ProjectCardComponent } from './project-card/project-card.component';
 		CustomDomainComponent,
 		IconSelectComponent,
 		ImageUploadComponent,
-		ProjectCardComponent
+		ItemGalleryComponent,
+		ProjectCardsComponent
 	]
 })
 export class ComponentsModule {}

@@ -19,27 +19,42 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-grid 
+  <div *ngIf="group">
+    <app-item-gallery
+      *ngIf="group.options.type == 'gallery'"
+      (onClick)="viewProject($event)" 
+      [items]="items">
+    </app-item-gallery>
+
+    <app-project-cards 
+      *ngIf="group.options.type == 'project'"
+      (onClick)="viewProject($event)" 
+      [items]="items" 
+      [shape]="group.options.shape">
+    </app-project-cards>
+  </div>
+
+  <!-- <ion-grid 
     *ngIf="group"
     class="ion-no-padding"
     fixed>
     <ion-row>
       <ion-col 
         *ngFor="let item of items"
-        (click)="viewProject(item.slug)"
         class="panel-card-container"
         size="12" 
         size-sm="12" 
         size-md="4" 
         size-lg="4" 
         size-xl="4">
-          <app-project-card [project]="item" [shape]="group.options.shape"></app-project-card>
+          <app-project-cards (onClick)="viewProject($event)" [items]="items" [shape]="group.options.shape"></app-project-cards>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
+
 
   <div *ngIf="items">
-    <div *ngIf="authService.isLoggedIn && items.length == 0" class="ion-text-left web-container">
+    <div *ngIf="authService.isOwner && items.length == 0" class="ion-text-left web-container">
       <br>
       <br>
       <br>

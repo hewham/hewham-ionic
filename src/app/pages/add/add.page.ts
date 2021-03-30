@@ -31,6 +31,19 @@ export class AddPage implements OnInit {
     coverURL: ""
   }
 
+  test = "project"
+
+  typeOptions = [
+    {
+      name: 'Projects',
+      value: 'project'
+    },
+    {
+      name: 'Gallery',
+      value: 'gallery'
+    }
+  ]
+
   constructor(
     public navCtrl: NavController,
     private activatedRoute: ActivatedRoute,
@@ -42,7 +55,8 @@ export class AddPage implements OnInit {
   ) {
     this.form = this.formBuilder.group({
       name : ['', Validators.compose([Validators.minLength(1), Validators.required])],
-      slug : ['', Validators.compose([Validators.minLength(1), Validators.required])]
+      slug : ['', Validators.compose([Validators.minLength(1), Validators.required])],
+      type : ['', Validators.compose([Validators.minLength(1), Validators.required])]
     });
   }
 
@@ -51,6 +65,8 @@ export class AddPage implements OnInit {
     if(this.groupSlug) {
       this.isEditing = true;
       this.setEditData();
+    } else {
+      this.form.controls.type.setValue('project');
     }
   }
 
@@ -59,6 +75,7 @@ export class AddPage implements OnInit {
     this.groupID = group.id;
     this.form.controls.name.setValue(group.name);
     this.form.controls.slug.setValue(group.slug);
+    this.form.controls.type.setValue(group.options.type);
     this.icon = group.icon;
   }
 
@@ -104,7 +121,7 @@ export class AddPage implements OnInit {
       icon: this.icon,
       options: {
         shape: "long",
-        type: "project"
+        type: this.form.controls.type.value
       }
     }
   }

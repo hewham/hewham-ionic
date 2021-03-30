@@ -1,0 +1,34 @@
+<!-- <ion-card>
+  <img [src]="project.cover" />
+  <ion-card-header>
+    <ion-card-subtitle>{{ project.subtitle }}</ion-card-subtitle>
+    <ion-card-title>{{ project.name }}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    {{ project.description }}
+  </ion-card-content>
+</ion-card> -->
+
+<ion-grid 
+  class="ion-no-padding"
+  fixed>
+  <ion-row>
+    <ion-col 
+      *ngFor="let item of items"
+      class="panel-card-container fade-in"
+      size="12" 
+      size-sm="12" 
+      size-md="4" 
+      size-lg="4" 
+      size-xl="4">
+        <div [ngClass]="cardClass" (click)="onClick.emit(item.slug)">
+          <div class="card_image"> <img [src]="item.cover" /> </div>
+          <div class="card_title title-white">
+            <p>{{ item.name }}</p>
+          </div>
+        </div>
+        <!-- <app-project-cards (onClick)="viewProject($event)" [items]="items" [shape]="group.options.shape"></app-project-cards> -->
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
