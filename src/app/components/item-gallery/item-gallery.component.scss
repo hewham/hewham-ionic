@@ -23,3 +23,11 @@
 #photos img:hover {
   opacity: 0.6;
 }
+
+@media (max-width: 768px) {
+  #photos {
+  -moz-column-count:    1;
+  -webkit-column-count: 1;
+  column-count:         1;
+  }
+}
