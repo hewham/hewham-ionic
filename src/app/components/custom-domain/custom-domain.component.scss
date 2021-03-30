@@ -5,3 +5,10 @@ ion-item {
 ion-label {
   opacity: 0.5;
 }
+
+.button-row {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 100;
+}

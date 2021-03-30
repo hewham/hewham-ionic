@@ -29,7 +29,7 @@ f: ## deploy firebase functions
 	@firebase deploy --only functions
 
 keys: ## set firebase function configs
-	@echo "\n Setting keys: \n keys.vercel=${vercel_key} \n keys.vercel_penna_id=${vercel_penna_id} \n"
+	@echo "\n Setting keys: \n keys.vercel=${vercel_key} \n keys.vercel_penna_id=${vercel_penna_id} \n" && \
 	firebase functions:config:set keys.vercel="${vercel_key}" keys.vercel_penna_id="${vercel_penna_id}" && \
 	make f
 

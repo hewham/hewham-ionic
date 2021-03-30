@@ -13,25 +13,68 @@ const VERCEL_BASEURL = "https://api.vercel.com";
 //   response.send("Hello from Firebase!");
 // });
 
-exports.addDomain = functions.https.onCall(async (data, context) => {
-  const domain = data.domain;
+async function isDomainInUse(domain) {
   const options = {
-    // url: `${VERCEL_BASEURL}/v4/domains`,
-    url: `${VERCEL_BASEURL}/v1/projects/${VERCEL_PENNA_PRJ_ID}/alias`,
-    method: 'POST',
+    url: `${VERCEL_BASEURL}/v4/domains/${domain}`,
+    method: 'GET',
     headers: {
       'Authorization': `Bearer ${VERCEL_KEY}`,
       'Content-Type': 'application/json'
-    },
-    data: { "domain": domain }
+    }
   };
   try {
-    await axios(options);
-    return { data: {success : true} };
+    let result = await axios(options);
+    functions.logger.info("RESULT", {structuredData: true});
+    functions.logger.info(result.data, {structuredData: true});
+    return true;
   } catch (err) {
-    return { data: { success : false} };
+    functions.logger.info("ERROR", {structuredData: true});
+    functions.logger.info(err, {structuredData: true});
+    return false;
+  }
+}
+
+exports.addDomain = functions.https.onCall(async (data, context) => {
+  const domain = data.domain;
+
+  if(await isDomainInUse(domain)) {
+    return { success : false, message: "Domain is already registered"};
+  } else {
+    const options = {
+      url: `${VERCEL_BASEURL}/v1/projects/${VERCEL_PENNA_PRJ_ID}/alias`,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${VERCEL_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      data: { "domain": domain }
+    };
+    try {
+      await axios(options);
+      return { success : true, message: "Domain successfully added" };
+    } catch (err) {
+      return { success : false, message: "Action unsuccessful" };
+    }
   }
 });
+
+// exports.domainInUse = functions.https.onCall(async (data, context) => {
+//   const domain = data.domain;
+//   const options = {
+//     url: `${VERCEL_BASEURL}/v4/domains/${domain}`,
+//     method: 'GET',
+//     headers: {
+//       'Authorization': `Bearer ${VERCEL_KEY}`,
+//       'Content-Type': 'application/json'
+//     }
+//   };
+//   try {
+//     await axios(options);
+//     return { data: { success : false } };
+//   } catch (err) {
+//     return { data: { success : true } };
+//   }
+// });
 
 exports.verifyDomain = functions.https.onCall(async (data, context) => {
   const domain = data.domain;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../services/auth.service'
 import { FirestoreService } from '../../services/firestore.service'
 import { FunctionsService } from '../../services/functions.service'
@@ -11,6 +11,7 @@ import { ValidateService } from '../../services/validate.service'
 })
 export class CustomDomainComponent implements OnInit {
 
+  // @Output() onRefresh: EventEmitter<any> = new EventEmitter();
   errorMessage = "";
   customdomain: any = null;
   hasCustomDomain: boolean = false;
@@ -45,24 +46,43 @@ export class CustomDomainComponent implements OnInit {
         this.domainVerifyData = res.data;
       } else {
         this.isDomainVerified = false;
-        this.domainVerifyData = res.error;
+        if(res.error.code == "forbidden") {
+          this.domainVerifyData = "forbidden"
+        }  else {
+          this.domainVerifyData = res.error;
+        }
       }
     }
     this.isDomainLoading = false;
   }
 
+  async refresh() {
+    await this.authService.refreshUser();
+    this.ngOnInit();
+  }
+
   async updateCustomDomain() {
+    this.isDomainLoading = true;
     // console.log("this.customdomain: ", this.customdomain)
     if(this.validateService.isValidDomainName(this.customdomain)) {
       this.errorMessage = "";
       try{
-        let res = await this.functionsService.call("addDomain", { domain: this.customdomain });
+        let res:any = await this.functionsService.call("addDomain", { domain: this.customdomain });
+        if(res.success) {
+          // nice
+          await this.firestoreService.addDomainToUser(this.customdomain);
+          this.refresh();
+        } else {
+          this.errorMessage = res.message;
+        }
       } catch (err) {
         this.errorMessage = "Something went wrong";
       }
     } else {
       this.errorMessage = "Please enter a valid domain name";
     }
+    this.isDomainLoading = false;
   }
+
 
 }

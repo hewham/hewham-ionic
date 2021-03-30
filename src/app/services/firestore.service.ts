@@ -93,6 +93,21 @@ export class FirestoreService {
     return true;
   }  
 
+  async addDomainToUser(domain) {
+    let domains = this.authService.user.domains;
+
+    console.log("domains: ", domains)
+    if(domains.indexOf(domain) === -1) {
+      domains.push(domain);
+    }
+    console.log("domains 2: ", domains)
+
+    await this.firestore.collection("users").doc(this.authService.authuid).update({
+      domains: domains
+    });
+    return true;
+  }
+
   async editItemBySlugs(body, groupSlug, itemSlug) {
     const group:any = await this.getGroup(groupSlug);
     const groupID = group.id;
