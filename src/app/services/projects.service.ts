@@ -48,7 +48,7 @@ export class ProjectsService {
       link: "https://www.giggot.com",
       description: "GigGot is an app I made to help people find performing artists. It started as a simpler way to book my DJ friends for houseparties in college. It turned into a full booking management platform for bars, venues, and everyone else.",
       logo: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/giggot-logo-black.png?alt=media&token=84e146df-9f59-412d-84b4-4a01e757fd48",
-      icon: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/giggot-icon.png?alt=media&token=e267a5da-037e-40e2-a19d-425e4d440391",
+      icon: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/RoundedIcon.png?alt=media&token=bdae7be6-ba1f-471d-b5a7-0c43e4b34241",
       cover: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/giggot-splash.png?alt=media&token=3b6d4e93-87ee-4cdd-b592-afa06d2ea0ef",
       image: "https://firebasestorage.googleapis.com/v0/b/hewham-ionic.appspot.com/o/giggot_artist.png?alt=media&token=2e95d431-cd96-4c6c-8367-46b7d5b25766",
       html: ``
