@@ -20,6 +20,12 @@
   </ion-header>
 
   <div *ngIf="group">
+    <app-table
+      *ngIf="group.options.type == 'table'"
+      (onClick)="viewProject($event)" 
+      [items]="items">
+    </app-table>
+
     <app-item-gallery
       *ngIf="group.options.type == 'gallery'"
       (onClick)="viewProject($event)" 

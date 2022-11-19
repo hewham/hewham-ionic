@@ -51,15 +51,15 @@ export class AuthService {
 
   async init(){
     this.isIniting = true;
-    await this.setuid();
     await this.checkIsLoggedIn();
     await this.getUser();
+
     if(this.isLoggedIn) {
-      this.getAuthUser()
+      this.getAuthUser();
     }
-    if(this.uid == this.authuid) this.isOwner = true;
-    // console.log("isOwner: ", this.isOwner)
-    // console.log("isLoggedIn: ", this.isLoggedIn)
+    if(this.isLoggedIn) this.isOwner = true;
+    // if(this.uid == this.authuid) this.isOwner = true;
+
     this.isInitialized = true;
     this.isIniting = false;
     this.onInit.emit();
@@ -71,6 +71,7 @@ export class AuthService {
         // console.log("user: ", user);
         if (user) {
           this.authuid = user.uid;
+          this.uid = user.uid;
           this.isLoggedIn = true;
           if(this.uid == this.authuid) this.isOwner = true;
           resolve(true);
@@ -146,62 +147,6 @@ export class AuthService {
     this.isIniting = false;
   }
 
-  setuid() {
-    return new Promise(async (resolve) => {
-      let fulldomain = /:\/\/([^\/]+)/.exec((window as any).location.href)[1];
-      if(!environment.production) {
-        fulldomain = this.TEST_FULLDOMAIN;
-      }
-      let subdomain = fulldomain.split(".")[0];
-      this.fulldomain = fulldomain;
-      this.subdomain = subdomain;
-      console.log("fulldomain: ", fulldomain)
-      console.log("subdomain: ", subdomain)
-      let isReserved = (this.reservedNames.indexOf(subdomain) > -1)
-      if(isReserved) {
-        if(fulldomain != "penna.io") {
-          // if its reserved, redirect to penna.io
-          <any>window.open('https://penna.io', '_self');
-        } else {
-          // default page
-          this.isReserved = true;
-          this.uid = environment.PENNA_UID;
-          resolve(this.uid);
-        }
-      } else {
-        let user:any = await this.getUserForDomain(fulldomain);
-        if(user) {
-          this.isReserved = false;
-          this.uid = user.id;
-          resolve(this.uid);
-        } else {
-          if(environment.production) {
-            // if no users found for entered subdomain, redirect to penna.io
-            // TODO: make a note explaining the redirect
-            <any>window.open('https://penna.io', '_self');
-          }
-        }
-      }
-    });
-  }
-
-  getUserForDomain(domain) {
-    return new Promise((resolve) => {
-      this.firestore.collection("users", ref => ref.where("domains", "array-contains", domain)).get().subscribe((snapshot) => {
-        if(snapshot.docs.length == 0) {
-          resolve(null);
-        } else {
-          // load user for subdomain
-          snapshot.docs.forEach((doc) => {
-            let data:any = doc.data();
-            data.id = doc.id
-            resolve (data)
-          });
-        }
-      });
-    });
-  }
-
   resetPassword(email) {
     return new Promise(async (resolve) => {
       try{
@@ -218,17 +163,14 @@ export class AuthService {
   async login(email, password) {
     let loading = await this.loadingCtrl.create({duration: 10000});
     loading.present();
-    if(!await this.checkSiteOwnerBeforeLogin(email)) {
-      loading.dismiss();
-      return;
-    }
     return new Promise((resolve) => {
     this.fireauth.signInWithEmailAndPassword(email, password)
       .then(async res => {
-        // this.init();
+        this.init();
         let user:any = await this.getAuthUser();
+        this.navCtrl.navigateRoot('start');
         loading.dismiss();
-        await this.redirectToUserSubdomain(user.subdomain);
+        // await this.redirectToUserSubdomain(user.subdomain);
         this.onAuthChange.emit();
         resolve(true);
       }).catch(error => {
@@ -237,26 +179,6 @@ export class AuthService {
         resolve(false);
       });
     })
-  }
-
-  async checkSiteOwnerBeforeLogin(email) {
-    return new Promise(async (resolve) => {
-      if(!environment.production) this.fulldomain = this.TEST_FULLDOMAIN;
-      let user:any = await this.getUserForDomain(this.fulldomain);
-      if(this.isReserved) {
-        resolve(true);
-      } else if(user) {
-        if(email == user.email) {
-          resolve(true);
-        } else {
-          this.dialogService.alert("This email is not authenticated to access this site.", "Incorrect Email");
-          resolve(false);
-        }
-      } else {
-        this.dialogService.alert("This site does not exist", "Invalid Site");
-        resolve(false);
-      }
-    });
   }
 
   async redirectToUserSubdomain(subdomain) {
@@ -270,7 +192,6 @@ export class AuthService {
         this.navCtrl.navigateRoot("start");
       }
     }
-
   }
   
   async signup(body) {
@@ -282,11 +203,11 @@ export class AuthService {
       this.fireauth.createUserWithEmailAndPassword(body.email, body.password)
       .then(async res => {
         await this.createNewUser(body, res.user.uid);
-        // this.init();
-        // this.navCtrl.navigateRoot('start');
+        this.init();
+        this.navCtrl.navigateRoot('start');
         // await this.initOnAppStartOrLogin();
         loading.dismiss();
-        this.redirectToUserSubdomain(body.subdomain);
+        // this.redirectToUserSubdomain(body.subdomain);
         this.onAuthChange.emit();
         resolve(true);
       }).catch(error => {
@@ -299,17 +220,18 @@ export class AuthService {
 
   async createNewUser(body, uid) {
     const createUserRequest = {
-      'firstName': body.firstName,
-      'lastName': body.lastName,
+      // 'firstName': body.firstName,
+      // 'lastName': body.lastName,
+      'username': body.username,
       'email': body.email,
-      'subdomain': body.subdomain,
-      'domains': [`${body.subdomain}.penna.io`],
+      // 'subdomain': body.subdomain,
+      // 'domains': [`${body.subdomain}.penna.io`],
       'uid': uid
     };
 
     try {
       await this.firestore.collection('users').doc(uid).set(createUserRequest);
-      await this.firestore.collection('subdomains').doc(body.subdomain).set({'uid': uid});
+      // await this.firestore.collection('subdomains').doc(body.subdomain).set({'uid': uid});
       return true;
     } catch (err) {
       this.dialogService.error("Please contact us, your account had an issue when we tried to create it. This may occur if you previously had an account with us.")

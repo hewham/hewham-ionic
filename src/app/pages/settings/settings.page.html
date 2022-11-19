@@ -84,40 +84,5 @@
     <br>
     <br>
 
-    <div class="item-box">
-      <br>
-
-      <ion-item lines="none">
-        <ion-label position="stacked"><b>Penna Subdomain:</b>&nbsp;<ion-chip>{{ subdomain }}.penna.io</ion-chip></ion-label>
-      </ion-item>
-
-      <!-- <br>
-
-      <ion-item>
-        <ion-label position="fixed">Subdomain</ion-label>
-        <ion-input [(ngModel)]="subdomain" class="ion-text-right"></ion-input>
-        <ion-note slot="end" style="padding-right: 30%;">
-          .penna.io
-        </ion-note>
-      </ion-item>
-
-      <br>
-
-      <div class="btn-wrapper">
-        <ion-button (click)="updateSubdomain()" color="seethrough" class="color-primary">
-          Save
-        </ion-button>
-      </div> -->
-    </div>
-
-    <br>
-    <br>
-
-    <app-custom-domain *ngIf="!isLoading"></app-custom-domain>
-
-    
-    <br>
-    <br>
-
   </div>
 </ion-content>

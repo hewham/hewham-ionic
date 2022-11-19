@@ -35,6 +35,10 @@ export class AddPage implements OnInit {
 
   typeOptions = [
     {
+      name: 'Table',
+      value: 'table'
+    },
+    {
       name: 'Projects',
       value: 'project'
     },

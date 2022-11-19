@@ -8,6 +8,7 @@ import { IconSelectComponent } from './icon-select/icon-select.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { ItemGalleryComponent } from './item-gallery/item-gallery.component';
 import { ProjectCardsComponent } from './project-cards/project-cards.component';
+import { TableComponent } from './table/table.component';
 
 @NgModule({
 	declarations: [
@@ -15,7 +16,8 @@ import { ProjectCardsComponent } from './project-cards/project-cards.component';
 		IconSelectComponent,
 		ImageUploadComponent,
 		ItemGalleryComponent,
-		ProjectCardsComponent
+		ProjectCardsComponent,
+		TableComponent
 	],
 	imports: [
 		CommonModule,
@@ -27,7 +29,8 @@ import { ProjectCardsComponent } from './project-cards/project-cards.component';
 		IconSelectComponent,
 		ImageUploadComponent,
 		ItemGalleryComponent,
-		ProjectCardsComponent
+		ProjectCardsComponent,
+		TableComponent
 	]
 })
 export class ComponentsModule {}

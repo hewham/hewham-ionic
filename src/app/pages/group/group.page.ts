@@ -30,7 +30,9 @@ export class GroupPage implements OnInit {
     this.authService.onRefresh.subscribe(() => this.ngOnInit());
     this.slug = this.activatedRoute.snapshot.paramMap.get('group');
     this.group = await this.firestoreService.getGroup(this.slug);
+    console.log("group: ", this.group);
     this.items = await this.firestoreService.getItems(this.group.id);
+    console.log("items: ", this.items);
   }
 
   viewProject(id) {
