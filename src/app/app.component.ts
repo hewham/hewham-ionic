@@ -57,16 +57,13 @@ export class AppComponent {
   setAppPages() {
     this.appPages = [];
     let groups = JSON.parse(JSON.stringify(this.authService.user.groups));
-    // if(this.authService.user.groupOrder) {
-    //   this.authService.user.groupOrder.forEach((groupID) => {
-    //     let i = groups.findIndex(a => a.id === groupID);
-    //     if(i > 0 && i < groups.length) {
-    //       console.log("i: ", i);
-    //       this.appPages.push(this.pageObj(groups[i]));
-    //       groups.splice(i, 1);
-    //     }
-    //   });
-    // }
+    if(this.authService.user.groupOrder) {
+      this.authService.user.groupOrder.forEach((groupID) => {
+        let i = groups.findIndex(a => a.id === groupID);
+        this.appPages.push(this.pageObj(groups[i]));
+        groups.splice(i, 1);
+      });
+    }
 
     // add in remaining groups
     groups.forEach((group) => {

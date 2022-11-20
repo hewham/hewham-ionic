@@ -1,1 +1,28 @@
-<div #editor class="editor-table"></div>
+
+<!-- <div #editor class="editor-table"></div> -->
+
+<ion-grid class="table-grid slide-up">
+	<ion-row class="table-row">
+		<ion-col class="table-cell header" *ngFor="let column of columns">
+			<ion-input 
+				class="table-input" 
+				[(ngModel)]="column.name"
+				(ionChange)="columnChanged(column)"
+				[debounce]="debounceLength"></ion-input>
+		</ion-col>
+	</ion-row>
+	<ion-row class="table-row" *ngFor="let item of items">
+		<ion-col class="table-cell" *ngFor="let column of columns">
+			<ion-input 
+				class="table-input" 
+				[(ngModel)]="item[column.id]" 
+				(ionChange)="itemChanged(item, column.id)"
+				[debounce]="debounceLength"></ion-input>
+		</ion-col>
+	</ion-row>
+	<ion-row>
+		<ion-col>
+			<ion-button fill="clear" size="medium" class="add-button"><ion-icon name="add"></ion-icon></ion-button>
+		</ion-col>
+	</ion-row>
+</ion-grid>

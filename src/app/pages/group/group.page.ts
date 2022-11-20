@@ -12,9 +12,11 @@ import { FirestoreService } from '../../services/firestore.service';
 })
 export class GroupPage implements OnInit {
 
-  public group: any;
-  public items: any;
+  public group: any = {};
+  public items: any = [];
+  public columns: any = [];
   public slug: string;
+  public isLoaded: boolean = false;
   Object = Object;
 
   constructor(
@@ -30,9 +32,9 @@ export class GroupPage implements OnInit {
     this.authService.onRefresh.subscribe(() => this.ngOnInit());
     this.slug = this.activatedRoute.snapshot.paramMap.get('group');
     this.group = await this.firestoreService.getGroup(this.slug);
-    console.log("group: ", this.group);
     this.items = await this.firestoreService.getItems(this.group.id);
-    console.log("items: ", this.items);
+    this.columns = await this.firestoreService.getColumns(this.group.id);
+    this.isLoaded = true;
   }
 
   viewProject(id) {

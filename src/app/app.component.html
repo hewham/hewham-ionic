@@ -37,14 +37,14 @@
           </ion-reorder-group>
 
           <ion-menu-toggle *ngIf="authService.isOwner && isEditing" auto-hide="false">
-            <ion-item (click)="navCtrl.navigateForward('add')" button lines="none" detail="false" tappable class="selected">
+            <ion-item (click)="navCtrl.navigateForward('add')" lines="none" detail="false" tappable class="selected">
               <ion-icon slot="start" name="add-outline" size="small"></ion-icon>
               <ion-label style="font-size: 0.7em;"><span class="monospace"><u>Add Group</u></span></ion-label>
             </ion-item>
           </ion-menu-toggle>
 
           <ion-menu-toggle *ngIf="authService.isOwner" auto-hide="false">
-            <ion-item (click)="toggleEditing()" button lines="none" detail="false" tappable class="selected">
+            <ion-item (click)="toggleEditing()" lines="none" detail="false" tappable class="selected">
               <ion-icon *ngIf="!isEditing" slot="start" name="create-outline" size="small"></ion-icon>
               <ion-icon *ngIf="isEditing" slot="start" name="close-outline" size="small"></ion-icon>
               <ion-label style="font-size: 0.7em;"><span class="monospace"><u>

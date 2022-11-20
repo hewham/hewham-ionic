@@ -19,10 +19,16 @@
     </ion-toolbar>
   </ion-header>
 
-  <div *ngIf="group">
+  <div class="default-spacer"></div>
+
+  <app-spinner [isLoaded]="isLoaded"></app-spinner>
+
+  <div *ngIf="group && isLoaded">
     <app-table
       *ngIf="group.options.type == 'table'"
       (onClick)="viewProject($event)" 
+      [group]="group"
+      [columns]="columns"
       [items]="items">
     </app-table>
 
@@ -59,7 +65,7 @@
   </ion-grid> -->
 
 
-  <div *ngIf="items">
+  <div *ngIf="items && isLoaded">
     <div *ngIf="authService.isOwner && items.length == 0" class="ion-text-left web-container">
       <br>
       <br>

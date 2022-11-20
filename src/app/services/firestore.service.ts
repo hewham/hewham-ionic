@@ -76,6 +76,31 @@ export class FirestoreService {
     })
   }
 
+  getColumns(groupID) {
+    return new Promise((resolve) => {
+      this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("columns").get().subscribe((snapshot) => {
+        let columns = [];
+        snapshot.docs.forEach((column) => {
+          columns.push({
+            id: column.id,
+            ...column.data()
+          });
+        })
+        resolve(columns);
+      })
+    })
+  }
+
+  async addColumn(groupID, column = null) {
+    console.log("groupID: ", groupID)
+    return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('columns').add({name: column});
+  }
+
+  async editColumn(body, groupID, columnID) {
+    await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('columns').doc(columnID).update(body);
+    return true;
+  }
+
   async addItem(item, groupSlug) {
     const group:any = await this.getGroup(groupSlug);
     const groupID = group.id;
@@ -83,7 +108,8 @@ export class FirestoreService {
   }
   
   async editItem(body, groupID, itemID) {
-    await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(itemID).set(body);
+    console.log("body: ", body);
+    await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(itemID).update(body);
     return true;
   }
 
@@ -130,6 +156,7 @@ export class FirestoreService {
   }
 
   async reorderGroups(groupOrderArray) {
+    console.log("groupOrderArray: ",groupOrderArray)
     await this.firestore.collection('users').doc(this.authService.authuid).update({groupOrder: groupOrderArray})
     return true;
   }

@@ -1,4 +1,40 @@
-.editor-table {
-  border: solid lightgrey 2px;
-  border-radius: 20px;
+$cell-border-color: #F7F5EE;
+$cell-border-width: 3px;
+$cell-color: #fcfbf9;
+
+.table-grid {
+  color: #333;
+  border-bottom: $cell-border-width solid $cell-border-color;
+  border-right: $cell-border-width solid $cell-border-color;
+  padding: 0;
+  overflow-x: scroll;
+}
+
+.table-row {
+
+}
+
+.table-cell {
+  background-color: $cell-color;
+  border: $cell-border-width solid $cell-border-color;
+  border-right: none;
+  border-bottom: none;
+  padding: 6px 10px;
+  font-weight: 500;
+}
+
+.header {
+  font-weight: bold;
+}
+
+.table-input {
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+.add-button {
+  padding: 0;
+  height: 20px;
+  --padding-start: 0;
+  --padding-top: 0;
 }
