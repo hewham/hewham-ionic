@@ -1,6 +1,7 @@
 $cell-border-color: #F7F5EE;
 $cell-border-width: 3px;
 $cell-color: #fcfbf9;
+$cell-color-light: #fcfbf977;
 
 .table-grid {
   color: #333;
@@ -25,6 +26,48 @@ $cell-color: #fcfbf9;
 
 .header {
   font-weight: bold;
+}
+
+.table-options-start {
+  opacity: 0;
+  background-color: $cell-color;
+  margin: 3px auto;
+  border-radius: 4px;
+  min-width: 16px;
+  &:first-of-type {
+    flex: 0 0 16px;
+  }
+}
+
+.table-row-hover {
+  border: $cell-border-width solid $cell-border-color;
+  border-right: none;
+  border-bottom: none;
+}
+
+.table-row-hover:hover {
+  background-color: $cell-color-light;
+  -webkit-transition: background-color 200ms linear;
+  -ms-transition: background-color 200ms linear;
+  transition: background-color 200ms linear;
+}
+
+.deleting-button {
+  background-color: var(--ion-color-danger);
+  color: white !important;
+}
+
+.options-icon {
+  margin-left: -5px;
+  margin-top: 3px;
+}
+
+.hover-appear {
+  opacity: 0;
+}
+
+.hover-appear:hover {
+  opacity: 1;
 }
 
 .table-input {

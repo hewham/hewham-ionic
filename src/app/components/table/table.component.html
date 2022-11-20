@@ -1,8 +1,7 @@
 
-<!-- <div #editor class="editor-table"></div> -->
-
 <ion-grid class="table-grid slide-up">
 	<ion-row class="table-row">
+		<ion-col class="table-options-start"></ion-col>
 		<ion-col class="table-cell header" *ngFor="let column of columns">
 			<ion-input 
 				class="table-input" 
@@ -12,6 +11,14 @@
 		</ion-col>
 	</ion-row>
 	<ion-row class="table-row" *ngFor="let item of items">
+		<ion-col 
+			class="table-options-start hover-appear" 
+			[ngClass]="isDeleting == item.id ? 'deleting-button' : null" 
+			tappable 
+			(click)="deleteItem(item)">
+				<ion-icon *ngIf="isDeleting != item.id" name="close" color="danger" class="options-icon"></ion-icon>
+				<ion-icon *ngIf="isDeleting == item.id" name="close" color="white" class="options-icon"></ion-icon>
+		</ion-col>
 		<ion-col class="table-cell" *ngFor="let column of columns">
 			<ion-input 
 				class="table-input" 
@@ -21,8 +28,14 @@
 		</ion-col>
 	</ion-row>
 	<ion-row>
-		<ion-col>
-			<ion-button fill="clear" size="medium" class="add-button"><ion-icon name="add"></ion-icon></ion-button>
+		<ion-col class="table-options-start"></ion-col>
+		<ion-col tappable class="table-row-hover" (click)="addRow()">
+			<ion-button  
+				fill="clear" 
+				size="medium" 
+				class="add-button">
+					<ion-icon name="add"></ion-icon>
+			</ion-button>
 		</ion-col>
 	</ion-row>
 </ion-grid>

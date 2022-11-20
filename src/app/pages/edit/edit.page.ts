@@ -90,7 +90,7 @@ export class EditPage implements OnInit {
       if(this.isEditing){
         success = await this.firestoreService.editItem(body, this.groupID, this.itemID);
       } else {
-        success = await this.firestoreService.addItem(body, this.groupSlug);
+        success = await this.firestoreService.addItemBySlug(body, this.groupSlug);
       }
       if(success) {
         await this.authService.refreshAll();
