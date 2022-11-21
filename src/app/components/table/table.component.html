@@ -2,12 +2,34 @@
 <ion-grid class="table-grid slide-up">
 	<ion-row class="table-row">
 		<ion-col class="table-options-start"></ion-col>
+		<ion-col 
+			*ngFor="let column of columns"
+			class="table-options-top hover-appear ion-text-center" 
+			[ngClass]="isDeleting == column.id ? 'deleting-button' : null" 
+			tappable 
+			(click)="deleteColumn(column)">
+				<ion-icon *ngIf="isDeleting != column.id" name="close" color="danger" class="options-icon-top"></ion-icon>
+				<ion-icon *ngIf="isDeleting == column.id" name="close" color="white" class="options-icon-top ion-text-center"></ion-icon>
+		</ion-col>
+		<ion-col class="table-column-hover"></ion-col>
+	</ion-row>
+	<ion-row class="table-row">
+		<ion-col class="table-options-start"></ion-col>
 		<ion-col class="table-cell header" *ngFor="let column of columns">
 			<ion-input 
 				class="table-input" 
+				placeholder="Heading"
 				[(ngModel)]="column.name"
 				(ionChange)="columnChanged(column)"
 				[debounce]="debounceLength"></ion-input>
+		</ion-col>
+		<ion-col tappable class="table-column-hover" (click)="addColumn()">
+			<ion-button  
+				fill="clear" 
+				size="medium" 
+				class="add-button">
+					<ion-icon name="add"></ion-icon>
+			</ion-button>
 		</ion-col>
 	</ion-row>
 	<ion-row class="table-row" *ngFor="let item of items">
@@ -21,11 +43,15 @@
 		</ion-col>
 		<ion-col class="table-cell" *ngFor="let column of columns">
 			<ion-input 
+			#inputs
+				[id]="column.id + '-' + item.id"
 				class="table-input" 
 				[(ngModel)]="item[column.id]" 
+				(keyup.enter)="enterPressed()"
 				(ionChange)="itemChanged(item, column.id)"
 				[debounce]="debounceLength"></ion-input>
 		</ion-col>
+		<ion-col class="table-column-hover"></ion-col>
 	</ion-row>
 	<ion-row>
 		<ion-col class="table-options-start"></ion-col>
@@ -37,5 +63,6 @@
 					<ion-icon name="add"></ion-icon>
 			</ion-button>
 		</ion-col>
+		<ion-col class="table-column-hover"></ion-col>
 	</ion-row>
 </ion-grid>

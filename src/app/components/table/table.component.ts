@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 
 
@@ -9,7 +9,7 @@ import { FirestoreService } from '../../services/firestore.service';
 })
 export class TableComponent implements OnInit {
 
-  public debounceLength = 800;
+  public debounceLength = 600;
   public isDeleting: any = null;
   private deleteTimeoutRef: any;
 
@@ -17,12 +17,16 @@ export class TableComponent implements OnInit {
   @Input('items') items: any;
   @Input('columns') columns: any;
   @Output() onClick: EventEmitter<any> = new EventEmitter();
+  @ViewChildren("inputs", { read: ElementRef }) private inputs: QueryList<ElementRef>;
 
   constructor(
     private firestoreService: FirestoreService
   ) {}
 
-  ngOnInit() {}
+  async ngOnInit() {
+    await this.firestoreService.delay(1500);
+    // console.log("inputs: ", this.inputs);
+  }
 
   async addColumns() {
     this.columns = [{name: "Name"}]
@@ -43,6 +47,16 @@ export class TableComponent implements OnInit {
     let res = await this.firestoreService.addItem({}, this.group.id);
     let newItem = {id: res.id};
     this.items.push(newItem);
+
+    // TODO: Auto focus on new row, first column
+    // let ID = this.columns[0].id + '-' + this.items[this.items.length - 1].id;
+    // await this.firestoreService.delay(200);
+    // this.inputs.forEach(inputInstance => {
+    //   if(inputInstance.nativeElement.id == ID) {
+    //     console.log("FOUND IT: ", inputInstance.nativeElement.id)
+    //     inputInstance.nativeElement.focus();
+    //   }
+    // });
   }
 
   deleteTimeout() {
@@ -68,6 +82,33 @@ export class TableComponent implements OnInit {
       return check.id === item.id;
     });
     this.items.splice(indexOfObject, 1);
+  }
+
+  async deleteColumn(column) {
+    if(!this.isDeleting) {
+      this.isDeleting = column.id;
+      this.deleteTimeout();
+      return;
+    }
+    if(this.isDeleting !== column.id) {
+      this.isDeleting = column.id;
+      this.deleteTimeout();
+      return;
+    }
+    await this.firestoreService.deleteColumn(this.group.id, column);
+    const indexOfObject = this.items.findIndex(check => {
+      return check.id === column.id;
+    });
+    this.columns.splice(indexOfObject, 1);
+  }
+
+  async addColumn() {
+    let res = await this.firestoreService.addColumn(this.group.id);
+    this.columns.push({id: res.id});
+  }
+
+  enterPressed() {
+    this.addRow();
   }
   
 }

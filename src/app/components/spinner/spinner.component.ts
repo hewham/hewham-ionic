@@ -8,6 +8,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class SpinnerComponent implements OnInit{
 
   @Input('isLoaded') isLoaded: any;
+  // tableDimensions = [7,4];
+  tableDimensions = [18,4];
 
   constructor() {}
 

@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CustomDomainComponent } from './custom-domain/custom-domain.component';
 import { IconSelectComponent } from './icon-select/icon-select.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
+import { ImageSearchComponent } from './image-search/image-search.component';
 import { ItemGalleryComponent } from './item-gallery/item-gallery.component';
 import { ProjectCardsComponent } from './project-cards/project-cards.component';
 import { SpinnerComponent } from './spinner/spinner.component';
@@ -16,6 +17,7 @@ import { TableComponent } from './table/table.component';
 		CustomDomainComponent,
 		IconSelectComponent,
 		ImageUploadComponent,
+		ImageSearchComponent,
 		ItemGalleryComponent,
 		ProjectCardsComponent,
 		SpinnerComponent,
@@ -30,6 +32,7 @@ import { TableComponent } from './table/table.component';
 		CustomDomainComponent,
 		IconSelectComponent,
 		ImageUploadComponent,
+		ImageSearchComponent,
 		ItemGalleryComponent,
 		ProjectCardsComponent,
 		SpinnerComponent,

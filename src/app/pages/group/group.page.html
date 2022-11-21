@@ -11,8 +11,9 @@
   <ion-header collapse="condense" no-border>
     <ion-toolbar>
       <ion-title size="large" *ngIf="group">{{ group.name }}</ion-title>
-      <ion-buttons slot="end">
-        <ion-button (click)="add()" *ngIf="authService.isOwner">
+      <ion-title size="large" *ngIf="!group">{{ " " }}</ion-title>
+      <ion-buttons *ngIf="group.options" slot="end">
+        <ion-button (click)="add()" *ngIf="group.options.type != 'table' && authService.isOwner">
           <ion-icon slot="icon-only" name="add"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -24,6 +25,9 @@
   <app-spinner [isLoaded]="isLoaded"></app-spinner>
 
   <div *ngIf="group && isLoaded">
+
+    <app-image-search></app-image-search>
+    
     <app-table
       *ngIf="group.options.type == 'table'"
       (onClick)="viewProject($event)" 

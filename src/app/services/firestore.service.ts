@@ -34,7 +34,6 @@ export class FirestoreService {
             ...doc.data()
           });
         })
-
       })
     })
   }
@@ -70,7 +69,7 @@ export class FirestoreService {
 
   getColumns(groupID) {
     return new Promise((resolve) => {
-      this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("columns").get().subscribe((snapshot) => {
+      this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection("columns", ref => ref.orderBy('created', 'asc')).get().subscribe((snapshot) => {
         let columns = [];
         snapshot.docs.forEach((column) => {
           columns.push({
@@ -131,6 +130,10 @@ export class FirestoreService {
   }
 
   // DELETE
+  async deleteColumn(groupID, column) {
+    return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('columns').doc(column.id).delete();
+  }
+
   async deleteItem(groupID, item) {
     if(item.tile) await this.imageService.deletePhoto(item.tile);
     if (item.cover) await this.imageService.deletePhoto(item.cover);
@@ -173,6 +176,14 @@ export class FirestoreService {
       domains: domains
     });
     return true;
+  }
+
+  delay(ms) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, ms)
+    })
   }
 
 }

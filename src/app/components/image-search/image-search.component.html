@@ -1,0 +1,15 @@
+<ion-searchbar
+placeholder="enter query..."
+style="max-width: 800px; margin: 0 auto;"
+[(ngModel)]="searchInput"
+(ionChange)="search()"
+debounce="500">
+</ion-searchbar>
+
+<div *ngIf="isLoading">
+  <ion-spinner name="crescent" color="medium"></ion-spinner>
+</div>
+
+<app-item-gallery
+	[items]="items">
+</app-item-gallery>

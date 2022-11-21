@@ -34,7 +34,7 @@ keys: ## set firebase function configs
 	make f
 
 serve: ## serve firebase functions
-	firebase serve --only functions
+	firebase serve --only functions -p 5001
 
 icons: ## generate ios and android resources
 	@npx cordova-res ios --skip-config --copy && \
