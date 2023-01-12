@@ -42,8 +42,15 @@
 				<ion-icon *ngIf="isDeleting == item.id" name="close" color="white" class="options-icon"></ion-icon>
 		</ion-col>
 		<ion-col class="table-cell" *ngFor="let column of columns">
+			<img 
+				*ngIf="column.name == 'Image'" 
+				[src]="item[column.id]" 
+				class="table-img"
+				tappable
+				(click)="chooseImage(item.id)"/>
 			<ion-input 
-			#inputs
+				#inputs
+				*ngIf="column.name != 'Image'"
 				[id]="column.id + '-' + item.id"
 				class="table-input" 
 				[(ngModel)]="item[column.id]" 

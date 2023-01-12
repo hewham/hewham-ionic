@@ -51,6 +51,7 @@ export class AuthService {
 
   async init(){
     this.isIniting = true;
+    // await this.logout();
     await this.checkIsLoggedIn();
     await this.getUser();
 

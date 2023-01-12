@@ -11,8 +11,7 @@ export class ImageSearchComponent implements OnInit{
   isLoading = false;
   searchInput: any = "";
   images: any = [];
-  items: any = [];
-  limit = 11;
+  limit = 15;
   @Output() onDone: EventEmitter<any> = new EventEmitter();
 
   constructor(
@@ -21,27 +20,30 @@ export class ImageSearchComponent implements OnInit{
 
   ngOnInit() {
   }
+
+  clearSearch() {
+    this.images = [];
+  }
   
   async search() {
+    if(this.searchInput == "") return;
     this.isLoading = true;
-    this.items = [];
     this.images = [];
-    this.images = await this.searchService.wikiMediaImages(this.searchInput);
-    console.log("images: ", this.images);
-    this.formatForGallery();
+    let res = await this.searchService.wikiMediaImages(this.searchInput);
+    this.formatForGallery(res);
   }
 
-  formatForGallery() {
+  formatForGallery(res) {
     let temp = [];
     let i = 0;
-    for(let image of this.images) {
-      temp.push({cover: image});
-      if(i == this.limit) {
+    for(let image of res) {
+      temp.push(image);
+      if(i == this.limit - 1) {
         break;
       }
       i++;
     }
-    this.items = temp;
+    this.images = temp;
     this.isLoading = false;
   }
 }

@@ -1,7 +1,8 @@
 <ion-searchbar
-placeholder="enter query..."
+placeholder="search..."
 style="max-width: 800px; margin: 0 auto;"
 [(ngModel)]="searchInput"
+(ionClear)="clearSearch()"
 (ionChange)="search()"
 debounce="500">
 </ion-searchbar>
@@ -10,6 +11,15 @@ debounce="500">
   <ion-spinner name="crescent" color="medium"></ion-spinner>
 </div>
 
-<app-item-gallery
-	[items]="items">
-</app-item-gallery>
+<ion-grid>
+	<ion-row>
+		<ion-col size="4" *ngFor="let image of images">
+          <img
+            [src]="image"
+            [alt]="image"
+            (click)="onClick.emit(item.slug)"
+            tappable
+            class="fade-in">
+		</ion-col>
+	</ion-row>
+</ion-grid>

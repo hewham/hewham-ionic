@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
+import { SearchService } from '../../services/search.service';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class TableComponent implements OnInit {
   @ViewChildren("inputs", { read: ElementRef }) private inputs: QueryList<ElementRef>;
 
   constructor(
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private searchService: SearchService
   ) {}
 
   async ngOnInit() {
@@ -41,6 +43,7 @@ export class TableComponent implements OnInit {
     let body = {};
     body[columnID] = item[columnID];
     this.firestoreService.editItem(body, this.group.id, item.id);
+    this.checkIfImage(item[columnID], item.id, columnID);
   }
 
   async addRow() {
@@ -109,6 +112,69 @@ export class TableComponent implements OnInit {
 
   enterPressed() {
     this.addRow();
+  }
+
+  async checkIfImage(query, itemID, columnID) {
+    // check if there is image field
+    let columnName = this.columnIDtoName(columnID);
+    if(columnName != "Name") return;
+    let imageColumnID = null;
+    for(let column of this.columns) {
+      if(column.name == "Image") {
+        imageColumnID = column.id;
+        break;
+      }
+    }
+    if(!imageColumnID) return;
+
+    //add image
+    let images = await this.searchService.wikiMediaImages(query);
+    const indexOfObject = this.items.findIndex(check => {
+      return check.id === itemID;
+    });
+    this.items[indexOfObject][imageColumnID] = images[0];
+
+    // save to firebase
+    let body = {};
+    body[imageColumnID] = images[0];
+    this.firestoreService.editItem(body, this.group.id, itemID);
+  }
+
+  columnIDtoName(ID) {
+    for(let column of this.columns) {
+      if(column.id == ID) {
+        return column.name;
+      }
+    }
+  }
+
+  columnNameToID(Name) {
+    for(let column of this.columns) {
+      if(column.name == Name) {
+        return column.id;
+      }
+    }
+  }
+
+  async chooseImage(itemID){
+    let nameColumnID = this.columnNameToID("Name");
+    let imageColumnID = this.columnNameToID("Image");
+    const indexOfObject = this.items.findIndex(check => {
+      return check.id === itemID;
+    });
+
+    console.log("indexOfObject: ", indexOfObject)
+    console.log("nameColumnID: ", nameColumnID)
+    console.log("this.items[indexOfObject][nameColumnID]: ", this.items[indexOfObject][nameColumnID])
+
+    let images:any = await this.searchService.wikiMediaImages(this.items[indexOfObject][nameColumnID]);
+    let image = images[Math.floor(Math.random()*images.length)];
+    this.items[indexOfObject][imageColumnID] = image;
+
+    // save to firebase
+    let body = {};
+    body[imageColumnID] = images[0];
+    this.firestoreService.editItem(body, this.group.id, itemID);
   }
   
 }

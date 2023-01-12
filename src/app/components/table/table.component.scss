@@ -75,6 +75,11 @@ $cell-color-light: #fcfbf988;
   }
 }
 
+.table-img {
+  height: 120px;
+  border-radius: 10px;
+}
+
 .deleting-button {
   background-color: var(--ion-color-danger);
   color: white !important;
