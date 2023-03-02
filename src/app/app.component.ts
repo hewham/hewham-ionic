@@ -51,7 +51,7 @@ export class AppComponent {
         this.navCtrl.navigateRoot("start");
       }
     }
-    this.angularTitle.setTitle(`${this.authService.user.firstName} ${this.authService.user.lastName} | Penna`);
+    this.angularTitle.setTitle(`${this.authService.user.firstName} ${this.authService.user.lastName} | uNNouN`);
   }
 
   setAppPages() {

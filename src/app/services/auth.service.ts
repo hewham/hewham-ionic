@@ -24,7 +24,7 @@ export class AuthService {
   isInitialized: Boolean = false;
   fulldomain: any; // current site fulldomain
   subdomain: any; // current site subdomain
-  reservedNames = ['unnoun', 'penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you', 'demo']; // reserved subdomains
+  reservedNames = ['unnoun', 'penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you', 'demo', 'drive', 'calendar' ]; // reserved subdomains
 
   TEST_FULLDOMAIN = 'unnoun.com';
   TEST_SUBDOMAIN = 'unnoun';
@@ -169,7 +169,7 @@ export class AuthService {
           resolve(this.uid);
         }
       } else {
-        let user:any = await this.getUserForDomain(fulldomain);
+        let user:any = await this.getUserForSubdomain(fulldomain);
         if(user) {
           this.isReserved = false;
           this.uid = user.id;
@@ -185,9 +185,26 @@ export class AuthService {
     });
   }
 
-  getUserForDomain(domain) {
+  // getUserForDomain(domain) {
+  //   return new Promise((resolve) => {
+  //     this.firestore.collection("users", ref => ref.where("domains", "array-contains", domain)).get().subscribe((snapshot) => {
+  //       if(snapshot.docs.length == 0) {
+  //         resolve(null);
+  //       } else {
+  //         // load user for subdomain
+  //         snapshot.docs.forEach((doc) => {
+  //           let data:any = doc.data();
+  //           data.id = doc.id
+  //           resolve (data)
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
+
+  getUserForSubdomain(subdomain) {
     return new Promise((resolve) => {
-      this.firestore.collection("users", ref => ref.where("domains", "array-contains", domain)).get().subscribe((snapshot) => {
+      this.firestore.collection("users", ref => ref.where("subdomain", "==", subdomain)).get().subscribe((snapshot) => {
         if(snapshot.docs.length == 0) {
           resolve(null);
         } else {
@@ -242,7 +259,8 @@ export class AuthService {
   async checkSiteOwnerBeforeLogin(email) {
     return new Promise(async (resolve) => {
       if(!environment.production) this.fulldomain = this.TEST_FULLDOMAIN;
-      let user:any = await this.getUserForDomain(this.fulldomain);
+      let subdomain = this.fulldomain.split(".")[0];
+      let user:any = await this.getUserForSubdomain(subdomain);
       if(this.isReserved) {
         resolve(true);
       } else if(user) {
