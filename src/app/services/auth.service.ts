@@ -24,10 +24,10 @@ export class AuthService {
   isInitialized: Boolean = false;
   fulldomain: any; // current site fulldomain
   subdomain: any; // current site subdomain
-  reservedNames = ['penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you', 'demo']; // reserved subdomains
+  reservedNames = ['unnoun', 'penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you', 'demo']; // reserved subdomains
 
   TEST_FULLDOMAIN = 'unnoun.com';
-  TEST_SUBDOMAIN = 'penna';
+  TEST_SUBDOMAIN = 'unnoun';
 
   onInit: EventEmitter<any> = new EventEmitter()
   onRefresh: EventEmitter<any> = new EventEmitter()
