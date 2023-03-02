@@ -161,6 +161,7 @@ export class AuthService {
       if(isReserved) {
         if(fulldomain != "unnoun.com") {
           // if its reserved, redirect to unnoun.com
+          console.log("RESERVED, OPENING...");
           <any>window.open('https://unnoun.com', '_self');
         } else {
           // default page
@@ -169,7 +170,7 @@ export class AuthService {
           resolve(this.uid);
         }
       } else {
-        let user:any = await this.getUserForSubdomain(fulldomain);
+        let user:any = await this.getUserForSubdomain(subdomain);
         if(user) {
           this.isReserved = false;
           this.uid = user.id;
@@ -178,6 +179,7 @@ export class AuthService {
           if(environment.production) {
             // if no users found for entered subdomain, redirect to unnoun.com
             // TODO: make a note explaining the redirect
+            console.log("NO USERS, OPENING...");
             <any>window.open('https://unnoun.com', '_self');
           }
         }
@@ -283,6 +285,7 @@ export class AuthService {
       this.navCtrl.navigateRoot("start");
     } else {
       if(await this.dialogService.prompt(`Would you like to go to your site at ${subdomain}.unnoun.com now?`, "No", "Yes", "Logged In")) {
+        console.log("PROMPTED, OPENING...");
         <any>window.open(`https://${subdomain}.unnoun.com/start`, "_self");
       } else {
         this.navCtrl.navigateRoot("start");
