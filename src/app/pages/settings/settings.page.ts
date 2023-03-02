@@ -65,7 +65,7 @@ export class SettingsPage implements OnInit {
 
   async setDomains() {
     for (let domain of this.authService.user.domains) {
-      if(domain.slice(domain.length - 8) == 'penna.io') {
+      if(domain.slice(domain.length - 8) == 'unnoun.com') {
         this.subdomain = domain.substr(0, domain.length - 9);
       }
     }

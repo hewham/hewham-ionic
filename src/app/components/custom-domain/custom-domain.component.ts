@@ -34,7 +34,7 @@ export class CustomDomainComponent implements OnInit {
   async setDomains() {
     this.isDomainLoading = true;
     for (let domain of this.authService.user.domains) {
-      if(domain.slice(domain.length - 8) != 'penna.io') {
+      if(domain.slice(domain.length - 8) != 'unnoun.com') {
         this.hasCustomDomain = true;
         this.customdomain = domain;
       }

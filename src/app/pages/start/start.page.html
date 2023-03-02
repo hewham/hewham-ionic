@@ -18,11 +18,15 @@
       Looking things up is overrated and outdated.
     </p>
     <p>
-      Cool kids let computers do it for them.
+      You'll get a free domain like -> <span class="monospace">you.unnoun.com</span>
+      <!-- , to use your own domain is pretty cheap. -->
     </p>
-    <p><b>
-      Auto-fill info for everything.
-    </b></p>
+    <p>
+      You can also use your own domain.
+    </p>
+    <p>
+      Here's a <a class="monospace" href="https://hew.unnoun.com" target="_blank">demo</a>.
+    </p>
     <br>
     <br>
     <p class="monospace">
@@ -40,7 +44,7 @@
       If this is your site, you can -> <a class="monospace" href="/login?login=true" target="_self">Log in</a>
     </p>
     <p>
-      If it isn't, you can create your own for free at -> <a class="monospace" href="https://penna.io" target="_blank">penna.io</a>
+      If it isn't, you can create your own for free at -> <a class="monospace" href="https://unnoun.com" target="_blank">unnoun.com</a>
     </p>
   </div> -->
 
@@ -61,7 +65,7 @@
         This isn't your site!
       </p>
       <strong>
-        Navigate to your site -> <a class="monospace" *ngIf="authService.authUser" [href]="'https://' + authService.authUser.subdomain + '.penna.io/start'">{{ authService.authUser.subdomain}}.penna.io</a>
+        Navigate to your site -> <a class="monospace" *ngIf="authService.authUser" [href]="'https://' + authService.authUser.subdomain + '.unnoun.com/start'">{{ authService.authUser.subdomain}}.unnoun.com</a>
       </strong>
       <p>p.s. you may need to log in again</p>
     </div>
