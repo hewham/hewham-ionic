@@ -26,7 +26,7 @@ export class AuthService {
   subdomain: any; // current site subdomain
   reservedNames = ['penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you', 'demo']; // reserved subdomains
 
-  TEST_FULLDOMAIN = 'penna.io';
+  TEST_FULLDOMAIN = 'unnoun.com';
   TEST_SUBDOMAIN = 'penna';
 
   onInit: EventEmitter<any> = new EventEmitter()
@@ -159,9 +159,9 @@ export class AuthService {
       console.log("subdomain: ", subdomain)
       let isReserved = (this.reservedNames.indexOf(subdomain) > -1)
       if(isReserved) {
-        if(fulldomain != "penna.io") {
-          // if its reserved, redirect to penna.io
-          <any>window.open('https://penna.io', '_self');
+        if(fulldomain != "unnoun.com") {
+          // if its reserved, redirect to unnoun.com
+          <any>window.open('https://unnoun.com', '_self');
         } else {
           // default page
           this.isReserved = true;
@@ -176,9 +176,9 @@ export class AuthService {
           resolve(this.uid);
         } else {
           if(environment.production) {
-            // if no users found for entered subdomain, redirect to penna.io
+            // if no users found for entered subdomain, redirect to unnoun.com
             // TODO: make a note explaining the redirect
-            <any>window.open('https://penna.io', '_self');
+            <any>window.open('https://unnoun.com', '_self');
           }
         }
       }
@@ -264,8 +264,8 @@ export class AuthService {
       // already on user's site
       this.navCtrl.navigateRoot("start");
     } else {
-      if(await this.dialogService.prompt(`Would you like to go to your site at ${subdomain}.penna.io now?`, "No", "Yes", "Logged In")) {
-        <any>window.open(`https://${subdomain}.penna.io/start`, "_self");
+      if(await this.dialogService.prompt(`Would you like to go to your site at ${subdomain}.unnoun.com now?`, "No", "Yes", "Logged In")) {
+        <any>window.open(`https://${subdomain}.unnoun.com/start`, "_self");
       } else {
         this.navCtrl.navigateRoot("start");
       }
@@ -303,7 +303,7 @@ export class AuthService {
       'lastName': body.lastName,
       'email': body.email,
       'subdomain': body.subdomain,
-      'domains': [`${body.subdomain}.penna.io`],
+      'domains': [`${body.subdomain}.unnoun.com`],
       'uid': uid
     };
 
