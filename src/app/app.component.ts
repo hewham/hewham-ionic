@@ -33,7 +33,7 @@ export class AppComponent {
     private firestoreService: FirestoreService
   ) {
     this.authService.onAuthChange.subscribe(() => this.initializeApp())
-    // this.authService.onRefresh.subscribe(() => this.setAppPages())
+    this.authService.onRefresh.subscribe(() => this.setAppPages())
     this.initializeApp();
   }
 

@@ -1,6 +1,8 @@
 // const functions = require("firebase-functions");
 
 const dbpedia = require('./search/dbpedia');
+const helpers = require('./helpers/helpers');
+const ai = require('./openai/ai');
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -11,18 +13,6 @@ const dbpedia = require('./search/dbpedia');
 // });
 
 exports.search = dbpedia;
+exports.helpers = helpers;
+exports.ai = ai;
 
-
-/* OLD VERCEL STUFF
-
-const vercel = require('./old/vercel.js');
-
-exports.addDomain = functions.https.onCall(async (data, context) => {
-  return vercel.addDomain(data);
-});
-
-exports.verifyDomain = functions.https.onCall(async (data, context) => {
-  return vercel.verifyDomain(data);
-});
-
-*/

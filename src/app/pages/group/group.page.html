@@ -1,14 +1,14 @@
-<ion-header [translucent]="true" no-border>
+<!-- <ion-header [translucent]="true" no-border>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title *ngIf="group">{{ group.name }}</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <ion-header collapse="condense" no-border>
+  <!-- <ion-header collapse="condense" no-border>
     <ion-toolbar>
       <ion-title size="large" *ngIf="group">{{ group.name }}</ion-title>
       <ion-title size="large" *ngIf="!group">{{ " " }}</ion-title>
@@ -18,15 +18,16 @@
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
 
+  <div class="default-spacer"></div>
   <div class="default-spacer"></div>
 
   <app-spinner [isLoaded]="isLoaded"></app-spinner>
 
   <div *ngIf="group && isLoaded">
 
-    <app-image-search></app-image-search>
+    <app-ai-search (onDone)=aiResult($event)></app-ai-search>
     
     <app-table
       *ngIf="group.options.type == 'table'"

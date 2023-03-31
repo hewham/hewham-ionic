@@ -165,7 +165,7 @@ export class AuthService {
         } else {
           // default page
           this.isReserved = true;
-          this.uid = environment.PENNA_UID;
+          // this.uid = environment.PENNA_UID;
           resolve(this.uid);
         }
       } else {

@@ -1,0 +1,38 @@
+div {
+  padding-top: 30px;
+  width: 100%;
+}
+
+ion-spinner {
+  transform: scale(1.6);
+  width: 100%;
+}
+
+ion-input {
+  min-width: 200px;
+  border-bottom: solid grey 2px;
+  width: auto;
+  margin-left: 12px;
+  margin-right: 12px;
+  transform: translateY(-10px);
+}
+
+.prompt-container {
+  font-size: 2em;
+  font-weight: bold;
+  color: #252525;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+.prompt-item {
+  flex-shrink: 1;
+  flex-grow: 0;
+  vertical-align: center;
+  // width: 200px;
+}
+
+.prompt-item ion-input {
+  margin-top: -50px;
+}

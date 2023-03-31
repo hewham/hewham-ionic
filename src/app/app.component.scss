@@ -13,6 +13,16 @@
   font-size: 2em;
 }
 
+.sidemenu-img {
+  margin-left: 15px;
+  border: solid #e8e8e8 4px;
+}
+
+.username-header {
+  word-break: break-all;
+  margin-top: -10px;
+}
+
 ion-split-pane {
   --side-max-width: 70px;
 }

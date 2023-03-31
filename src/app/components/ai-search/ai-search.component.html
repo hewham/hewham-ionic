@@ -1,0 +1,30 @@
+<div class="prompt-container">
+  <span class="prompt-item">I want a list of </span>
+  <ion-input class="prompt-item" [(ngModel)]="searchInput1" (keypress)="keyPress($event.keyCode)"></ion-input>
+  <span class="prompt-item">sorted by </span>
+  <ion-input class="prompt-item" [(ngModel)]="searchInput2" (keypress)="keyPress($event.keyCode)"></ion-input>
+</div>
+
+<ion-button (click)="search()" shape="round" size="small" class="gradient-button">
+  Generate
+</ion-button>
+
+<!-- <ion-searchbar
+  placeholder="Prompt..."
+  style="max-width: 800px; margin: 0 auto;"
+  [(ngModel)]="searchInput"
+  (ionClear)="clearSearch()"
+  (keypress)="keyPress($event.keyCode)">
+</ion-searchbar> -->
+
+<!-- <ion-button (click)="listModels()" shape="round" size="small" class="gradient-button">
+  Models
+</ion-button> -->
+
+<div *ngIf="isLoading">
+  <ion-spinner name="crescent" color="medium"></ion-spinner>
+</div>
+
+<div *ngIf="!isLoading">
+  {{result}}
+</div>
