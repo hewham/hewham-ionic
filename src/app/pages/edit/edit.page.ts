@@ -95,9 +95,9 @@ export class EditPage implements OnInit {
       if(success) {
         await this.authService.refreshAll();
         if(this.isEditing){
-          this.navCtrl.navigateRoot(`p/${this.groupSlug}/${body.slug}`)
+          this.navCtrl.navigateRoot(`u/${this.authService.user.username}/${this.groupSlug}/${body.slug}`)
         } else {
-          this.navCtrl.navigateRoot(`p/${this.groupSlug}`);
+          this.navCtrl.navigateRoot(`u/${this.authService.user.username}/${this.groupSlug}`);
         }
       }
       this.isLoading = false;

@@ -57,7 +57,7 @@
 
         <div class="version">
 
-          <ion-menu-toggle *ngIf="authService.uid == environment.PENNA_UID" auto-hide="false">
+          <ion-menu-toggle *ngIf="!authService.isLoggedIn" auto-hide="false">
             <ion-item routerDirection="root" routerLink="start" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon slot="start" name="rocket-outline"></ion-icon>
               <ion-label>Get Started</ion-label>

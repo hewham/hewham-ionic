@@ -34,10 +34,10 @@ export class AuthService {
   onAuthChange: EventEmitter<any> = new EventEmitter()
 
   user: any; // page user
-  authUser: any; // authenticated (logged in) user
+  // authUser: any; // authenticated (logged in) user
   // data: any;
   uid: any; // page firebase uid
-  authuid: any; // authenticated user's firebase uid
+  // authuid: any; // authenticated user's firebase uid
 
   constructor(
       private navCtrl: NavController,
@@ -51,12 +51,10 @@ export class AuthService {
 
   async init(){
     this.isIniting = true;
-    // await this.logout();
     await this.checkIsLoggedIn();
-    await this.getUser();
 
     if(this.isLoggedIn) {
-      this.getAuthUser();
+      await this.getUser();
     }
     if(this.isLoggedIn) this.isOwner = true;
     // if(this.uid == this.authuid) this.isOwner = true;
@@ -69,12 +67,10 @@ export class AuthService {
   async checkIsLoggedIn() {
     return new Promise((resolve) => {
       this.fireauth.onAuthStateChanged((user) => {
-        // console.log("user: ", user);
         if (user) {
-          this.authuid = user.uid;
           this.uid = user.uid;
           this.isLoggedIn = true;
-          if(this.uid == this.authuid) this.isOwner = true;
+          this.isOwner = true
           resolve(true);
         } else {
           this.isLoggedIn = false;
@@ -102,6 +98,7 @@ export class AuthService {
     return new Promise(async (resolve) => {
       this.firestore.collection('users').doc(this.uid).get().subscribe((userDoc) => {
         this.user = userDoc.data();
+        console.log("getUser user: ", this.user);
         this.user.groups = [];
         this.firestore.collection('users').doc(this.uid).collection('groups').get().subscribe((snapshot) => {
           if(snapshot.docs.length == 0) resolve(true);
@@ -117,14 +114,14 @@ export class AuthService {
     });
   }
 
-  getAuthUser() {
-    return new Promise(async (resolve) => {
-      this.firestore.collection('users').doc(this.authuid).get().subscribe((userDoc) => {
-        this.authUser = userDoc.data();
-        resolve(userDoc.data())
-      });
-    });
-  }
+  // getAuthUser() {
+  //   return new Promise(async (resolve) => {
+  //     this.firestore.collection('users').doc(this.authuid).get().subscribe((userDoc) => {
+  //       this.authUser = userDoc.data();
+  //       resolve(userDoc.data())
+  //     });
+  //   });
+  // }
 
   async refreshUser() {
     await this.getUser();
@@ -138,12 +135,12 @@ export class AuthService {
   async logout() {
     this.isIniting = true;
     this.isLoggedIn = false;
-    this.user = {};
-    this.authuid = null;
+    this.user = null;
+    this.uid = null;
     await this.fireauth.signOut();
     // await this.storage.clear();
     // await this.crispService.init();
-    // await this.navCtrl.navigateRoot('start');
+    await this.navCtrl.navigateRoot('start');
     this.onAuthChange.emit();
     this.isIniting = false;
   }
@@ -243,10 +240,8 @@ export class AuthService {
     this.fireauth.signInWithEmailAndPassword(email, password)
       .then(async res => {
         this.init();
-        let user:any = await this.getAuthUser();
         this.navCtrl.navigateRoot('start');
         loading.dismiss();
-        // await this.redirectToUserSubdomain(user.subdomain);
         this.onAuthChange.emit();
         resolve(true);
       }).catch(error => {
@@ -294,7 +289,7 @@ export class AuthService {
   
   async signup(body) {
     // @params in body:
-    // email, password, firstName, lastName, subdomain
+    // email, password, username
     let loading = await this.loadingCtrl.create({duration: 10000});
     loading.present();
     return new Promise((resolve) => {
@@ -302,10 +297,8 @@ export class AuthService {
       .then(async res => {
         await this.createNewUser(body, res.user.uid);
         this.init();
-        this.navCtrl.navigateRoot('start');
-        // await this.initOnAppStartOrLogin();
+        this.navCtrl.navigateRoot('signupcompleted');
         loading.dismiss();
-        // this.redirectToUserSubdomain(body.subdomain);
         this.onAuthChange.emit();
         resolve(true);
       }).catch(error => {
@@ -322,8 +315,8 @@ export class AuthService {
       // 'lastName': body.lastName,
       'username': body.username,
       'email': body.email,
-      'subdomain': body.subdomain,
-      'domains': [`${body.subdomain}.unnoun.com`],
+      // 'subdomain': body.subdomain,
+      // 'domains': [`${body.subdomain}.unnoun.com`],
       'uid': uid
     };
 
@@ -335,6 +328,14 @@ export class AuthService {
       this.dialogService.error("Please contact us, your account had an issue when we tried to create it. This may occur if you previously had an account with us.")
       return false;
     }
+  }
+
+  delay(ms) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, ms)
+    })
   }
 
 }

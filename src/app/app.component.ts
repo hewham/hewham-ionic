@@ -33,25 +33,43 @@ export class AppComponent {
     private firestoreService: FirestoreService
   ) {
     this.authService.onAuthChange.subscribe(() => this.initializeApp())
-    this.authService.onRefresh.subscribe(() => this.setAppPages())
+    // this.authService.onRefresh.subscribe(() => this.setAppPages())
     this.initializeApp();
   }
 
   async initializeApp() {
+    await this.authService.delay(500);
+    console.log("this.router.url: ", this.router.url)
     await this.authService.init();
-    this.setAppPages();
+    console.log("user: ", this.authService.user)
+
     if (this.router.url == "/start"
       || this.router.url == "/login"
       || this.router.url == "/login?login=true") {
       // Do Nothing...
-    } else if (this.appPages.length > 0) {
-      this.navCtrl.navigateRoot(this.appPages[0].url);
+      console.log("1.1");
+    } else if (this.authService.user) {
+        this.setAppPages();
+      // loggedIn
+      console.log("1.2");
     } else {
-      if(this.router.url == "/") {
-        this.navCtrl.navigateRoot("start");
-      }
+      this.navCtrl.navigateRoot("start")
+      console.log("1.3");
     }
-    this.angularTitle.setTitle(`${this.authService.user.firstName} ${this.authService.user.lastName} | uNNouN`);
+
+    // this.setAppPages();
+    // if (this.router.url == "/start"
+    //   || this.router.url == "/login"
+    //   || this.router.url == "/login?login=true") {
+    //   // Do Nothing...
+    // } else if (this.appPages.length > 0) {
+    //   this.navCtrl.navigateRoot(this.appPages[0].url);
+    // } else {
+    //   if(this.router.url == "/") {
+    //     this.navCtrl.navigateRoot("start");
+    //   }
+    // }
+    // this.angularTitle.setTitle(`${this.authService.user.firstName} ${this.authService.user.lastName} | uNNouN`);
   }
 
   setAppPages() {
@@ -75,7 +93,7 @@ export class AppComponent {
     return {
       id: group.id,
       title: group.name,
-      url: `p/${group.slug}`,
+      url: `u/${this.authService.user.username}/${group.slug}`,
       icon: group.icon,
       slug: group.slug
     }

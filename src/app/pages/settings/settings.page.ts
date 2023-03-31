@@ -17,6 +17,7 @@ export class SettingsPage implements OnInit {
 
   errorMessage='';
   form: FormGroup;
+  usernameForm: FormGroup;
   isLoading: boolean = true;
   content: any = "";
   isEditing: boolean = false;
@@ -41,14 +42,17 @@ export class SettingsPage implements OnInit {
 
     this.form = this.formBuilder.group({
       firstName : ['', Validators.compose([Validators.minLength(1), Validators.required])],
-      lastName : ['', Validators.compose([Validators.minLength(1), Validators.required])]
+      lastName : ['', Validators.compose([Validators.minLength(1), Validators.required])],
+    });
+
+    this.usernameForm = this.formBuilder.group({
+      username : ['', Validators.compose([Validators.minLength(3), Validators.required])]
     });
   }
 
   async ngOnInit() {
     await this.authService.onReady();
     this.setEditData();
-    this.setDomains();
     this.isLoading = false;
   }
 
@@ -61,14 +65,7 @@ export class SettingsPage implements OnInit {
     this.images.avatarURL = this.authService.user.avatar,
     this.form.controls.firstName.setValue(this.authService.user.firstName);
     this.form.controls.lastName.setValue(this.authService.user.lastName);
-  }
-
-  async setDomains() {
-    for (let domain of this.authService.user.domains) {
-      if(domain.slice(domain.length - 8) == 'unnoun.com') {
-        this.subdomain = domain.substr(0, domain.length - 9);
-      }
-    }
+    this.usernameForm.controls.username.setValue(this.authService.user.username);
   }
     
   async submit() {

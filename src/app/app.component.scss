@@ -49,8 +49,10 @@ ion-menu.ios ion-note {
 ion-menu.ios ion-item {
   --padding-start: 16px;
   --padding-end: 16px;
-  --min-height: 50px;
+  --min-height: 40px;
   --border-radius: 999px;
+  margin-bottom: 10px;
+  // --ion-item-background: linear-gradient(90deg, #ef89ef 0%, #70deeb 100%);
 }
 
 ion-menu.ios ion-item.selected ion-icon {

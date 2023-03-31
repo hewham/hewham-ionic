@@ -40,7 +40,7 @@
               <ion-icon name="{{ icon }}-outline" color="primary"></ion-icon>
             </ion-item>
           </ion-col>
-          <ion-col size="4" class="ion-no-padding">
+          <ion-col size="5" class="ion-no-padding">
             <ion-item>
               <ion-label position="stacked">Name</ion-label>
               <ion-input 
@@ -52,7 +52,7 @@
               </ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size="4" class="ion-no-padding">
+          <ion-col size="5" class="ion-no-padding">
             <ion-item>
               <ion-label position="stacked">URL Slug</ion-label>
               <ion-input 
@@ -61,27 +61,27 @@
                 type="text"
                 [class.invalid]="!form.controls.slug.valid" 
                 (keypress)="eventHandler($event.keyCode)">
-                <span style="opacity: 0.5;">/p/</span>
+                <span style="opacity: 0.5;">/</span>
               </ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size="2" class="ion-no-padding">
+          <!-- <ion-col size="2" class="ion-no-padding">
             <ion-item>
               <ion-label position="stacked">Type</ion-label>
               <ion-select formControlName="type" interface="popover">
                 <ion-select-option *ngFor="let option of typeOptions" [value]="option.value">{{ option.name }}</ion-select-option>
               </ion-select>
             </ion-item>
-          </ion-col>
+          </ion-col> -->
         </ion-row>
       </ion-grid>
 
     </form>
 
-    <ion-button *ngIf="showIcons" (click)="toggleIcons()" color="seethrough" class="color-primary">
-      Close
-    </ion-button>
     <app-icon-select *ngIf="showIcons" (onSelect)="selectIcon($event)"></app-icon-select>
+    <ion-button *ngIf="showIcons" (click)="toggleIcons()" shape="round" size="small" class="gradient-button">
+      <ion-icon name="close"></ion-icon> Cancel
+    </ion-button>
     
 
     <div class="spacer" style="height:12px;"></div>
@@ -89,10 +89,10 @@
     <ion-label padding color="danger" style="text-align:center;">{{errorMessage}}</ion-label>
     
     <div class="btn-wrapper">
-      <ion-button *ngIf="!showIcons && !isEditing" (click)="submit()" color="seethrough" class="color-primary">
+      <ion-button *ngIf="!showIcons && !isEditing" (click)="submit()" shape="round" size="small" class="gradient-button">
         Create
       </ion-button>
-      <ion-button *ngIf="!showIcons && isEditing" (click)="submit()" color="seethrough" class="color-primary">
+      <ion-button *ngIf="!showIcons && isEditing" (click)="submit()" shape="round" size="small" class="gradient-button">
         Save
       </ion-button>
     </div>

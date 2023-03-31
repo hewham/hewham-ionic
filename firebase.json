@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "hewham-ionic",
+    "site": "unnounapp",
     "public": "www",
     "ignore": [
       "firebase.json",

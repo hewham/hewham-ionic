@@ -70,7 +70,7 @@ export class AddPage implements OnInit {
       this.isEditing = true;
       this.setEditData();
     } else {
-      this.form.controls.type.setValue('project');
+      this.form.controls.type.setValue('table');
     }
   }
 
@@ -110,7 +110,7 @@ export class AddPage implements OnInit {
       }
       if(success) {
         await this.authService.refreshUser();
-        this.navCtrl.navigateRoot(`p/${body.slug}`);
+        this.navCtrl.navigateRoot(`u/${this.authService.user.username}/${body.slug}`);
       }
       this.isLoading = false;
     } else {

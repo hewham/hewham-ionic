@@ -57,35 +57,6 @@
           <ion-row>
             <ion-col class="ion-no-padding">
               <ion-item>
-                <ion-label position="floating">First Name</ion-label>
-                <ion-input 
-                  #firstName 
-                  formControlName="firstName" 
-                  type="text"
-                  [class.invalid]="!signupForm.controls.firstName.valid" 
-                  (keypress)="eventHandler($event.keyCode)">
-                </ion-input>
-              </ion-item>
-            </ion-col>
-            <ion-col class="ion-no-padding">
-              <ion-item>
-                <ion-label position="floating">Last Name</ion-label>
-                <ion-input 
-                  #lastName 
-                  formControlName="lastName" 
-                  type="text"
-                  [class.invalid]="!signupForm.controls.lastName.valid" 
-                  (keypress)="eventHandler($event.keyCode)">
-                </ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-
-        <ion-grid class="ion-no-padding ion-no-margin">
-          <ion-row>
-            <ion-col class="ion-no-padding">
-              <ion-item>
                 <ion-label position="floating">Email</ion-label>
                 <ion-input 
                   #email 
@@ -117,23 +88,31 @@
           </ion-row>
         </ion-grid>
 
-        <br>
-        <br>
-
-        <ion-item>
-          <ion-label position="fixed">Subdomain</ion-label>
-          <ion-input 
-            class="ion-text-right"
-            #subdomain 
-            formControlName="subdomain" 
-            type="text"
-            [class.invalid]="!signupForm.controls.subdomain.valid" 
-            (keypress)="eventHandler($event.keyCode)">
-          </ion-input>
-          <ion-note slot="end" style="padding-right: 30%;">
-            .unnoun.com
-          </ion-note>
-        </ion-item>
+        <ion-grid class="ion-no-padding ion-no-margin">
+          <ion-row>
+            <ion-col class="ion-no-padding">
+              <ion-item>
+                <ion-label position="floating">Username</ion-label>
+                <ion-input 
+                  class="ion-text-left"
+                  #username 
+                  formControlName="username" 
+                  type="text"
+                  [class.invalid]="!signupForm.controls.username.valid" 
+                  (keypress)="eventHandler($event.keyCode)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <ion-item>
+                <ion-label position="stacked">url</ion-label>
+                <ion-input [disabled]="true" style="color: grey;">
+                  unnoun.com/u/<b>{{signupForm.controls.username.value}}</b>
+                </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
 
       </form>
       

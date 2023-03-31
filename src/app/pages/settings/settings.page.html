@@ -74,8 +74,12 @@
       <!-- <ion-label padding color="danger" style="text-align:center;">{{errorMessage}}</ion-label> -->
       
       <div class="btn-wrapper">
-        <ion-button (click)="submit()" color="seethrough" class="color-primary">
-          Save
+        <ion-button 
+          (click)="submit()" 
+          shape="round" 
+          size="small" 
+          class="gradient-button">
+            Save Profile
         </ion-button>
       </div>
 
@@ -87,33 +91,47 @@
     <div class="item-box">
       <br>
 
-      <ion-item lines="none">
-        <ion-label position="stacked"><b>uNNouN Subdomain:</b>&nbsp;<ion-chip>{{ subdomain }}.unnoun.com</ion-chip></ion-label>
-      </ion-item>
+      <form [formGroup]="usernameForm">
+        <ion-grid class="ion-no-padding ion-no-margin">
+          <ion-row>
+            <ion-col class="ion-no-padding">
+              <ion-item>
+                <ion-label position="floating">Username</ion-label>
+                <ion-input 
+                  class="ion-text-left"
+                  #username 
+                  formControlName="username" 
+                  type="text"
+                  [class.invalid]="!usernameForm.controls.username.valid" 
+                  (keypress)="eventHandler($event.keyCode)">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <ion-item>
+                <ion-label position="stacked">url</ion-label>
+                <ion-input [disabled]="true" style="color: grey;">
+                  unnoun.com/u/<b>{{usernameForm.controls.username.value}}</b>
+                </ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
 
-      <!-- <br>
-
-      <ion-item>
-        <ion-label position="fixed">Subdomain</ion-label>
-        <ion-input [(ngModel)]="subdomain" class="ion-text-right"></ion-input>
-        <ion-note slot="end" style="padding-right: 30%;">
-          .unnoun.com
-        </ion-note>
-      </ion-item>
-
-      <br>
+      <div class="spacer" style="height:12px;"></div>
 
       <div class="btn-wrapper">
-        <ion-button (click)="updateSubdomain()" color="seethrough" class="color-primary">
-          Save
+        <ion-button 
+          (click)="updateSubdomain()" 
+          shape="round" 
+          size="small" 
+          class="gradient-button">
+            Update
         </ion-button>
-      </div> -->
+      </div>
     </div>
 
-    <br>
-    <br>
-
-    <app-custom-domain *ngIf="!isLoading"></app-custom-domain>
 
     
     <br>

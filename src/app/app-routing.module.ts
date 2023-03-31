@@ -8,16 +8,16 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'p/:group',
+    path: 'u/:username',
     loadChildren: () => import('./pages/group/group.module').then( m => m.GroupPageModule)
   },
   {
-    path: 'p/:group/:id',
-    loadChildren: () => import('./pages/item/item.module').then( m => m.ItemPageModule)
+    path: 'u/:username/:group',
+    loadChildren: () => import('./pages/group/group.module').then( m => m.GroupPageModule)
   },
   {
-    path: 'js/:id',
-    loadChildren: () => import('./pages/js-iframe/js-iframe.module').then( m => m.JsIframePageModule)
+    path: 'u/:username/:group/:id',
+    loadChildren: () => import('./pages/item/item.module').then( m => m.ItemPageModule)
   },
   {
     path: 'about',
@@ -42,6 +42,10 @@ const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+  },
+  {
+    path: 'signupcompleted',
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
   }
 ];
 

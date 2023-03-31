@@ -33,9 +33,9 @@ export class LoginPage implements OnInit {
     this.signupForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.email, Validators.minLength(1), Validators.required])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
-      firstName : ['', Validators.compose([Validators.minLength(1), Validators.required])],
-      lastName : ['', Validators.compose([Validators.minLength(1), Validators.required])],
-      subdomain : ['', Validators.compose([Validators.minLength(1), Validators.required])]
+      username : ['', Validators.compose([Validators.minLength(1), Validators.required])]
+      // lastName : ['', Validators.compose([Validators.minLength(1), Validators.required])],
+      // subdomain : ['', Validators.compose([Validators.minLength(1), Validators.required])]
     });
   }
 
@@ -79,9 +79,7 @@ export class LoginPage implements OnInit {
       return {
         email: this.signupForm.controls.email.value,
         password: this.signupForm.controls.password.value,
-        firstName: this.signupForm.controls.firstName.value,
-        lastName: this.signupForm.controls.lastName.value,
-        subdomain: this.signupForm.controls.subdomain.value,
+        username: this.signupForm.controls.username.value
       }
     } else {
       return {
@@ -94,11 +92,8 @@ export class LoginPage implements OnInit {
   validate() {
     if(this.isSignUp) {
       if(!this.signupForm.valid){
-        if(this.signupForm.controls.firstName.valid == false){
-          this.errorMessage = 'Please enter your first name';
-          return false;
-        } else if(this.signupForm.controls.lastName.valid == false){
-          this.errorMessage = 'Please enter your last name';
+        if(this.signupForm.controls.username.valid == false){
+          this.errorMessage = 'Please enter a username';
           return false;
         } else if(this.signupForm.controls.email.valid == false){
           this.errorMessage = 'Please enter a valid email';
@@ -106,13 +101,11 @@ export class LoginPage implements OnInit {
         } else if(this.signupForm.controls.password.valid == false){
           this.errorMessage = 'Password must be at least 6 characters';
           return false;
-        } else if(this.signupForm.controls.subdomain.valid == false){
-          this.errorMessage = 'Please enter a subdomain';
-          return false; 
         }
       }
 
-      let res:any = this.validateService.validateSubdomain(String(this.signupForm.controls.subdomain.value));
+      // let res:any = this.validateService.validateUsername(String(this.signupForm.controls.subdomain.value));
+      let res:any = {success: true};
       this.errorMessage = res.errorMessage;
       return res.success;
     } else {

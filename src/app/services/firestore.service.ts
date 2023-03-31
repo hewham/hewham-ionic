@@ -84,7 +84,7 @@ export class FirestoreService {
 
   // ADD
   async addGroup(body) {
-    return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').add(body)
+    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').add(body)
   }
 
   async addColumn(groupID, column = null) {
@@ -92,52 +92,52 @@ export class FirestoreService {
       name: column,
       created: firebase.firestore.FieldValue.serverTimestamp()
     }
-    return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('columns').add(body);
+    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('columns').add(body);
   }
 
   async addItem(item, groupID) {
     item.created = firebase.firestore.FieldValue.serverTimestamp();
-    return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').add(item);
+    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('items').add(item);
   }
 
   async addItemBySlug(item, groupSlug) {
     const group:any = await this.getGroup(groupSlug);
     const groupID = group.id;
-    return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').add(item);
+    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('items').add(item);
   }
 
   // EDIT
   async editGroup(body, groupID) {
-    await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).set(body);
+    await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).set(body);
     return true;
   }
 
   async editItem(body, groupID, itemID) {
     console.log("body: ", body);
-    await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(itemID).update(body);
+    await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('items').doc(itemID).update(body);
     return true;
   }
 
   async editColumn(body, groupID, columnID) {
-    await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('columns').doc(columnID).update(body);
+    await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('columns').doc(columnID).update(body);
     return true;
   }
 
   async editUser(body) {
     console.log("BODY: ", body);
-    await this.firestore.collection('users').doc(this.authService.authuid).update(body);
+    await this.firestore.collection('users').doc(this.authService.uid).update(body);
     return true;
   }
 
   // DELETE
   async deleteColumn(groupID, column) {
-    return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('columns').doc(column.id).delete();
+    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('columns').doc(column.id).delete();
   }
 
   async deleteItem(groupID, item) {
     if(item.tile) await this.imageService.deletePhoto(item.tile);
     if (item.cover) await this.imageService.deletePhoto(item.cover);
-    return await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(item.id).delete();
+    return await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('items').doc(item.id).delete();
   }
 
   async deleteGroup(groupID) {
@@ -146,7 +146,7 @@ export class FirestoreService {
     } else {
       let groupOrder = this.authService.user.groupOrder.filter(e => e !== groupID); // remove from groupOrder array
       await this.reorderGroups(groupOrder);
-      await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).delete();
+      await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).delete();
       return true;
     }
   }
@@ -154,7 +154,7 @@ export class FirestoreService {
   // RANDOM
   async reorderGroups(groupOrderArray) {
     console.log("groupOrderArray: ",groupOrderArray)
-    await this.firestore.collection('users').doc(this.authService.authuid).update({groupOrder: groupOrderArray})
+    await this.firestore.collection('users').doc(this.authService.uid).update({groupOrder: groupOrderArray})
     return true;
   }
 
@@ -163,7 +163,7 @@ export class FirestoreService {
     const group:any = await this.getGroup(groupSlug);
     const groupID = group.id;
     const item:any = await this.getItem(groupID, itemSlug);
-    await this.firestore.collection('users').doc(this.authService.authuid).collection('groups').doc(groupID).collection('items').doc(item.id).set(body);
+    await this.firestore.collection('users').doc(this.authService.uid).collection('groups').doc(groupID).collection('items').doc(item.id).set(body);
     return true;
   }
 
@@ -172,7 +172,7 @@ export class FirestoreService {
     if(domains.indexOf(domain) === -1) {
       domains.push(domain);
     }
-    await this.firestore.collection("users").doc(this.authService.authuid).update({
+    await this.firestore.collection("users").doc(this.authService.uid).update({
       domains: domains
     });
     return true;
