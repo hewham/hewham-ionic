@@ -6,13 +6,13 @@ exports.singular = functions.https.onRequest(async (request, response) => {
 	response.set('Access-Control-Allow-Origin', '*');
 	
 	let plural = request.query.query
-	console.log("plural: ", plural);
+	// console.log("plural: ", plural);
 	try {
 		if(pluralize.isSingular(plural)) {
 			response.send({result: plural});
 		} else {
 			let single = pluralize.singular(plural);
-			console.log("single: ", single);
+			// console.log("single: ", single);
 			response.send({result: single});
 		}
 	} catch (err) {

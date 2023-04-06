@@ -92,14 +92,12 @@ export class AuthService {
         })
       })
     }
-
   }
 
   async getUser() {
     return new Promise(async (resolve) => {
       this.firestore.collection('users').doc(this.uid).get().subscribe((userDoc) => {
         this.user = userDoc.data();
-        console.log("getUser user: ", this.user);
         this.user.groups = [];
         this.firestore.collection('users').doc(this.uid).collection('groups').get().subscribe((snapshot) => {
           if(snapshot.docs.length == 0) resolve(true);
@@ -114,6 +112,7 @@ export class AuthService {
       });
     });
   }
+
 
   // getAuthUser() {
   //   return new Promise(async (resolve) => {
@@ -240,7 +239,7 @@ export class AuthService {
     return new Promise((resolve) => {
     this.fireauth.signInWithEmailAndPassword(email, password)
       .then(async res => {
-        this.init();
+        // this.init();
         this.navCtrl.navigateRoot('start');
         loading.dismiss();
         this.onAuthChange.emit();
@@ -254,24 +253,25 @@ export class AuthService {
   }
 
   async checkSiteOwnerBeforeLogin(email) {
-    return new Promise(async (resolve) => {
-      if(!environment.production) this.fulldomain = this.TEST_FULLDOMAIN;
-      let subdomain = this.fulldomain.split(".")[0];
-      let user:any = await this.getUserForSubdomain(subdomain);
-      if(this.isReserved) {
-        resolve(true);
-      } else if(user) {
-        if(email == user.email) {
-          resolve(true);
-        } else {
-          this.dialogService.alert("This email is not authenticated to access this site.", "Incorrect Email");
-          resolve(false);
-        }
-      } else {
-        this.dialogService.alert("This site does not exist", "Invalid Site");
-        resolve(false);
-      }
-    });
+    return;
+    // return new Promise(async (resolve) => {
+    //   if(!environment.production) this.fulldomain = this.TEST_FULLDOMAIN;
+    //   let subdomain = this.fulldomain.split(".")[0];
+    //   let user:any = await this.getUserForSubdomain(subdomain);
+    //   if(this.isReserved) {
+    //     resolve(true);
+    //   } else if(user) {
+    //     if(email == user.email) {
+    //       resolve(true);
+    //     } else {
+    //       this.dialogService.alert("This email is not authenticated to access this site.", "Incorrect Email");
+    //       resolve(false);
+    //     }
+    //   } else {
+    //     this.dialogService.alert("This site does not exist", "Invalid Site");
+    //     resolve(false);
+    //   }
+    // });
   }
 
   async redirectToUserSubdomain(subdomain) {
@@ -297,7 +297,10 @@ export class AuthService {
       this.fireauth.createUserWithEmailAndPassword(body.email, body.password)
       .then(async res => {
         await this.createNewUser(body, res.user.uid);
-        this.init();
+        // this.init();
+        (await this.fireauth.currentUser).sendEmailVerification().then(() => {
+          // email verification sent!
+        })
         this.navCtrl.navigateRoot('signupcompleted');
         loading.dismiss();
         this.onAuthChange.emit();
@@ -316,8 +319,6 @@ export class AuthService {
       // 'lastName': body.lastName,
       'username': body.username,
       'email': body.email,
-      // 'subdomain': body.subdomain,
-      // 'domains': [`${body.subdomain}.unnoun.com`],
       'uid': uid
     };
 
@@ -329,6 +330,21 @@ export class AuthService {
       this.dialogService.error("Please contact us, your account had an issue when we tried to create it. This may occur if you previously had an account with us.")
       return false;
     }
+  }
+
+  async sendEmailVerification() {
+    return new Promise(async (resolve) => {
+      (await this.fireauth.currentUser).sendEmailVerification().then(() => {
+        // email verification sent!
+        resolve(true);
+      }).catch(() => {
+        resolve(false);
+      })
+    })
+  }
+
+  async isEmailVerified() {
+    return (await this.fireauth.currentUser).emailVerified;
   }
 
   toggleMenu() {

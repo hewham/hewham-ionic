@@ -12,6 +12,7 @@ import { ItemGalleryComponent } from './item-gallery/item-gallery.component';
 import { ProjectCardsComponent } from './project-cards/project-cards.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { TableComponent } from './table/table.component';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 @NgModule({
 	declarations: [
@@ -23,7 +24,8 @@ import { TableComponent } from './table/table.component';
 		ItemGalleryComponent,
 		ProjectCardsComponent,
 		SpinnerComponent,
-		TableComponent
+		TableComponent,
+		VerifyEmailComponent
 	],
 	imports: [
 		CommonModule,
@@ -39,7 +41,8 @@ import { TableComponent } from './table/table.component';
 		ItemGalleryComponent,
 		ProjectCardsComponent,
 		SpinnerComponent,
-		TableComponent
+		TableComponent,
+		VerifyEmailComponent
 	]
 })
 export class ComponentsModule {}

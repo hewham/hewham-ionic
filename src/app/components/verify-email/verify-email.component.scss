@@ -1,0 +1,11 @@
+ion-item {
+  // --background: rgba(0,0,0,0.03) !important;
+  --background: white !important;
+  margin: 6px;
+  border-radius: 8px;
+  color: #555 !important;
+  font-size: 0.9em;
+}
+.detail-item ion-label {
+  white-space: normal !important;
+}
