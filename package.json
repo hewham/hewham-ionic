@@ -1,11 +1,11 @@
 {
   "name": "unnoun",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "author": "ajitama",
   "homepage": "https://ajitama.io",
   "scripts": {
     "ng": "ng",
-    "start": "./node_modules/cowsay/cli.js -f owl Starting uNNouN... && ng serve --open",
+    "start": "./node_modules/cowsay/cli.js -f owl Starting uNNouN... && ionic serve --open",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

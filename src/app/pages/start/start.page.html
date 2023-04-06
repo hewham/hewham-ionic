@@ -1,7 +1,12 @@
 <ion-header no-border>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <!-- <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
+    </ion-buttons> -->
+    <ion-buttons slot="start" *ngIf="!authService.showMenu">
+      <ion-button (click)="authService.toggleMenu()" color="medium">
+        <ion-icon slot="icon-only" name="menu"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
