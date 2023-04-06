@@ -22,6 +22,7 @@ export class AppComponent {
   @ViewChild(IonReorderGroup) reorderGroup: IonReorderGroup;
 
   isEditing: boolean = false;
+  showMenu: boolean = false;
 
   public appPages = [];
 
@@ -70,6 +71,10 @@ export class AppComponent {
     //   }
     // }
     // this.angularTitle.setTitle(`${this.authService.user.firstName} ${this.authService.user.lastName} | uNNouN`);
+  }
+
+  toggleMenu() {
+    this.showMenu = !this.showMenu;
   }
 
   setAppPages() {

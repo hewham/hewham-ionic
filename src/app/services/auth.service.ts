@@ -17,6 +17,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class AuthService {
 
+  showMenu: Boolean = true;
   isLoggedIn: Boolean = false;
   isOwner: Boolean = false; // auth user owns site
   isReserved: Boolean = false; // is a penna reserved site
@@ -328,6 +329,10 @@ export class AuthService {
       this.dialogService.error("Please contact us, your account had an issue when we tried to create it. This may occur if you previously had an account with us.")
       return false;
     }
+  }
+
+  toggleMenu() {
+    this.showMenu = !this.showMenu;
   }
 
   delay(ms) {

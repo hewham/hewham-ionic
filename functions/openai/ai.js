@@ -36,7 +36,7 @@ exports.query = functions.https.onRequest(async (request, response) => {
 
 	try {
 		const completion = await openai.createCompletion(BODY);
-		console.log(completion.data.choices[0].text);
+		// console.log(completion.data.choices[0].text);
 		response.send(completion.data);
 	} catch (err) {
 		functions.logger.info("ERROR", {structuredData: true});

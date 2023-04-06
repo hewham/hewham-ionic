@@ -10,16 +10,16 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-header no-border>
     <ion-toolbar>
-      <ion-buttons slot="end">
-        <ion-button id="click-trigger" (click)="options()" *ngIf="authService.isOwner">
+      <ion-buttons slot="start" *ngIf="!authService.showMenu">
+        <ion-button (click)="authService.toggleMenu()" *ngIf="authService.isOwner" color="medium">
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <!-- <ion-buttons slot="end">
+        <ion-button (click)="options()" *ngIf="authService.isOwner">
           <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
         </ion-button>
-        <ion-popover trigger="click-trigger" triggerAction="click">
-          <ng-template>
-            <ion-content class="ion-padding">Hello World!</ion-content>
-          </ng-template>
-        </ion-popover>
-      </ion-buttons>
+      </ion-buttons> -->
     </ion-toolbar>
   </ion-header>
 
@@ -78,7 +78,7 @@
   </ion-grid> -->
 
 
-  <div *ngIf="items && isLoaded">
+  <!-- <div *ngIf="items && isLoaded">
     <div *ngIf="authService.isOwner && items.length == 0" class="ion-text-left web-container">
       <br>
       <br>
@@ -93,5 +93,5 @@
         Click the plus icon in the top right.
       </p>
     </div>
-  </div>
+  </div> -->
 </ion-content>

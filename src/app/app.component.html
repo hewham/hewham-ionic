@@ -1,8 +1,11 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
+  <ion-split-pane contentId="main-content" [when]="authService.showMenu">
+    <ion-menu contentId="main-content" type="overlay" mode="side">
       <ion-content>
         <ion-list id="inbox-list">
+          <ion-button (click)="authService.toggleMenu()" class="close-menu-button" fill="clear" color="medium">
+            <ion-icon slot="icon-only" name="caret-back"></ion-icon>
+          </ion-button>
           <div *ngIf="authService.user">
             <!-- <img class="small-img sidemenu-img" [src]="authService.user.avatar ? authService.user.avatar : 'https://avatars.dicebear.com/api/jdenticon/' + authService.user.username +'.svg'" /> -->
             <img class="small-img sidemenu-img" [src]="authService.user.avatar ? authService.user.avatar : 'https://api.dicebear.com/6.x/initials/svg?fontWeight=900&chars=1&scale=70&backgroundColor=ef89ef,70deeb&backgroundType=gradientLinear&seed=' + authService.user.username" />
@@ -37,25 +40,30 @@
             </ion-menu-toggle>
           </div>
 
+          <div *ngIf="!authService.isIniting && authService.user">
+            <ion-menu-toggle auto-hide="false" *ngFor="let p of authService.user.groups">
+              <ion-item
+                *ngIf="isEditing"
+                lines="none"
+                detail="false"
+                routerLinkActive="gradient-button">
+                  <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                  <ion-label>{{ p.name }}</ion-label>
+                  <ion-icon slot="end" *ngIf="isEditing" (click)="edit(p.slug)" name="create-outline" color="primary"></ion-icon>
+              </ion-item>
+            </ion-menu-toggle>
+          </div>
 
-            <!-- return {
-              id: group.id,
-              title: group.name,
-              url: `u/${this.authService.user.username}/${group.slug}`,
-              icon: group.icon,
-              slug: group.slug
-            } -->
 
-            <ion-reorder-group *ngIf="authService.isOwner && isEditing" (ionItemReorder)="doReorder($event)" disabled="false">
-              <!-- <ion-item *ngFor="let p of appPages" (click)="edit(p.slug)" button lines="none" detail="false"> -->
-              <!-- <ion-item *ngFor="let p of appPages"> -->
+
+            <!-- <ion-reorder-group *ngIf="authService.isOwner && isEditing" (ionItemReorder)="doReorder($event)" disabled="false">
               <ion-item *ngFor="let p of authService.user.groups">
                 <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
                 <ion-icon slot="end" *ngIf="isEditing" (click)="edit(p.slug)" name="create-outline" color="primary"></ion-icon>
                 <ion-reorder slot="end"></ion-reorder>
               </ion-item>
-          </ion-reorder-group>
+          </ion-reorder-group> -->
 
           <ion-menu-toggle *ngIf="authService.isOwner && isEditing" auto-hide="false">
             <ion-item (click)="navCtrl.navigateForward('add')" lines="none" detail="false" tappable class="selected">

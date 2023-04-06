@@ -23,6 +23,12 @@
   margin-top: -10px;
 }
 
+.close-menu-button {
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
+
 ion-split-pane {
   --side-max-width: 70px;
 }
@@ -48,7 +54,7 @@ ion-menu.ios ion-content {
 }
 
 ion-menu.ios ion-list {
-  padding: 20px 0 0 15px;
+  padding: 20px 30px 0 15px;
 }
 
 ion-menu.ios ion-note {
