@@ -8,17 +8,20 @@
 </ion-header> -->
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <!-- <ion-header collapse="condense" no-border>
+  <ion-header no-border>
     <ion-toolbar>
-      <ion-title size="large" *ngIf="group">{{ group.name }}</ion-title>
-      <ion-title size="large" *ngIf="!group">{{ " " }}</ion-title>
-      <ion-buttons *ngIf="group.options" slot="end">
-        <ion-button (click)="add()" *ngIf="group.options.type != 'table' && authService.isOwner">
-          <ion-icon slot="icon-only" name="add"></ion-icon>
+      <ion-buttons slot="end">
+        <ion-button id="click-trigger" (click)="options()" *ngIf="authService.isOwner">
+          <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
         </ion-button>
+        <ion-popover trigger="click-trigger" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-padding">Hello World!</ion-content>
+          </ng-template>
+        </ion-popover>
       </ion-buttons>
     </ion-toolbar>
-  </ion-header> -->
+  </ion-header>
 
   <div class="default-spacer"></div>
   <div class="default-spacer"></div>

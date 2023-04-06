@@ -20,23 +20,36 @@
           <br>
           <!-- <ion-note>hew@anonacy.com</ion-note> -->
 
-            <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+            <!-- <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages"> -->
+
+          <div *ngIf="!authService.isIniting && authService.user">
+            <ion-menu-toggle auto-hide="false" *ngFor="let p of authService.user.groups">
               <ion-item
                 *ngIf="!isEditing"
                 routerDirection="root"
-                [routerLink]="[p.url]"
+                [routerLink]="['u/' + this.authService.user.username + '/' + p.slug]"
                 lines="none"
                 detail="false"
                 routerLinkActive="gradient-button">
                   <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-                  <ion-label>{{ p.title }}</ion-label>
+                  <ion-label>{{ p.name }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
+          </div>
 
+
+            <!-- return {
+              id: group.id,
+              title: group.name,
+              url: `u/${this.authService.user.username}/${group.slug}`,
+              icon: group.icon,
+              slug: group.slug
+            } -->
 
             <ion-reorder-group *ngIf="authService.isOwner && isEditing" (ionItemReorder)="doReorder($event)" disabled="false">
               <!-- <ion-item *ngFor="let p of appPages" (click)="edit(p.slug)" button lines="none" detail="false"> -->
-              <ion-item *ngFor="let p of appPages">
+              <!-- <ion-item *ngFor="let p of appPages"> -->
+              <ion-item *ngFor="let p of authService.user.groups">
                 <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
                 <ion-icon slot="end" *ngIf="isEditing" (click)="edit(p.slug)" name="create-outline" color="primary"></ion-icon>

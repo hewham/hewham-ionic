@@ -22,7 +22,7 @@ export class AppComponent {
   @ViewChild(IonReorderGroup) reorderGroup: IonReorderGroup;
 
   isEditing: boolean = false;
-  
+
   public appPages = [];
 
   constructor(
@@ -73,6 +73,7 @@ export class AppComponent {
   }
 
   setAppPages() {
+    return;
     this.appPages = [];
     let groups = JSON.parse(JSON.stringify(this.authService.user.groups));
     if(this.authService.user.groupOrder) {
