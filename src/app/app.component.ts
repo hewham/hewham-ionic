@@ -50,7 +50,14 @@ export class AppComponent {
       // Do Nothing...
       console.log("1.1");
     } else if (this.authService.user) {
-        this.setAppPages();
+        // this.setAppPages();
+        if(this.router.url == "/") {
+          if(this.authService.user.groups.length > 0) {
+            this.navCtrl.navigateRoot(`u/${this.authService.user.username}/${this.authService.user.groups[0].slug}`)
+          } else {
+            this.navCtrl.navigateRoot("start")
+          }
+        }
       // loggedIn
       console.log("1.2");
     } else {
