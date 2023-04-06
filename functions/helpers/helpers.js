@@ -2,7 +2,9 @@ const functions = require("firebase-functions");
 const pluralize = require("pluralize");
 
 exports.singular = functions.https.onRequest(async (request, response) => {
+	// response.set('Access-Control-Allow-Origin', 'unnoun.com');
 	response.set('Access-Control-Allow-Origin', '*');
+	
 	let plural = request.query.query
 	console.log("plural: ", plural);
 	try {

@@ -5,7 +5,9 @@ const cheerio = require("cheerio");
 // const WIKIMEDIA_COMMONS_BASEURL = "https://en.wikipedia.org/w/api.php";
 
 exports.wikiMediaImages = functions.https.onRequest(async (request, response) => {
+	// response.set('Access-Control-Allow-Origin', 'unnoun.com');
 	response.set('Access-Control-Allow-Origin', '*');
+	
 	let searchTerm = request.query.query
 	const options = {
 		url: `https://commons.wikimedia.org/w/index.php?search=${searchTerm}&title=Special:MediaSearch&go=Go&type=image`,

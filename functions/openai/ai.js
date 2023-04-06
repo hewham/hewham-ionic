@@ -1,9 +1,13 @@
 const functions = require("firebase-functions");
+const { defineString } = require('firebase-functions/params');
 const { Configuration, OpenAIApi } = require("openai");
+
+const OPENAI_ORG_ID = defineString('OPENAI_ORG_ID');
+const OPENAI_SECRET_KEY = defineString('OPENAI_SECRET_KEY');
+
 const configuration = new Configuration({
-    organization: "org-hN0R6oAFHN1WhB1cV8WOAEAB",
-    // apiKey: process.env.OPENAI_API_KEY,
-    apiKey: "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",
+    organization: OPENAI_ORG_ID.value(),
+    apiKey: OPENAI_SECRET_KEY.value()
 });
 const openai = new OpenAIApi(configuration);
 
@@ -15,7 +19,9 @@ const MODELS = [
 ]
 
 exports.query = functions.https.onRequest(async (request, response) => {
-	response.set('Access-Control-Allow-Origin', '*');
+		response.set('Access-Control-Allow-Origin', '*');
+	// response.set('Access-Control-Allow-Origin', 'unnoun.com');
+
 	const query = request.query.query
 
 	const BODY = {
@@ -41,12 +47,14 @@ exports.query = functions.https.onRequest(async (request, response) => {
 })
 
 exports.models = functions.https.onRequest(async (request, response) => {
+	// response.set('Access-Control-Allow-Origin', 'unnoun.com');
 	response.set('Access-Control-Allow-Origin', '*');
+
 	try {
 		const models = await openai.listModels();
 		response.send(models.data);
 	} catch (err) {
-		functions.logger.info(err, {structuredData: true});
+		functions.logger.info(err.message, {structuredData: true});
 		response.send(err);
 
 	}

@@ -32,8 +32,8 @@ export class GroupPage implements OnInit {
     this.authService.onRefresh.subscribe(() => this.ngOnInit());
     this.slug = this.activatedRoute.snapshot.paramMap.get('group');
     this.group = await this.firestoreService.getGroup(this.slug);
-    this.items = await this.firestoreService.getItems(this.group.id);
     this.columns = await this.firestoreService.getColumns(this.group.id);
+    this.items = await this.firestoreService.getItems(this.group.id);
     this.isLoaded = true;
   }
 
@@ -53,5 +53,30 @@ export class GroupPage implements OnInit {
 
   aiResult(result) {
     console.log("aiResult: ", result);
+    let columns = [
+      { id: "name", name: "Name" },
+      { id: "1", name: result.attribute }
+    ];
+
+    let items = [];
+    for(let item of result.data) {
+      items.push({
+        name: item.name,
+        "1": item.attribute
+      })
+    }
+
+    this.columns = columns;
+    this.items = items;
+  }
+
+  async clearGroup() {
+    this.items = [];
+    this.columns = [
+      { id: "name", name: "Name"},
+      { id: "1", name: "Attribute" }
+    ];
+    // await this.firestoreService.clearGroup(this.group.id);
+    return;
   }
 }

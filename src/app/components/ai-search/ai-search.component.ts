@@ -34,7 +34,7 @@ export class AISearchComponent implements OnInit{
       this.search();
     }
   }
-  
+
   async search() {
     if(this.searchInput1 == "") return;
     this.isLoading = true;
@@ -43,8 +43,8 @@ export class AISearchComponent implements OnInit{
     console.log("QUERY: ", QUERY);
     this.result = null;
     let res:any = await this.searchService.aiSearch(QUERY);
-    this.result = res.choices[0].text;
-    
+    this.result = res;
+
     this.onDone.emit({
       name: this.nonplural,
       attribute: this.searchInput2,

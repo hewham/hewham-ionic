@@ -19,6 +19,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+
 
 // Other modules
 import { QuillModule } from 'ngx-quill';
@@ -52,8 +54,8 @@ let quillModules = {
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    BrowserModule, 
-    IonicModule.forRoot({mode: 'ios', navAnimation: mdTransitionAnimation}), 
+    BrowserModule,
+    IonicModule.forRoot({mode: 'ios', navAnimation: mdTransitionAnimation}),
     AppRoutingModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -61,6 +63,7 @@ let quillModules = {
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireFunctionsModule,
+    AngularFireDatabaseModule,
     QuillModule.forRoot({modules: quillModules})
   ],
   providers: [

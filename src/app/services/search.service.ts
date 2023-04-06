@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service'
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
 
-  // BASE_URL = "https://us-central1-hewham-ionic.cloudfunctions.net";
-  BASE_URL = "http://localhost:5001/unnounapp/us-central1";
-  
+  // BASE_URL = "https://us-central1-unnounapp.cloudfunctions.net";
+  // BASE_URL = "http://localhost:5001/unnounapp/us-central1";
+  BASE_URL = environment.firebaseConfig.function_url;
+
 
   constructor(
     private httpService: HttpService,
@@ -42,12 +44,31 @@ export class SearchService {
     const FUNCTION_NAME = "ai-query";
     try {
       const URL = `${this.BASE_URL}/${FUNCTION_NAME}?query=${query}`;
-      let res = await this.httpService.get(URL);
-      return res;
+      let res:any = await this.httpService.get(URL);
+      res = res.choices[0].text
+      console.log("ai res: ", res);
+      let parsed = this.parseData(res);
+      console.log("parsed: ", parsed);
+
+      return parsed;
     } catch (err) {
       console.log("ERROR: ", err);
       return false;
     }
   }
+
+  parseData(dataString) {
+  const treeData = dataString.split('\n');
+  const result = [];
+
+  treeData.forEach((treeInfo) => {
+    const [name, attribute] = treeInfo.split(' | ');
+    if(name && attribute) {
+      result.push({ name, attribute });
+    }
+  });
+
+  return result;
+}
 
 }

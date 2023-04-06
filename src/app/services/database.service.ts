@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
+
 import * as firebase from 'firebase';
 
 import { AuthService } from './auth.service';
@@ -21,6 +23,7 @@ export class FirestoreService {
   items = [];
 
   constructor(
+    private db: AngularFireDatabase,
     private firestore: AngularFirestore,
     private authService: AuthService,
     private dialogService: DialogService,
@@ -43,6 +46,13 @@ export class FirestoreService {
       })
     })
   }
+
+  // getGroup(slug) {
+  //   return this.db
+  //     .object(`u/${this.authService.user.uid}/groups`)
+  //     .valueChanges();
+  // }
+
 
   getItem(groupID, itemSlug) {
     return new Promise((resolve) => {

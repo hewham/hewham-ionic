@@ -5,11 +5,11 @@
         <ion-list id="inbox-list">
           <div *ngIf="authService.user">
             <!-- <img class="small-img sidemenu-img" [src]="authService.user.avatar ? authService.user.avatar : 'https://avatars.dicebear.com/api/jdenticon/' + authService.user.username +'.svg'" /> -->
-            <img class="small-img sidemenu-img" [src]="authService.user.avatar ? authService.user.avatar : 'https://api.dicebear.com/6.x/initials/svg?fontWeight=900&chars=1&scale=70&backgroundColor=ef89ef,70deeb&backgroundType=gradientLinear&seed=' + authService.user.username + 'adqwom'" />
+            <img class="small-img sidemenu-img" [src]="authService.user.avatar ? authService.user.avatar : 'https://api.dicebear.com/6.x/initials/svg?fontWeight=900&chars=1&scale=70&backgroundColor=ef89ef,70deeb&backgroundType=gradientLinear&seed=' + authService.user.username" />
 
-            <ion-icon 
+            <ion-icon
               *ngIf="authService.isOwner"
-              class="settings-position animated fadeIn" 
+              class="settings-position animated fadeIn"
               (click)="navCtrl.navigateRoot('settings')"
               name="cog-outline"
               tappable>
@@ -21,12 +21,12 @@
           <!-- <ion-note>hew@anonacy.com</ion-note> -->
 
             <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-              <ion-item 
-                *ngIf="!isEditing" 
-                routerDirection="root" 
-                [routerLink]="[p.url]" 
-                lines="none" 
-                detail="false" 
+              <ion-item
+                *ngIf="!isEditing"
+                routerDirection="root"
+                [routerLink]="[p.url]"
+                lines="none"
+                detail="false"
                 routerLinkActive="gradient-button">
                   <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
                   <ion-label>{{ p.title }}</ion-label>
@@ -79,24 +79,24 @@
             </ion-item>
           </ion-menu-toggle> -->
 
-          <p 
+          <p
             *ngIf="!authService.isLoggedIn && authService.isInitialized && authService.isReserved"
             class="monospace">
               <span class="color-primary" tappable (click)="navCtrl.navigateRoot('login')"><u>Sign up</u></span>&nbsp;|&nbsp;<span class="color-primary" tappable (click)="navCtrl.navigateRoot('login?login=true')"><u>Log in</u></span>
           </p>
 
-          <p 
+          <p
             *ngIf="authService.isOwner && authService.isInitialized"
-            class="monospace color-primary" 
-            tappable 
+            class="monospace color-primary"
+            tappable
             (click)="authService.logout()">
             <u>Log out</u>
           </p>
 
-          <p class="accent-text monospace">
+          <!-- <p class="accent-text monospace">
             <a href="https://github.com/hewham/hewham-ionic" target="_blank">
             Source&nbsp;Code</a>&nbsp;<ion-icon name="code"></ion-icon>
-          </p>
+          </p> -->
           <p class="accent-text monospace">v{{ version }}</p>
         </div>
       </ion-content>

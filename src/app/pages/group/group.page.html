@@ -28,10 +28,10 @@
   <div *ngIf="group && isLoaded">
 
     <app-ai-search (onDone)=aiResult($event)></app-ai-search>
-    
+
     <app-table
       *ngIf="group.options.type == 'table'"
-      (onClick)="viewProject($event)" 
+      (onClick)="viewProject($event)"
       [group]="group"
       [columns]="columns"
       [items]="items">
@@ -39,30 +39,35 @@
 
     <app-item-gallery
       *ngIf="group.options.type == 'gallery'"
-      (onClick)="viewProject($event)" 
+      (onClick)="viewProject($event)"
       [items]="items">
     </app-item-gallery>
 
-    <app-project-cards 
+    <app-project-cards
       *ngIf="group.options.type == 'project'"
-      (onClick)="viewProject($event)" 
-      [items]="items" 
+      (onClick)="viewProject($event)"
+      [items]="items"
       [shape]="group.options.shape">
     </app-project-cards>
   </div>
 
-  <!-- <ion-grid 
+  <ion-button (click)="clearGroup()" shape="round" size="small" class="gradient-button">
+    <ion-icon name="close"></ion-icon> Clear Data
+  </ion-button>
+
+
+  <!-- <ion-grid
     *ngIf="group"
     class="ion-no-padding"
     fixed>
     <ion-row>
-      <ion-col 
+      <ion-col
         *ngFor="let item of items"
         class="panel-card-container"
-        size="12" 
-        size-sm="12" 
-        size-md="4" 
-        size-lg="4" 
+        size="12"
+        size-sm="12"
+        size-md="4"
+        size-lg="4"
         size-xl="4">
           <app-project-cards (onClick)="viewProject($event)" [items]="items" [shape]="group.options.shape"></app-project-cards>
       </ion-col>

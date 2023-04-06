@@ -26,7 +26,7 @@ deploy: ## firebase deploy webapp
 f: ## deploy firebase functions
 	@firebase deploy --only functions
 
-f-serve: ## serve firebase functions
+serve: ## serve firebase functions
 	firebase serve --only functions -p 5001
 
 icons: ## generate ios and android resources

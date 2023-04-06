@@ -27,6 +27,9 @@ export class TableComponent implements OnInit {
 
   async ngOnInit() {
     await this.firestoreService.delay(1500);
+    console.log("TABLE group: ", this.group);
+    console.log("TABLE columns: ", this.columns);
+    console.log("TABLE items: ", this.items);
     // console.log("inputs: ", this.inputs);
   }
 
@@ -36,10 +39,12 @@ export class TableComponent implements OnInit {
   }
 
   columnChanged(column) {
+    return;
     this.firestoreService.editColumn({name: column.name}, this.group.id, column.id);
   }
 
   itemChanged(item, columnID) {
+    return;
     let body = {};
     body[columnID] = item[columnID];
     this.firestoreService.editItem(body, this.group.id, item.id);
@@ -176,5 +181,5 @@ export class TableComponent implements OnInit {
     body[imageColumnID] = images[0];
     this.firestoreService.editItem(body, this.group.id, itemID);
   }
-  
+
 }
