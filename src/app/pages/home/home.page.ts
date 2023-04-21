@@ -16,7 +16,6 @@ export class HomePage implements OnInit {
 
   async ngOnInit() {
     await this.authService.delay(500);
-    console.log("this.authService.user: ", this.authService.user)
     if(this.authService.user) {
       this.navCtrl.navigateRoot(`u/${this.authService.user.username}`);
     } else {

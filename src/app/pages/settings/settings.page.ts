@@ -21,6 +21,7 @@ export class SettingsPage implements OnInit {
   isLoading: boolean = true;
   content: any = "";
   isEditing: boolean = false;
+  isEmailVerified: boolean = false;
 
   subdomain: any = "";
 
@@ -52,6 +53,7 @@ export class SettingsPage implements OnInit {
 
   async ngOnInit() {
     await this.authService.onReady();
+    this.isEmailVerified = await this.authService.isEmailVerified();
     this.setEditData();
     this.isLoading = false;
   }

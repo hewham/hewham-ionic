@@ -145,81 +145,6 @@ export class AuthService {
     this.isIniting = false;
   }
 
-  setuid() {
-    return new Promise(async (resolve) => {
-      let fulldomain = /:\/\/([^\/]+)/.exec((window as any).location.href)[1];
-      if(!environment.production) {
-        fulldomain = this.TEST_FULLDOMAIN;
-      }
-      let subdomain = fulldomain.split(".")[0];
-      this.fulldomain = fulldomain;
-      this.subdomain = subdomain;
-      console.log("fulldomain: ", fulldomain)
-      console.log("subdomain: ", subdomain)
-      let isReserved = (this.reservedNames.indexOf(subdomain) > -1)
-      if(isReserved) {
-        if(fulldomain != "unnoun.com") {
-          // if its reserved, redirect to unnoun.com
-          console.log("RESERVED, OPENING...");
-          <any>window.open('https://unnoun.com', '_self');
-        } else {
-          // default page
-          this.isReserved = true;
-          // this.uid = environment.PENNA_UID;
-          resolve(this.uid);
-        }
-      } else {
-        let user:any = await this.getUserForSubdomain(subdomain);
-        if(user) {
-          this.isReserved = false;
-          this.uid = user.id;
-          resolve(this.uid);
-        } else {
-          if(environment.production) {
-            // if no users found for entered subdomain, redirect to unnoun.com
-            // TODO: make a note explaining the redirect
-            console.log("NO USERS, OPENING...");
-            <any>window.open('https://unnoun.com', '_self');
-          }
-        }
-      }
-    });
-  }
-
-  // getUserForDomain(domain) {
-  //   return new Promise((resolve) => {
-  //     this.firestore.collection("users", ref => ref.where("domains", "array-contains", domain)).get().subscribe((snapshot) => {
-  //       if(snapshot.docs.length == 0) {
-  //         resolve(null);
-  //       } else {
-  //         // load user for subdomain
-  //         snapshot.docs.forEach((doc) => {
-  //           let data:any = doc.data();
-  //           data.id = doc.id
-  //           resolve (data)
-  //         });
-  //       }
-  //     });
-  //   });
-  // }
-
-  getUserForSubdomain(subdomain) {
-    return new Promise((resolve) => {
-      this.firestore.collection("users", ref => ref.where("subdomain", "==", subdomain)).get().subscribe((snapshot) => {
-        if(snapshot.docs.length == 0) {
-          resolve(null);
-        } else {
-          // load user for subdomain
-          snapshot.docs.forEach((doc) => {
-            let data:any = doc.data();
-            data.id = doc.id
-            resolve (data)
-          });
-        }
-      });
-    });
-  }
-
   resetPassword(email) {
     return new Promise(async (resolve) => {
       try{
@@ -250,28 +175,6 @@ export class AuthService {
         resolve(false);
       });
     })
-  }
-
-  async checkSiteOwnerBeforeLogin(email) {
-    return;
-    // return new Promise(async (resolve) => {
-    //   if(!environment.production) this.fulldomain = this.TEST_FULLDOMAIN;
-    //   let subdomain = this.fulldomain.split(".")[0];
-    //   let user:any = await this.getUserForSubdomain(subdomain);
-    //   if(this.isReserved) {
-    //     resolve(true);
-    //   } else if(user) {
-    //     if(email == user.email) {
-    //       resolve(true);
-    //     } else {
-    //       this.dialogService.alert("This email is not authenticated to access this site.", "Incorrect Email");
-    //       resolve(false);
-    //     }
-    //   } else {
-    //     this.dialogService.alert("This site does not exist", "Invalid Site");
-    //     resolve(false);
-    //   }
-    // });
   }
 
   async redirectToUserSubdomain(subdomain) {

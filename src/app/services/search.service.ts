@@ -17,7 +17,7 @@ export class SearchService {
   ) {}
 
   async wikiMediaImages(query) {
-    console.log(`searching for [${query}]...`);
+    // console.log(`searching for [${query}]...`);
     const FUNCTION_NAME = "search-wikiMediaImages";
     const URL = `${this.BASE_URL}/${FUNCTION_NAME}?query=${query}`;
     let images = await this.httpService.get(URL)
@@ -40,15 +40,13 @@ export class SearchService {
   }
 
   async aiSearch(query) {
-    console.log(`searching for [${query}]...`);
+    // console.log(`searching for [${query}]...`);
     const FUNCTION_NAME = "ai-query";
     try {
       const URL = `${this.BASE_URL}/${FUNCTION_NAME}?query=${query}`;
       let res:any = await this.httpService.get(URL);
       res = res.choices[0].text
-      console.log("ai res: ", res);
       let parsed = this.parseData(res);
-      console.log("parsed: ", parsed);
 
       return parsed;
     } catch (err) {

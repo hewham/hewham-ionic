@@ -63,7 +63,6 @@ export class CustomDomainComponent implements OnInit {
 
   async updateCustomDomain() {
     this.isDomainLoading = true;
-    // console.log("this.customdomain: ", this.customdomain)
     if(this.validateService.isValidDomainName(this.customdomain)) {
       this.errorMessage = "";
       try{

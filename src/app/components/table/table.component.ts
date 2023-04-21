@@ -27,10 +27,6 @@ export class TableComponent implements OnInit {
 
   async ngOnInit() {
     await this.firestoreService.delay(1500);
-    console.log("TABLE group: ", this.group);
-    console.log("TABLE columns: ", this.columns);
-    console.log("TABLE items: ", this.items);
-    // console.log("inputs: ", this.inputs);
   }
 
   async addColumns() {
@@ -40,15 +36,15 @@ export class TableComponent implements OnInit {
 
   columnChanged(column) {
     return;
-    this.firestoreService.editColumn({name: column.name}, this.group.id, column.id);
+    // this.firestoreService.editColumn({name: column.name}, this.group.id, column.id);
   }
 
   itemChanged(item, columnID) {
     return;
-    let body = {};
-    body[columnID] = item[columnID];
-    this.firestoreService.editItem(body, this.group.id, item.id);
-    this.checkIfImage(item[columnID], item.id, columnID);
+    // let body = {};
+    // body[columnID] = item[columnID];
+    // this.firestoreService.editItem(body, this.group.id, item.id);
+    // this.checkIfImage(item[columnID], item.id, columnID);
   }
 
   async addRow() {
@@ -61,7 +57,6 @@ export class TableComponent implements OnInit {
     // await this.firestoreService.delay(200);
     // this.inputs.forEach(inputInstance => {
     //   if(inputInstance.nativeElement.id == ID) {
-    //     console.log("FOUND IT: ", inputInstance.nativeElement.id)
     //     inputInstance.nativeElement.focus();
     //   }
     // });
@@ -167,10 +162,6 @@ export class TableComponent implements OnInit {
     const indexOfObject = this.items.findIndex(check => {
       return check.id === itemID;
     });
-
-    console.log("indexOfObject: ", indexOfObject)
-    console.log("nameColumnID: ", nameColumnID)
-    console.log("this.items[indexOfObject][nameColumnID]: ", this.items[indexOfObject][nameColumnID])
 
     let images:any = await this.searchService.wikiMediaImages(this.items[indexOfObject][nameColumnID]);
     let image = images[Math.floor(Math.random()*images.length)];

@@ -52,7 +52,6 @@ export class GroupPage implements OnInit {
   }
 
   aiResult(result) {
-    console.log("aiResult: ", result);
     let columns = [
       { id: "name", name: "Name" },
       { id: "1", name: result.attribute }

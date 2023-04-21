@@ -40,7 +40,6 @@ export class AISearchComponent implements OnInit{
     this.isLoading = true;
     this.nonplural = await this.getSingular();
     const QUERY = await this.formQuery();
-    console.log("QUERY: ", QUERY);
     this.result = null;
     let res:any = await this.searchService.aiSearch(QUERY);
     this.result = res;
@@ -68,7 +67,6 @@ export class AISearchComponent implements OnInit{
     this.isLoading = true;
     let res:any = await this.searchService.f('ai-models');
     this.models = res.data;
-    console.log(this.models);
     this.isLoading = false;
   }
 }

@@ -40,15 +40,12 @@ export class AppComponent {
 
   async initializeApp() {
     await this.authService.delay(500);
-    console.log("this.router.url: ", this.router.url)
     await this.authService.init();
-    console.log("user: ", this.authService.user)
 
     if (this.router.url == "/start"
       || this.router.url == "/login"
       || this.router.url == "/login?login=true") {
       // Do Nothing...
-      console.log("1.1");
     } else if (this.authService.user) {
         // this.setAppPages();
         if(this.router.url == "/") {
@@ -59,10 +56,8 @@ export class AppComponent {
           }
         }
       // loggedIn
-      console.log("1.2");
     } else {
       this.navCtrl.navigateRoot("start")
-      console.log("1.3");
     }
 
     // this.setAppPages();
