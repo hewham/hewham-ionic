@@ -34,78 +34,39 @@ export class AppComponent {
     private firestoreService: FirestoreService
   ) {
     this.authService.onAuthChange.subscribe(() => this.initializeApp())
-    this.authService.onRefresh.subscribe(() => this.setAppPages())
+    // this.authService.onRefresh.subscribe(() => this.setAppPages())
     this.initializeApp();
   }
 
   async initializeApp() {
-    await this.authService.delay(500);
+    // await this.authService.delay(500);
     await this.authService.init();
+    await this.authService.triggerOnInit();
 
     if (this.router.url == "/start"
       || this.router.url == "/login"
       || this.router.url == "/login?login=true") {
       // Do Nothing...
     } else if (this.authService.user) {
-        // this.setAppPages();
-        if(this.router.url == "/") {
-          if(this.authService.user.groups.length > 0) {
-            this.navCtrl.navigateRoot(`u/${this.authService.user.username}/${this.authService.user.groups[0].slug}`)
-          } else {
-            this.navCtrl.navigateRoot("start")
-          }
-        }
-      // loggedIn
+        this.authService.homepage();
     } else {
       this.navCtrl.navigateRoot("start")
     }
-
-    // this.setAppPages();
-    // if (this.router.url == "/start"
-    //   || this.router.url == "/login"
-    //   || this.router.url == "/login?login=true") {
-    //   // Do Nothing...
-    // } else if (this.appPages.length > 0) {
-    //   this.navCtrl.navigateRoot(this.appPages[0].url);
-    // } else {
-    //   if(this.router.url == "/") {
-    //     this.navCtrl.navigateRoot("start");
-    //   }
-    // }
-    // this.angularTitle.setTitle(`${this.authService.user.firstName} ${this.authService.user.lastName} | uNNouN`);
   }
 
   toggleMenu() {
     this.showMenu = !this.showMenu;
   }
 
-  setAppPages() {
-    return;
-    this.appPages = [];
-    let groups = JSON.parse(JSON.stringify(this.authService.user.groups));
-    if(this.authService.user.groupOrder) {
-      this.authService.user.groupOrder.forEach((groupID) => {
-        let i = groups.findIndex(a => a.id === groupID);
-        this.appPages.push(this.pageObj(groups[i]));
-        groups.splice(i, 1);
-      });
-    }
-
-    // add in remaining groups
-    groups.forEach((group) => {
-      this.appPages.push(this.pageObj(group))
-    });
-  }
-
-  pageObj(group) {
-    return {
-      id: group.id,
-      title: group.name,
-      url: `u/${this.authService.user.username}/${group.slug}`,
-      icon: group.icon,
-      slug: group.slug
-    }
-  }
+  // pageObj(group) {
+  //   return {
+  //     id: group.id,
+  //     title: group.name,
+  //     url: `u/${this.authService.user.username}/${group.slug}`,
+  //     icon: group.icon,
+  //     slug: group.slug
+  //   }
+  // }
 
   async doReorder(ev: CustomEvent<ItemReorderEventDetail>) {
     // let before = JSON.parse(JSON.stringify(this.appPages));

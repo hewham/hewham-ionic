@@ -27,6 +27,7 @@ export class AuthService {
   isIniting: Boolean = true;
   isInitialized: Boolean = false;
   isEditingGroups: Boolean = false;
+  isGroupsLoaded: Boolean = false;
   fulldomain: any; // current site fulldomain
   subdomain: any; // current site subdomain
   reservedNames = ['unnoun', 'penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you', 'demo', 'drive', 'calendar' ]; // reserved subdomains
@@ -37,6 +38,7 @@ export class AuthService {
   onInit: EventEmitter<any> = new EventEmitter()
   onRefresh: EventEmitter<any> = new EventEmitter()
   onAuthChange: EventEmitter<any> = new EventEmitter()
+  firstGroupLoaded: EventEmitter<any> = new EventEmitter()
 
   user: any; // page user
   // authUser: any; // authenticated (logged in) user
@@ -64,9 +66,36 @@ export class AuthService {
       this.isOwner = true
     }
 
-    this.isInitialized = true;
-    this.isIniting = false;
-    this.onInit.emit();
+    if(this.isGroupsLoaded) {
+      this.isInitialized = true;
+      this.isIniting = false;
+      this.onInit.emit();
+    } else {
+      this.firstGroupLoaded.subscribe(() => {
+        this.isInitialized = true;
+        this.isIniting = false;
+        this.onInit.emit();
+      })
+    }
+
+  }
+
+  triggerOnInit() {
+    return new Promise((resolve) => {
+      if(this.isInitialized) {
+        resolve(true)
+      } else {
+        this.onInit.subscribe(() => {
+          if(this.isGroupsLoaded) {
+            resolve(true)
+          } else {
+            this.firstGroupLoaded.subscribe(() => {
+              resolve(true);
+            })
+          }
+        })
+      }
+    })
   }
 
   async checkIsLoggedIn() {
@@ -103,9 +132,8 @@ export class AuthService {
       this.db
         .object(`u/${this.uid}`)
         .query.once('value')
-        .then(async user => {
+        .then(user => {
           this.user = user.val();
-          this.user.id = this.uid;
           this.subscribeGroups();
           console.log("authService GetUser: ", this.user);
           resolve(true)
@@ -118,16 +146,15 @@ export class AuthService {
       .list(`g/${this.uid}`)
       .snapshotChanges()
       .subscribe(groups => {
-
         let userGroups = [];
         for(let group of groups) {
           let value:any = group.payload.val();
           value.id = group.key;
           userGroups.push(value)
         }
-
         this.user.groups = userGroups;
-        console.log("this.user.groups: ", this.user.groups);
+        this.isGroupsLoaded = true;
+        this.firstGroupLoaded.emit();
       });
   }
 
