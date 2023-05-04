@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { NavController, LoadingController } from '@ionic/angular';
+import { map, catchError } from 'rxjs/operators';
 
 import { DialogService } from './dialog.service';
 // import { NotificationService} from './notification.service';
@@ -9,6 +10,8 @@ import { environment } from '../../environments/environment';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
+
 // import * as auth from 'this.auth
 
 
@@ -23,6 +26,7 @@ export class AuthService {
   isReserved: Boolean = false; // is a penna reserved site
   isIniting: Boolean = true;
   isInitialized: Boolean = false;
+  isEditingGroups: Boolean = false;
   fulldomain: any; // current site fulldomain
   subdomain: any; // current site subdomain
   reservedNames = ['unnoun', 'penna', 'www', 'ftp', 'mail', 'pop', 'smtp', 'admin', 'ssl', 'sftp', 'app', 'api', 'ads', 'you', 'demo', 'drive', 'calendar' ]; // reserved subdomains
@@ -47,7 +51,8 @@ export class AuthService {
       // private crispService: CrispService,
       // private trackingService: TrackingService,
       private firestore: AngularFirestore,
-      private fireauth: AngularFireAuth
+      private fireauth: AngularFireAuth,
+      private db: AngularFireDatabase
     ) {}
 
   async init(){
@@ -56,9 +61,8 @@ export class AuthService {
 
     if(this.isLoggedIn) {
       await this.getUser();
+      this.isOwner = true
     }
-    if(this.isLoggedIn) this.isOwner = true;
-    // if(this.uid == this.authuid) this.isOwner = true;
 
     this.isInitialized = true;
     this.isIniting = false;
@@ -96,32 +100,36 @@ export class AuthService {
 
   async getUser() {
     return new Promise(async (resolve) => {
-      this.firestore.collection('users').doc(this.uid).get().subscribe((userDoc) => {
-        this.user = userDoc.data();
-        this.user.groups = [];
-        this.firestore.collection('users').doc(this.uid).collection('groups').get().subscribe((snapshot) => {
-          if(snapshot.docs.length == 0) resolve(true);
-          snapshot.docs.forEach((groupDoc) => {
-            this.user.groups.push({
-              id: groupDoc.id,
-              ...groupDoc.data()
-            });
-            resolve(true);
-          });
+      this.db
+        .object(`u/${this.uid}`)
+        .query.once('value')
+        .then(async user => {
+          this.user = user.val();
+          this.user.id = this.uid;
+          this.subscribeGroups();
+          console.log("authService GetUser: ", this.user);
+          resolve(true)
         })
-      });
     });
   }
 
+  subscribeGroups() {
+    this.db
+      .list(`g/${this.uid}`)
+      .snapshotChanges()
+      .subscribe(groups => {
 
-  // getAuthUser() {
-  //   return new Promise(async (resolve) => {
-  //     this.firestore.collection('users').doc(this.authuid).get().subscribe((userDoc) => {
-  //       this.authUser = userDoc.data();
-  //       resolve(userDoc.data())
-  //     });
-  //   });
-  // }
+        let userGroups = [];
+        for(let group of groups) {
+          let value:any = group.payload.val();
+          value.id = group.key;
+          userGroups.push(value)
+        }
+
+        this.user.groups = userGroups;
+        console.log("this.user.groups: ", this.user.groups);
+      });
+  }
 
   async refreshUser() {
     await this.getUser();
@@ -130,6 +138,18 @@ export class AuthService {
 
   async refreshAll() {
     this.onRefresh.emit();
+  }
+
+  homepage() {
+    if(this.isLoggedIn) {
+      if(this.user.groups[0]) {
+        this.navCtrl.navigateRoot(`u/${this.user.username}/${this.user.groups[0].slug}`);
+      } else {
+        this.navCtrl.navigateRoot(`u/${this.user.username}`);
+      }
+    } else {
+      this.navCtrl.navigateRoot(`start`);
+    }
   }
 
   async logout() {
@@ -218,16 +238,15 @@ export class AuthService {
 
   async createNewUser(body, uid) {
     const createUserRequest = {
-      // 'firstName': body.firstName,
-      // 'lastName': body.lastName,
       'username': body.username,
       'email': body.email,
       'uid': uid
     };
 
     try {
-      await this.firestore.collection('users').doc(uid).set(createUserRequest);
-      // await this.firestore.collection('subdomains').doc(body.subdomain).set({'uid': uid});
+      this.db
+        .object(`u/${createUserRequest.uid}`)
+        .set(createUserRequest);
       return true;
     } catch (err) {
       this.dialogService.error("Please contact us, your account had an issue when we tried to create it. This may occur if you previously had an account with us.")

@@ -9,7 +9,7 @@ const routes: Routes = [
   },
   {
     path: 'u/:username',
-    loadChildren: () => import('./pages/group/group.module').then( m => m.GroupPageModule)
+    loadChildren: () => import('./pages/start/start.module').then( m => m.StartPageModule)
   },
   {
     path: 'u/:username/:group',

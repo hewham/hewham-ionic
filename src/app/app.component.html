@@ -28,7 +28,7 @@
           <div *ngIf="!authService.isIniting && authService.user">
             <ion-menu-toggle auto-hide="false" *ngFor="let p of authService.user.groups">
               <ion-item
-                *ngIf="!isEditing"
+                *ngIf="!authService.isEditingGroups"
                 routerDirection="root"
                 [routerLink]="['u/' + this.authService.user.username + '/' + p.slug]"
                 lines="none"
@@ -43,29 +43,29 @@
           <div *ngIf="!authService.isIniting && authService.user">
             <ion-menu-toggle auto-hide="false" *ngFor="let p of authService.user.groups">
               <ion-item
-                *ngIf="isEditing"
+                *ngIf="authService.isEditingGroups"
                 lines="none"
                 detail="false"
                 routerLinkActive="gradient-button">
                   <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
                   <ion-label>{{ p.name }}</ion-label>
-                  <ion-icon slot="end" *ngIf="isEditing" (click)="edit(p.slug)" name="create-outline" color="primary"></ion-icon>
+                  <ion-icon slot="end" *ngIf="authService.isEditingGroups" (click)="edit(p.slug)" name="create-outline" color="primary"></ion-icon>
               </ion-item>
             </ion-menu-toggle>
           </div>
 
 
 
-            <!-- <ion-reorder-group *ngIf="authService.isOwner && isEditing" (ionItemReorder)="doReorder($event)" disabled="false">
+            <!-- <ion-reorder-group *ngIf="authService.isOwner && authService.isEditingGroups" (ionItemReorder)="doReorder($event)" disabled="false">
               <ion-item *ngFor="let p of authService.user.groups">
                 <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
-                <ion-icon slot="end" *ngIf="isEditing" (click)="edit(p.slug)" name="create-outline" color="primary"></ion-icon>
+                <ion-icon slot="end" *ngIf="authService.isEditingGroups" (click)="edit(p.slug)" name="create-outline" color="primary"></ion-icon>
                 <ion-reorder slot="end"></ion-reorder>
               </ion-item>
           </ion-reorder-group> -->
 
-          <ion-menu-toggle *ngIf="authService.isOwner && isEditing" auto-hide="false">
+          <ion-menu-toggle *ngIf="authService.isOwner && authService.isEditingGroups" auto-hide="false">
             <ion-item (click)="navCtrl.navigateForward('add')" lines="none" detail="false" tappable class="selected">
               <ion-icon slot="start" name="add-outline" size="small"></ion-icon>
               <ion-label style="font-size: 0.7em;"><span class="monospace"><u>Add Group</u></span></ion-label>
@@ -74,11 +74,11 @@
 
           <ion-menu-toggle *ngIf="authService.isOwner" auto-hide="false">
             <ion-item (click)="toggleEditing()" lines="none" detail="false" tappable class="selected">
-              <ion-icon *ngIf="!isEditing" slot="start" name="create-outline" size="small"></ion-icon>
-              <ion-icon *ngIf="isEditing" slot="start" name="close-outline" size="small"></ion-icon>
+              <ion-icon *ngIf="!authService.isEditingGroups" slot="start" name="create-outline" size="small"></ion-icon>
+              <ion-icon *ngIf="authService.isEditingGroups" slot="start" name="close-outline" size="small"></ion-icon>
               <ion-label style="font-size: 0.7em;"><span class="monospace"><u>
-                <span *ngIf="!isEditing">Edit Groups</span>
-                <span *ngIf="isEditing">Stop Editing</span>
+                <span *ngIf="!authService.isEditingGroups">Edit Groups</span>
+                <span *ngIf="authService.isEditingGroups">Stop Editing</span>
               </u></span></ion-label>
             </ion-item>
           </ion-menu-toggle>

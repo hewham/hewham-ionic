@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service'
 import { FirestoreService } from '../../services/firestore.service'
+import { DatabaseService } from '../../services/database.service'
 import { ImageService } from '../../services/image.service'
 import { ValidateService } from '../../services/validate.service'
 
@@ -37,15 +38,15 @@ export class AddPage implements OnInit {
     {
       name: 'Table',
       value: 'table'
-    },
-    {
-      name: 'Projects',
-      value: 'project'
-    },
-    {
-      name: 'Gallery',
-      value: 'gallery'
     }
+    // {
+    //   name: 'Projects',
+    //   value: 'project'
+    // },
+    // {
+    //   name: 'Gallery',
+    //   value: 'gallery'
+    // }
   ]
 
   constructor(
@@ -54,6 +55,7 @@ export class AddPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private firestoreService: FirestoreService,
+    private databaseService: DatabaseService,
     private imageService: ImageService,
     private validateService: ValidateService,
   ) {
@@ -75,12 +77,15 @@ export class AddPage implements OnInit {
   }
 
   async setEditData() {
-    let group:any = await this.firestoreService.getGroup(this.groupSlug);
-    this.groupID = group.id;
-    this.form.controls.name.setValue(group.name);
-    this.form.controls.slug.setValue(group.slug);
-    this.form.controls.type.setValue(group.options.type);
-    this.icon = group.icon;
+    for(let group of this.authService.user.groups) {
+      if(group.slug == this.groupSlug ) {
+        this.groupID = group.id;
+        this.form.controls.name.setValue(group.name);
+        this.form.controls.slug.setValue(group.slug);
+        this.form.controls.type.setValue(group.options.type);
+        this.icon = group.icon;
+      }
+    }
   }
 
   eventHandler(keyCode) { //function gets called on every keypress in phone number text box
@@ -98,23 +103,18 @@ export class AddPage implements OnInit {
   }
     
   async submit() {
-    // this.trackingService.track("login_page_submit");
     if(this.validate()) {
       this.isLoading = true;
       let body = this.getBody();
-      let success: any = false;
       if(this.isEditing) {
-        success = await this.firestoreService.editGroup(body, this.groupID);
+        this.databaseService.editGroup(body, this.groupID);
       } else {
-        success = await this.firestoreService.addGroup(body);
+        this.databaseService.addGroup(body);
       }
-      if(success) {
-        await this.authService.refreshUser();
-        this.navCtrl.navigateRoot(`u/${this.authService.user.username}/${body.slug}`);
-      }
+
+      this.authService.isEditingGroups = false;
+      this.navCtrl.navigateRoot(`u/${this.authService.user.username}/${body.slug}`);
       this.isLoading = false;
-    } else {
-      // this.trackingService.track("login_page_invalid", { email : this.loginForm.controls.email.value, password: this.loginForm.controls.password.value } );
     }
   }
 
@@ -146,11 +146,9 @@ export class AddPage implements OnInit {
   }
 
   async delete() {
-    let deleted = await this.firestoreService.deleteGroup(this.groupID);
-    if(deleted) {
-      this.authService.refreshUser();
-      this.navCtrl.navigateRoot("start");
-    }
+    await this.databaseService.deleteGroup(this.groupID);
+    this.authService.isEditingGroups = false;
+    this.authService.homepage();
   }
 
 }

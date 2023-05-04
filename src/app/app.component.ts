@@ -123,7 +123,7 @@ export class AppComponent {
   }
 
   toggleEditing() {
-    this.isEditing = !this.isEditing;
+    this.authService.isEditingGroups = !this.authService.isEditingGroups;
   }
 
 }
