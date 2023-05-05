@@ -64,20 +64,23 @@ export class AuthService {
     if(this.isLoggedIn) {
       await this.getUser();
       this.isOwner = true
+    } else {
+      this.triggerInit();
     }
 
     if(this.isGroupsLoaded) {
-      this.isInitialized = true;
-      this.isIniting = false;
-      this.onInit.emit();
+      this.triggerInit();
     } else {
       this.firstGroupLoaded.subscribe(() => {
-        this.isInitialized = true;
-        this.isIniting = false;
-        this.onInit.emit();
+        this.triggerInit();
       })
     }
+  }
 
+  triggerInit() {
+    this.isInitialized = true;
+    this.isIniting = false;
+    this.onInit.emit();
   }
 
   async checkIsLoggedIn() {
