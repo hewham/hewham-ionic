@@ -1,7 +1,7 @@
 <ion-app>
   <ion-split-pane contentId="main-content" [when]="authService.showMenu">
     <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
+      <ion-content class="unselectable">
         <ion-list id="inbox-list">
           <ion-button (click)="authService.toggleMenu()" class="close-menu-button" fill="clear" color="medium">
             <ion-icon slot="icon-only" name="caret-back"></ion-icon>
