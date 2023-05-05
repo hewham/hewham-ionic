@@ -80,24 +80,6 @@ export class AuthService {
 
   }
 
-  triggerOnInit() {
-    return new Promise((resolve) => {
-      if(this.isInitialized) {
-        resolve(true)
-      } else {
-        this.onInit.subscribe(() => {
-          if(this.isGroupsLoaded) {
-            resolve(true)
-          } else {
-            this.firstGroupLoaded.subscribe(() => {
-              resolve(true);
-            })
-          }
-        })
-      }
-    })
-  }
-
   async checkIsLoggedIn() {
     return new Promise((resolve) => {
       this.fireauth.onAuthStateChanged((user) => {

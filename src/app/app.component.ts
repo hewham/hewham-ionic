@@ -41,7 +41,7 @@ export class AppComponent {
   async initializeApp() {
     // await this.authService.delay(500);
     await this.authService.init();
-    await this.authService.triggerOnInit();
+    await this.authService.onReady();
 
     if (this.router.url == "/start"
       || this.router.url == "/login"

@@ -32,7 +32,7 @@
 
   <div *ngIf="group && isLoaded">
 
-    <app-ai-search (onDone)=aiResult($event)></app-ai-search>
+    <app-ai-search (onDone)=aiResult($event) [prompt]="group.prompt"></app-ai-search>
 
     <app-table
       *ngIf="group.options.type == 'table'"
@@ -56,8 +56,12 @@
     </app-project-cards>
   </div>
 
+  <ion-button (click)="save()" shape="round" size="small" class="gradient-button">
+    <ion-icon name="save-outline"></ion-icon>
+  </ion-button>
+
   <ion-button (click)="clearGroup()" shape="round" size="small" class="gradient-button">
-    <ion-icon name="close"></ion-icon> Clear Data
+    <ion-icon name="trash-outline"></ion-icon>
   </ion-button>
 
 

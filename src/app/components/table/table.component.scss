@@ -12,7 +12,11 @@ $cell-color-light: #fcfbf988;
 }
 
 .table-row {
+  
+}
 
+ion-row {
+  min-width: 200px !important;
 }
 
 .table-cell {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
@@ -22,6 +22,10 @@ export class DatabaseService {
   groups = [];
   items = [];
 
+  dbSubscription:any;
+  // onUpdate: EventEmitter<any> = new EventEmitter()
+
+
   constructor(
     private db: AngularFireDatabase,
     private firestore: AngularFirestore,
@@ -41,29 +45,65 @@ export class DatabaseService {
     })
   }
 
-    // ADD
-    async addGroup(body) {
-      return this.db
-        .list(`g/${this.authService.uid}`)
-        .push(body);
-    }
-
-    // EDIT
-    async editGroup(body, groupID) {
-      return this.db
-        .object(`g/${this.authService.uid}/${groupID}`)
-        .set(body);
-    }
-
-    //DELETE
-    async deleteGroup(groupID) {
-      if(!await this.dialogService.prompt("Deleting this group will also delete all of it's contents. This action is irreversible.", "Nevermind", "Delete", "Confirm Delete")){
-        return false;
-      } else {
-        return this.db
-          .object(`g/${this.authService.uid}/${groupID}`)
-          .remove();
+  // GET
+  groupFromSlug(slug) {
+    for(let group of this.authService.user.groups) {
+      if(group.slug == slug ) {
+        return group;
       }
     }
+  }
+
+  getDatabaseSub(groupID) {
+    return this.db
+      .list(`db/${this.authService.user.uid}/${groupID}`)
+      .valueChanges()
+  }
+
+  clearDatabaseSubscribe() {
+    this.dbSubscription.unsubscribe();
+  }
+
+  // ADD
+  async addGroup(body) {
+    return this.db
+      .list(`g/${this.authService.uid}`)
+      .push(body);
+  }
+
+  setDB(rows, columns, groupID) {
+    console.log("rows: ", rows);
+    console.log("columns: ", columns);
+    return this.db
+      .object(`db/${this.authService.uid}/${groupID}`)
+      .set({
+        rows: rows,
+        columns: columns
+      });
+  }
+
+  // EDIT
+  async editGroup(body, groupID) {
+    return this.db
+      .object(`g/${this.authService.uid}/${groupID}`)
+      .set(body);
+  }
+
+  updateGroupPrompt(name, attribute, groupID) {
+    return this.db
+      .object(`g/${this.authService.uid}/${groupID}`)
+      .update({prompt: {name, attribute}});
+  }
+
+  //DELETE
+  async deleteGroup(groupID) {
+    if(!await this.dialogService.prompt("Deleting this group will also delete all of it's contents. This action is irreversible.", "Nevermind", "Delete", "Confirm Delete")){
+      return false;
+    } else {
+      return this.db
+        .object(`g/${this.authService.uid}/${groupID}`)
+        .remove();
+    }
+  }
 
 }

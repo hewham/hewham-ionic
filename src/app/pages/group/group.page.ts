@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 import { ProjectsService } from '../../services/projects.service';
 import { FirestoreService } from '../../services/firestore.service';
+import { DatabaseService } from '../../services/database.service';
 
 @Component({
   selector: 'app-group',
@@ -17,6 +18,7 @@ export class GroupPage implements OnInit {
   public columns: any = [];
   public slug: string;
   public isLoaded: boolean = false;
+  private dbSub: any;
   Object = Object;
 
   constructor(
@@ -24,17 +26,24 @@ export class GroupPage implements OnInit {
     private navCtrl: NavController,
     public authService: AuthService,
     public projectsService: ProjectsService,
-    public firestoreService: FirestoreService
+    public firestoreService: FirestoreService,
+    public databaseService: DatabaseService
   ) { }
 
   async ngOnInit() {
     await this.authService.onReady();
     this.authService.onRefresh.subscribe(() => this.ngOnInit());
     this.slug = this.activatedRoute.snapshot.paramMap.get('group');
-    this.group = await this.firestoreService.getGroup(this.slug);
-    this.columns = await this.firestoreService.getColumns(this.group.id);
-    this.items = await this.firestoreService.getItems(this.group.id);
+    this.group = this.databaseService.groupFromSlug(this.slug);
+    this.dbSub = this.databaseService.getDatabaseSub(this.group.id).subscribe(db => {
+      this.columns = db[0];
+      this.items = db[1];
+    })
     this.isLoaded = true;
+  }
+
+  ngOnDestroy() {
+    this.dbSub.unsubscribe();
   }
 
   viewProject(id) {
@@ -56,7 +65,6 @@ export class GroupPage implements OnInit {
       { id: "name", name: "Name" },
       { id: "1", name: result.attribute }
     ];
-
     let items = [];
     for(let item of result.data) {
       items.push({
@@ -64,9 +72,11 @@ export class GroupPage implements OnInit {
         "1": item.attribute
       })
     }
-
     this.columns = columns;
     this.items = items;
+
+    this.group.prompt = {name: result.name, attribute: result.attribute};
+    return;
   }
 
   async clearGroup() {
@@ -75,7 +85,11 @@ export class GroupPage implements OnInit {
       { id: "name", name: "Name"},
       { id: "1", name: "Attribute" }
     ];
-    // await this.firestoreService.clearGroup(this.group.id);
     return;
+  }
+
+  async save() {
+   this.databaseService.setDB(this.items, this.columns, this.group.id);
+   this.databaseService.updateGroupPrompt(this.group.prompt.name, this.group.prompt.attribute, this.group.id);
   }
 }

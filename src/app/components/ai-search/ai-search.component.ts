@@ -16,6 +16,7 @@ export class AISearchComponent implements OnInit{
   result: any;
   models: any = [];
   limit = 15;
+  @Input('prompt') prompt: any = null;
   @Output() onDone: EventEmitter<any> = new EventEmitter();
 
   constructor(
@@ -23,6 +24,10 @@ export class AISearchComponent implements OnInit{
   ) {}
 
   ngOnInit() {
+    if(this.prompt) {
+      this.searchInput1 = this.prompt.name;
+      this.searchInput2 = this.prompt.attribute;
+    }
   }
 
   clearSearch() {

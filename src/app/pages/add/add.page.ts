@@ -77,15 +77,12 @@ export class AddPage implements OnInit {
   }
 
   async setEditData() {
-    for(let group of this.authService.user.groups) {
-      if(group.slug == this.groupSlug ) {
-        this.groupID = group.id;
-        this.form.controls.name.setValue(group.name);
-        this.form.controls.slug.setValue(group.slug);
-        this.form.controls.type.setValue(group.options.type);
-        this.icon = group.icon;
-      }
-    }
+    let group = this.databaseService.groupFromSlug(this.groupSlug);
+    this.groupID = group.id;
+    this.form.controls.name.setValue(group.name);
+    this.form.controls.slug.setValue(group.slug);
+    this.form.controls.type.setValue(group.options.type);
+    this.icon = group.icon;
   }
 
   eventHandler(keyCode) { //function gets called on every keypress in phone number text box

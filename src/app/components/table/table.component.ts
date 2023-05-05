@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
+import { DatabaseService } from '../../services/database.service';
 import { SearchService } from '../../services/search.service';
 
 
@@ -22,17 +23,18 @@ export class TableComponent implements OnInit {
 
   constructor(
     private firestoreService: FirestoreService,
+    private databaseService: DatabaseService,
     private searchService: SearchService
   ) {}
 
   async ngOnInit() {
-    await this.firestoreService.delay(1500);
+    await this.databaseService.delay(1500);
   }
 
-  async addColumns() {
-    this.columns = [{name: "Name"}]
-    await this.firestoreService.addColumn(this.group.id, "Name")
-  }
+  // async addColumns() {
+  //   this.columns = [{name: "Name"}]
+  //   await this.firestoreService.addColumn(this.group.id, "Name")
+  // }
 
   columnChanged(column) {
     return;
@@ -114,31 +116,7 @@ export class TableComponent implements OnInit {
     this.addRow();
   }
 
-  async checkIfImage(query, itemID, columnID) {
-    // check if there is image field
-    let columnName = this.columnIDtoName(columnID);
-    if(columnName != "Name") return;
-    let imageColumnID = null;
-    for(let column of this.columns) {
-      if(column.name == "Image") {
-        imageColumnID = column.id;
-        break;
-      }
-    }
-    if(!imageColumnID) return;
 
-    //add image
-    let images = await this.searchService.wikiMediaImages(query);
-    const indexOfObject = this.items.findIndex(check => {
-      return check.id === itemID;
-    });
-    this.items[indexOfObject][imageColumnID] = images[0];
-
-    // save to firebase
-    let body = {};
-    body[imageColumnID] = images[0];
-    this.firestoreService.editItem(body, this.group.id, itemID);
-  }
 
   columnIDtoName(ID) {
     for(let column of this.columns) {
@@ -156,21 +134,47 @@ export class TableComponent implements OnInit {
     }
   }
 
-  async chooseImage(itemID){
-    let nameColumnID = this.columnNameToID("Name");
-    let imageColumnID = this.columnNameToID("Image");
-    const indexOfObject = this.items.findIndex(check => {
-      return check.id === itemID;
-    });
+  // async chooseImage(itemID){
+  //   let nameColumnID = this.columnNameToID("Name");
+  //   let imageColumnID = this.columnNameToID("Image");
+  //   const indexOfObject = this.items.findIndex(check => {
+  //     return check.id === itemID;
+  //   });
 
-    let images:any = await this.searchService.wikiMediaImages(this.items[indexOfObject][nameColumnID]);
-    let image = images[Math.floor(Math.random()*images.length)];
-    this.items[indexOfObject][imageColumnID] = image;
+  //   let images:any = await this.searchService.wikiMediaImages(this.items[indexOfObject][nameColumnID]);
+  //   let image = images[Math.floor(Math.random()*images.length)];
+  //   this.items[indexOfObject][imageColumnID] = image;
 
-    // save to firebase
-    let body = {};
-    body[imageColumnID] = images[0];
-    this.firestoreService.editItem(body, this.group.id, itemID);
-  }
+  //   // save to firebase
+  //   let body = {};
+  //   body[imageColumnID] = images[0];
+  //   this.firestoreService.editItem(body, this.group.id, itemID);
+  // }
+
+  // async checkIfImage(query, itemID, columnID) {
+  //   // check if there is image field
+  //   let columnName = this.columnIDtoName(columnID);
+  //   if(columnName != "Name") return;
+  //   let imageColumnID = null;
+  //   for(let column of this.columns) {
+  //     if(column.name == "Image") {
+  //       imageColumnID = column.id;
+  //       break;
+  //     }
+  //   }
+  //   if(!imageColumnID) return;
+
+  //   //add image
+  //   let images = await this.searchService.wikiMediaImages(query);
+  //   const indexOfObject = this.items.findIndex(check => {
+  //     return check.id === itemID;
+  //   });
+  //   this.items[indexOfObject][imageColumnID] = images[0];
+
+  //   // save to firebase
+  //   let body = {};
+  //   body[imageColumnID] = images[0];
+  //   this.firestoreService.editItem(body, this.group.id, itemID);
+  // }
 
 }
