@@ -104,11 +104,12 @@ export class AddPage implements OnInit {
       this.isLoading = true;
       let body = this.getBody();
       if(this.isEditing) {
-        this.databaseService.editGroup(body, this.groupID);
+        await this.databaseService.editGroup(body, this.groupID);
       } else {
-        this.databaseService.addGroup(body);
+        await this.databaseService.addGroup(body);
       }
 
+      this.databaseService.delay(1000);
       this.authService.isEditingGroups = false;
       this.navCtrl.navigateRoot(`u/${this.authService.user.username}/${body.slug}`);
       this.isLoading = false;
