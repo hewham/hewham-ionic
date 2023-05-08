@@ -89,6 +89,7 @@
 
     <div class="item-box">
       <br>
+      <b>&nbsp;&nbsp;&nbsp;&nbsp;Profile</b>
 
       <form [formGroup]="usernameForm">
         <ion-grid class="ion-no-padding ion-no-margin">
@@ -97,6 +98,7 @@
               <ion-item>
                 <ion-label position="floating">Username</ion-label>
                 <ion-input 
+                  [disabled]="true"
                   class="ion-text-left"
                   #username 
                   formControlName="username" 
@@ -118,7 +120,7 @@
         </ion-grid>
       </form>
 
-      <div class="spacer" style="height:12px;"></div>
+      <!-- <div class="spacer" style="height:12px;"></div>
 
       <div class="btn-wrapper">
         <ion-button 
@@ -128,7 +130,7 @@
           class="gradient-button">
             Update
         </ion-button>
-      </div>
+      </div> -->
     </div>
 
     <br>

@@ -21,13 +21,13 @@ exports.limits = functions.https.onRequest(async (request, response) => {
 	let token = request.query.query
 	try {
 		let uid = await decodeToken(token);
-		console.log("uid: ", uid);
-
 		admin.database().ref(`db/${uid}`)
       .once('value').then(snapshot => {
 				let totalRows = 0;
-				for(let key of Object.keys(snapshot.val())) {
-					totalRows += snapshot.val()[key].rows.length;
+				if(snapshot.val()){
+					for(let key of Object.keys(snapshot.val())) {
+						totalRows += snapshot.val()[key].rows.length;
+					}
 				}
 				response.send({result: totalRows});
       });

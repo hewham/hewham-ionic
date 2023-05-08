@@ -8,9 +8,9 @@ import { AuthService } from '../../services/auth.service'
 })
 export class VerifyEmailComponent implements OnInit{
 
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   isSent: boolean = false;
-  isVerified: boolean = true;
+  isVerified: boolean = false;
   already = "";
   @Input('showIfVerified') showIfVerified: boolean = false;
 
@@ -23,6 +23,7 @@ export class VerifyEmailComponent implements OnInit{
     if(await this.authService.isEmailVerified()) {
       this.isVerified = true;
     }
+    this.isLoading = false;
   }
 
   async send() {
