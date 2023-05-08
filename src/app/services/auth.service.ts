@@ -1,14 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { NavController, LoadingController } from '@ionic/angular';
-import { map, catchError } from 'rxjs/operators';
 
 import { DialogService } from './dialog.service';
-// import { NotificationService} from './notification.service';
-// import { CrispService } from './crisp.service';
-// import { TrackingService } from './tracking.service';
-import { environment } from '../../environments/environment';
+import { FunctionsService } from './functions.service';
 
-import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
 
@@ -50,9 +45,7 @@ export class AuthService {
       private navCtrl: NavController,
       private loadingCtrl: LoadingController,
       private dialogService: DialogService,
-      // private crispService: CrispService,
-      // private trackingService: TrackingService,
-      private firestore: AngularFirestore,
+      private functionsService: FunctionsService,
       private fireauth: AngularFireAuth,
       private db: AngularFireDatabase
     ) {}
@@ -283,6 +276,21 @@ export class AuthService {
 
   toggleMenu() {
     this.showMenu = !this.showMenu;
+  }
+
+  async getAccountLimits() {
+    return new Promise(async (resolve) => {
+      (await this.fireauth.currentUser).getIdToken(true)
+      .then(async (token) => {
+          let res:any = await this.functionsService.function("account-limits", `${token}`);
+          resolve(res.result);
+      })
+      .catch(function (err) {
+          console.error(err);
+          resolve(0)
+      });
+    })
+
   }
 
   delay(ms) {

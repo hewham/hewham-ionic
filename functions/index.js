@@ -3,6 +3,7 @@
 // const dbpedia = require('./search/dbpedia');
 const test = require('./helpers/test');
 const helpers = require('./helpers/helpers');
+const account = require('./helpers/account');
 const ai = require('./openai/ai');
 
 // // Create and Deploy Your First Cloud Functions
@@ -16,4 +17,5 @@ const ai = require('./openai/ai');
 // exports.search = dbpedia;
 exports.test = test;
 exports.helpers = helpers;
+exports.account = account;
 exports.ai = ai;

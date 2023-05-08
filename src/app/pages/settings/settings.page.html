@@ -131,12 +131,23 @@
       </div>
     </div>
 
-
-    
     <br>
     <br>
 
-    <app-verify-email [showIfVerified]="isEmailVerified"></app-verify-email>
+    <div class="item-box">
+      <div class="item-padding">
+        <b>Account Limits</b>
+        <p class="accent-text" >Total Rows Used: <span class="color-secondary" *ngIf="rowsUsed != null"><b>{{rowsUsed}}</b></span> / {{rowsAllowed}}</p>
+        <ion-progress-bar color="secondary" *ngIf="rowsUsed != null" [value]="rowsUsed / rowsAllowed"></ion-progress-bar>
+        <ion-progress-bar color="secondary" *ngIf="rowsUsed == null" [value]="0"></ion-progress-bar>
+      </div>
+    </div>
+
+    <br>
+    <br>
+
+    <app-verify-email [showIfVerified]="true"></app-verify-email>
+
 
   </div>
 </ion-content>

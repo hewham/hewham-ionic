@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service'
 import { FirestoreService } from '../../services/firestore.service'
 import { ImageService } from '../../services/image.service'
-import { FunctionsService } from '../../services/functions.service'
 import { ValidateService } from '../../services/validate.service'
 
 @Component({
@@ -20,6 +18,8 @@ export class SettingsPage implements OnInit {
   usernameForm: FormGroup;
   isLoading: boolean = true;
   content: any = "";
+  rowsUsed:any = null
+  rowsAllowed:any = 1000;
   isEditing: boolean = false;
   isEmailVerified: boolean = false;
 
@@ -33,7 +33,6 @@ export class SettingsPage implements OnInit {
 
   constructor(
     public navCtrl: NavController,
-    private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     public authService: AuthService,
     private firestoreService: FirestoreService,
@@ -56,6 +55,8 @@ export class SettingsPage implements OnInit {
     this.isEmailVerified = await this.authService.isEmailVerified();
     this.setEditData();
     this.isLoading = false;
+    this.rowsUsed = await this.authService.getAccountLimits();
+    console.log("this.rowsUsed: ", this.rowsUsed)
   }
 
   eventHandler(keyCode) { //function gets called on every keypress in phone number text box

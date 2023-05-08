@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service'
+import { FunctionsService } from './functions.service'
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -14,6 +15,7 @@ export class SearchService {
 
   constructor(
     private httpService: HttpService,
+    private functionsService: FunctionsService
   ) {}
 
   async wikiMediaImages(query) {
@@ -25,18 +27,7 @@ export class SearchService {
   }
 
   async f(f, query=null) {
-    const FUNCTION_NAME = f;
-    let URL = `${this.BASE_URL}/${FUNCTION_NAME}`
-    if(query) {
-      URL += `?query=${query}`;
-    }
-    try {
-      let res = await this.httpService.get(URL);
-      return res;
-    } catch (err) {
-      console.log("ERROR: ", err);
-      return false;
-    }
+    return await this.functionsService.function(f, query);
   }
 
   async aiSearch(query) {
