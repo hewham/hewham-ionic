@@ -87,7 +87,7 @@
     <br>
     <br>
 
-    <div class="item-box">
+    <div class="item-box slide-up">
       <br>
       <b>&nbsp;&nbsp;&nbsp;&nbsp;Profile</b>
 
@@ -95,7 +95,7 @@
         <ion-grid class="ion-no-padding ion-no-margin">
           <ion-row>
             <ion-col class="ion-no-padding">
-              <ion-item>
+              <ion-item lines="none">
                 <ion-label position="floating">Username</ion-label>
                 <ion-input 
                   [disabled]="true"
@@ -109,7 +109,7 @@
               </ion-item>
             </ion-col>
             <ion-col class="ion-no-padding">
-              <ion-item>
+              <ion-item lines="none">
                 <ion-label position="stacked">url</ion-label>
                 <ion-input [disabled]="true" style="color: grey;">
                   unnoun.com/u/<b>{{usernameForm.controls.username.value}}</b>
@@ -136,7 +136,7 @@
     <br>
     <br>
 
-    <div class="item-box">
+    <div class="item-box slide-up">
       <div class="item-padding">
         <b>Account Limits</b>
         <p class="accent-text" >Total Rows Used: <span class="color-secondary" *ngIf="rowsUsed != null"><b>{{rowsUsed}}</b></span> / {{rowsAllowed}}</p>

@@ -56,7 +56,6 @@ export class SettingsPage implements OnInit {
     this.setEditData();
     this.isLoading = false;
     this.rowsUsed = await this.authService.getAccountLimits();
-    console.log("this.rowsUsed: ", this.rowsUsed)
   }
 
   eventHandler(keyCode) { //function gets called on every keypress in phone number text box

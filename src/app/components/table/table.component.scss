@@ -1,7 +1,7 @@
 $cell-border-color: #F7F5EE;
 $cell-border-width: 3px;
 $cell-color: #fcfbf9;
-$cell-color-light: #fcfbf988;
+$cell-color-light: #fcfbf9c2;
 
 .table-grid {
   color: #333;
@@ -9,6 +9,12 @@ $cell-color-light: #fcfbf988;
   border-right: $cell-border-width solid $cell-border-color;
   padding: 0;
   overflow-x: scroll;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.table-grid::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
 }
 
 .table-row {

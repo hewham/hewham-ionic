@@ -72,8 +72,8 @@ export class DatabaseService {
   }
 
   setDB(rows, columns, groupID) {
-    console.log("rows: ", rows);
-    console.log("columns: ", columns);
+    // console.log("rows: ", rows);
+    // console.log("columns: ", columns);
     return this.db
       .object(`db/${this.authService.uid}/${groupID}`)
       .set({

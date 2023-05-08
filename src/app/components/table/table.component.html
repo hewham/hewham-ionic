@@ -1,5 +1,6 @@
 
 <ion-grid class="table-grid slide-up">
+
 	<ion-row class="table-row">
 		<ion-col class="table-options-start"></ion-col>
 		<ion-col 
@@ -13,6 +14,7 @@
 		</ion-col>
 		<ion-col class="table-column-hover"></ion-col>
 	</ion-row>
+
 	<ion-row class="table-row">
 		<ion-col class="table-options-start"></ion-col>
 		<ion-col class="table-cell header" *ngFor="let column of columns">
@@ -32,6 +34,7 @@
 			</ion-button>
 		</ion-col>
 	</ion-row>
+
 	<ion-row class="table-row" *ngFor="let item of items">
 		<ion-col 
 			class="table-options-start hover-appear" 
@@ -60,6 +63,7 @@
 		</ion-col>
 		<ion-col class="table-column-hover"></ion-col>
 	</ion-row>
+
 	<ion-row>
 		<ion-col class="table-options-start"></ion-col>
 		<ion-col tappable class="table-row-hover" (click)="addRow()">
@@ -72,4 +76,5 @@
 		</ion-col>
 		<ion-col class="table-column-hover"></ion-col>
 	</ion-row>
+	
 </ion-grid>

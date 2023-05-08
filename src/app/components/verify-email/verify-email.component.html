@@ -1,4 +1,4 @@
-<ion-item *ngIf="!isVerified && !isLoading" lines="none">
+<ion-item *ngIf="!isVerified && !isLoading" lines="none" class="slide-up">
   <ion-label *ngIf="!isSent">You need to verify you own the email: [{{ authService.user.email }}]</ion-label>
   <ion-label *ngIf="isSent">Please check your inbox for an email from us!</ion-label>
   <ion-button class="gradient-button" shape="round" slot="end" (click)="send()">
@@ -8,7 +8,7 @@
   </ion-button>
 </ion-item>
 
-<ion-item *ngIf="showIfVerified && isVerified && !isLoading" lines="none">
+<ion-item *ngIf="showIfVerified && isVerified && !isLoading" lines="none" class="slide-up">
   <ion-label>
     Your email [{{ authService.user.email }}] has {{already}}been verified<ion-icon color="success" name="checkmark-circle-outline"></ion-icon>
   </ion-label>
