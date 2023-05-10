@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
-import { ProjectsService } from '../../services/projects.service';
 import { FirestoreService } from '../../services/firestore.service';
 import { ImageService } from '../../services/image.service';
 import { DialogService } from '../../services/dialog.service';
@@ -22,7 +21,6 @@ export class ItemPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     public navCtrl: NavController,
     public authService: AuthService,
-    public projectsService: ProjectsService,
     public firestoreService: FirestoreService,
     public imageService: ImageService,
     public dialogService: DialogService
@@ -36,7 +34,6 @@ export class ItemPage implements OnInit {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     this.group = await this.firestoreService.getGroup(this.slug);
     this.item = await this.firestoreService.getItem(this.group.id, this.id);
-    // this.item = this.projectsService.getItem(this.slug, this.id);
   }
 
   back() {

@@ -23,11 +23,12 @@ exports.query = functions.https.onRequest(async (request, response) => {
 	// response.set('Access-Control-Allow-Origin', 'unnoun.com');
 
 	const query = request.query.query
+	console.log("QUERY: ", query);
 
 	const BODY = {
 		model: MODELS[0],
 		prompt: `${query}`,
-		temperature: 0.2,
+		temperature: 0,
 		max_tokens: 200,
 		top_p: 1.0,
 		frequency_penalty: 0.0,

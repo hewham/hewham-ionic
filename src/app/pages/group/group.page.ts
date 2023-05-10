@@ -2,10 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
-import { ProjectsService } from '../../services/projects.service';
-import { FirestoreService } from '../../services/firestore.service';
 import { DatabaseService } from '../../services/database.service';
 import { FileService } from '../../services/file.service';
+import { SearchService } from '../../services/search.service';
 
 @Component({
   selector: 'app-group',
@@ -26,10 +25,9 @@ export class GroupPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private navCtrl: NavController,
     public authService: AuthService,
-    public projectsService: ProjectsService,
-    public firestoreService: FirestoreService,
-    public databaseService: DatabaseService,
-    public fileService: FileService
+    private databaseService: DatabaseService,
+    private fileService: FileService,
+    private SearchService: SearchService
   ) { }
 
   async ngOnInit() {
@@ -64,28 +62,31 @@ export class GroupPage implements OnInit {
 
   aiResult(result) {
     let columns = [
-      { id: "1", name: "Name" },
-      { id: "2", name: result.attribute }
+      { id: "0", name: "Name" },
+      { id: "1", name: result.attribute }
     ];
     let items = [];
     for(let item of result.data) {
       items.push({
-        "1": item.name,
-        "2": item.attribute
+        "0": item.name,
+        "1": item.attribute
       })
     }
     this.columns = columns;
     this.rows = items;
 
     this.group.prompt = {name: result.name, attribute: result.attribute};
+
+    console.log("columns: ", this.columns);
+    console.log("rows: ", this.rows);
     return;
   }
 
   async clearGroup() {
     this.rows = [];
     this.columns = [
-      { id: "1", name: "Name"},
-      { id: "2", name: "Attribute" }
+      { id: "0", name: "Name"},
+      { id: "1", name: "Attribute" }
     ];
     return;
   }
@@ -108,6 +109,10 @@ export class GroupPage implements OnInit {
 
   async download() {
     await this.fileService.export({columns: this.columns, rows: this.rows}, this.group.name);
+  }
+
+  getDB() {
+    return {columns: this.columns, rows: this.rows};
   }
 
 }

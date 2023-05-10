@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PapaParseService } from 'ngx-papaparse';
-import { DialogService } from './dialog.service';
-import * as j2c from 'json-2-csv';
+import { FormatService } from './format.service';
 
 
 @Injectable({
@@ -11,41 +10,18 @@ export class FileService {
 
   constructor(
     private papa: PapaParseService,
-    private dialogService: DialogService
+    private formatService: FormatService
   ) {}
 
     async process(files) {
       return new Promise(async (resolve) => {
         for(let file of files){
           let items = await this.parseCSVFile(file);
-          let db = this.formatForDB(items);
+          let db = this.formatService.formatForDB(items);
           resolve(db);
         }
         resolve(true);
       });
-    }
-
-    formatForDB(items) {
-      let columns:any = [];
-      let i = 0;
-      for(let column of Object.keys(items[0])) {
-        columns.push({id: i, name: column});
-        i++;
-      }
-
-      let rows:any = [];
-      for(let i in items) {
-        rows.push({});
-        for(let column of columns) {
-          rows[i][column.id] = items[i][column.name];
-        }
-      }
-
-      let db = {
-        columns,
-        rows
-      }
-      return db;
     }
 
     parseCSVFile(file) {
@@ -60,8 +36,8 @@ export class FileService {
     }
 
     async export(db, FILE_NAME="data_export") {
-      let formattedData = this.formatForDL(db);
-      let csvData = await this.convertToCSV(formattedData);
+      let formattedData = this.formatService.formatForCSV(db);
+      let csvData = await this.formatService.convertToCSV(formattedData);
 
       let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
       let dwldLink = document.createElement("a");
@@ -77,27 +53,5 @@ export class FileService {
       dwldLink.click();
       document.body.removeChild(dwldLink);
       return;
-    }
-
-    formatForDL(db) {
-      let items = [];
-      for(let i in db.rows) {
-        let item = {};
-        for(let key of Object.keys(db.rows[i])) {
-          let name = db.columns.find(x => x.id === key).name;
-          let thing = db.rows[i][key];
-          item[name] = thing;
-        }
-        items.push(item);
-      }
-      return items;
-    }
-  
-    convertToCSV(data) {
-      return new Promise((resolve) => {
-        j2c.json2csvAsync(data)
-        .then((res) => resolve(res))
-        .catch((err) => this.dialogService.error(err.message));
-      })
     }
 }

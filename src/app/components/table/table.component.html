@@ -17,13 +17,14 @@
 
 	<ion-row class="table-row">
 		<ion-col class="table-options-start"></ion-col>
-		<ion-col class="table-cell header" *ngFor="let column of columns">
+		<ion-col class="table-cell header" *ngFor="let column of columns, let i = index">
 			<ion-input 
 				class="table-input" 
 				placeholder="Heading"
 				[(ngModel)]="column.name"
-				(ionChange)="columnChanged(column)"
-				[debounce]="debounceLength"></ion-input>
+				(ionChange)="columnChanged1(column)"
+				(keypress)="keyPressColumn($event.keyCode, column)"
+				[debounce]="0"></ion-input>
 		</ion-col>
 		<ion-col tappable class="table-column-hover" (click)="addColumn()">
 			<ion-button  

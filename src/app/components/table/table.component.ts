@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, ElementRe
 import { FirestoreService } from '../../services/firestore.service';
 import { DatabaseService } from '../../services/database.service';
 import { SearchService } from '../../services/search.service';
+import { FormatService } from '../../services/format.service';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class TableComponent implements OnInit {
   constructor(
     private firestoreService: FirestoreService,
     private databaseService: DatabaseService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private formatService: FormatService
   ) {}
 
   async ngOnInit() {
@@ -36,9 +38,24 @@ export class TableComponent implements OnInit {
   //   await this.firestoreService.addColumn(this.group.id, "Name")
   // }
 
-  columnChanged(column) {
+  columnChanged1(column) {
     return;
     // this.firestoreService.editColumn({name: column.name}, this.group.id, column.id);
+  }
+
+  columnChanged(column) {
+    // this.autofillRow(0, column);
+    for(let i in this.rows) {
+      this.autofillRow(i, column);
+    }
+    return;
+  }
+
+  async autofillRow(i, column) {
+    let newRow = this.formatService.keysToNames(this.rows[i], this.columns);
+    let res = await this.searchService.autofillRow(newRow, column);
+    this.rows[i][column.id] = res;
+    console.log("res: ", res);
   }
 
   rowChanged(row, columnID) {
@@ -62,6 +79,12 @@ export class TableComponent implements OnInit {
     //     inputInstance.nativeElement.focus();
     //   }
     // });
+  }
+
+  keyPressColumn(keyCode, column) {
+    if(keyCode == 13) {
+      this.columnChanged(column);
+    }
   }
 
   deleteTimeout() {
@@ -108,8 +131,8 @@ export class TableComponent implements OnInit {
   }
 
   async addColumn() {
-    let res = await this.firestoreService.addColumn(this.group.id);
-    this.columns.push({id: res.id});
+    // let res = await this.firestoreService.addColumn(this.group.id);
+    this.columns.push({id: String(this.columns.length), name: ""});
   }
 
   enterPressed() {
