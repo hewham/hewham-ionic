@@ -84,7 +84,7 @@ export class FileService {
       for(let i in db.rows) {
         let item = {};
         for(let key of Object.keys(db.rows[i])) {
-          let name = db.columns.find(x => x.id === key).name;
+          let name = db.columns.find(x => x.id == key).name;
           let thing = db.rows[i][key];
           item[name] = thing;
         }
