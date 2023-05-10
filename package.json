@@ -1,6 +1,6 @@
 {
   "name": "unnoun",
-  "version": "0.7.12",
+  "version": "0.7.13",
   "author": "ajitama",
   "homepage": "https://ajitama.io",
   "scripts": {
@@ -27,6 +27,7 @@
     "axios": "^0.21.1",
     "firebase": "^7.9.3",
     "firebase-functions": "^3.13.2",
+    "json-2-csv": "^3.7.5",
     "ngx-papaparse": "^2.1.0",
     "ngx-quill": "^13.2.0",
     "pluralize": "^8.0.0",

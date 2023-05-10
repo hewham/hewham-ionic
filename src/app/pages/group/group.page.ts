@@ -106,4 +106,8 @@ export class GroupPage implements OnInit {
     }
   }
 
+  async download() {
+    await this.fileService.export({columns: this.columns, rows: this.rows}, this.group.name);
+  }
+
 }
