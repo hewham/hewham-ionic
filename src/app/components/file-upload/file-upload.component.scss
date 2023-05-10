@@ -1,0 +1,41 @@
+.img-button{
+  position: relative;
+  color: white;
+  margin: 4px 2px;
+  height: 2.1em;
+  width: 5.4em;
+}
+.img-button:hover {
+  opacity: 0.7;
+}
+
+ion-icon {
+  font-size: 1.4em;
+}
+
+.img-button-old {
+  position: absolute;
+  left: calc(50% + 22px);
+  bottom: 0;
+  background: #f8f8f8;
+  color: var(--ion-color-tertiary);
+  border-radius: 50%;
+  border: 1.5px solid silver;
+  height: 3.3em;
+  width: 3.3em;
+}
+
+//Creates invisable file input button (Used as overlay on image upload buttons)
+.ghost-input{
+  opacity: 0;
+  position: absolute;
+  top: -4px;
+  left: -2px;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  border-radius: 50%;
+}
+.ghost-input:hover{
+  opacity: 0;
+}

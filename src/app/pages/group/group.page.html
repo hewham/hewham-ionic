@@ -34,35 +34,46 @@
 
     <app-ai-search (onDone)=aiResult($event) [prompt]="group.prompt"></app-ai-search>
 
+    &nbsp;&nbsp;&nbsp;&nbsp;
+  
+    <app-file-upload (onDone)="uploaded($event)"></app-file-upload>
+
+    <ion-button (click)="download()" shape="round" size="small" class="gradient-button">
+      <ion-icon name="download-outline"></ion-icon>
+    </ion-button>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;
+
+    <ion-button (click)="save()" shape="round" size="small" class="gradient-button">
+      <ion-icon name="save-outline"></ion-icon>
+    </ion-button>
+  
+    <ion-button (click)="clearGroup()" shape="round" size="small" class="gradient-button">
+      <ion-icon name="trash-outline"></ion-icon>
+    </ion-button>
+
+
     <app-table
       *ngIf="group.options.type == 'table'"
       (onClick)="viewProject($event)"
       [group]="group"
       [columns]="columns"
-      [items]="items">
+      [rows]="rows">
     </app-table>
 
     <app-item-gallery
       *ngIf="group.options.type == 'gallery'"
       (onClick)="viewProject($event)"
-      [items]="items">
+      [items]="rows">
     </app-item-gallery>
 
     <app-project-cards
       *ngIf="group.options.type == 'project'"
       (onClick)="viewProject($event)"
-      [items]="items"
+      [items]="rows"
       [shape]="group.options.shape">
     </app-project-cards>
   </div>
-
-  <ion-button (click)="save()" shape="round" size="small" class="gradient-button">
-    <ion-icon name="save-outline"></ion-icon>
-  </ion-button>
-
-  <ion-button (click)="clearGroup()" shape="round" size="small" class="gradient-button">
-    <ion-icon name="trash-outline"></ion-icon>
-  </ion-button>
 
 
   <!-- <ion-grid

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { CustomDomainComponent } from './custom-domain/custom-domain.component';
 import { IconSelectComponent } from './icon-select/icon-select.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { ImageSearchComponent } from './image-search/image-search.component';
 import { AISearchComponent } from './ai-search/ai-search.component';
@@ -18,6 +19,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 	declarations: [
 		CustomDomainComponent,
 		IconSelectComponent,
+		FileUploadComponent,
 		ImageUploadComponent,
 		ImageSearchComponent,
 		AISearchComponent,
@@ -35,6 +37,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 	exports: [
 		CustomDomainComponent,
 		IconSelectComponent,
+		FileUploadComponent,
 		ImageUploadComponent,
 		ImageSearchComponent,
 		AISearchComponent,

@@ -23,6 +23,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 
 // Other modules
+import { PapaParseModule } from 'ngx-papaparse';
 import { QuillModule } from 'ngx-quill';
 
 let quillModules = {
@@ -64,7 +65,8 @@ let quillModules = {
     AngularFireStorageModule,
     AngularFireFunctionsModule,
     AngularFireDatabaseModule,
-    QuillModule.forRoot({modules: quillModules})
+    QuillModule.forRoot({modules: quillModules}),
+    PapaParseModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

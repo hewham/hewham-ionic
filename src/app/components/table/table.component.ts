@@ -16,7 +16,7 @@ export class TableComponent implements OnInit {
   private deleteTimeoutRef: any;
 
   @Input('group') group: any;
-  @Input('items') items: any;
+  @Input('rows') rows: any;
   @Input('columns') columns: any;
   @Output() onClick: EventEmitter<any> = new EventEmitter();
   @ViewChildren("inputs", { read: ElementRef }) private inputs: QueryList<ElementRef>;
@@ -41,18 +41,18 @@ export class TableComponent implements OnInit {
     // this.firestoreService.editColumn({name: column.name}, this.group.id, column.id);
   }
 
-  itemChanged(item, columnID) {
+  rowChanged(row, columnID) {
     return;
     // let body = {};
-    // body[columnID] = item[columnID];
-    // this.firestoreService.editItem(body, this.group.id, item.id);
-    // this.checkIfImage(item[columnID], item.id, columnID);
+    // body[columnID] = row[columnID];
+    // this.firestoreService.editItem(body, this.group.id, row.id);
+    // this.checkIfImage(row[columnID], row.id, columnID);
   }
 
   async addRow() {
-    let res = await this.firestoreService.addItem({}, this.group.id);
-    let newItem = {id: res.id};
-    this.items.push(newItem);
+    // let res = await this.firestoreService.addItem({}, this.group.id);
+    // let newRow = {id: res.id};
+    // this.rows.push(newRow);
 
     // TODO: Auto focus on new row, first column
     // let ID = this.columns[0].id + '-' + this.items[this.items.length - 1].id;
@@ -71,22 +71,22 @@ export class TableComponent implements OnInit {
     }, 3000)
   }
 
-  async deleteItem(item) {
+  async deleteRow(row) {
     if(!this.isDeleting) {
-      this.isDeleting = item.id;
+      this.isDeleting = row.id;
       this.deleteTimeout();
       return;
     }
-    if(this.isDeleting !== item.id) {
-      this.isDeleting = item.id;
+    if(this.isDeleting !== row.id) {
+      this.isDeleting = row.id;
       this.deleteTimeout();
       return;
     }
-    await this.firestoreService.deleteItem(this.group.id, item);
-    const indexOfObject = this.items.findIndex(check => {
-      return check.id === item.id;
+    // await this.firestoreService.deleteItem(this.group.id, row);
+    const indexOfObject = this.rows.findIndex(check => {
+      return check.id === row.id;
     });
-    this.items.splice(indexOfObject, 1);
+    this.rows.splice(indexOfObject, 1);
   }
 
   async deleteColumn(column) {
@@ -101,7 +101,7 @@ export class TableComponent implements OnInit {
       return;
     }
     await this.firestoreService.deleteColumn(this.group.id, column);
-    const indexOfObject = this.items.findIndex(check => {
+    const indexOfObject = this.rows.findIndex(check => {
       return check.id === column.id;
     });
     this.columns.splice(indexOfObject, 1);

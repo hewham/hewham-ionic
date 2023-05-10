@@ -35,30 +35,30 @@
 		</ion-col>
 	</ion-row>
 
-	<ion-row class="table-row" *ngFor="let item of items">
+	<ion-row class="table-row" *ngFor="let row of rows">
 		<ion-col 
 			class="table-options-start hover-appear" 
-			[ngClass]="isDeleting == item.id ? 'deleting-button' : null" 
+			[ngClass]="isDeleting == row.id ? 'deleting-button' : null" 
 			tappable 
-			(click)="deleteItem(item)">
-				<ion-icon *ngIf="isDeleting != item.id" name="close" color="danger" class="options-icon"></ion-icon>
-				<ion-icon *ngIf="isDeleting == item.id" name="close" color="white" class="options-icon"></ion-icon>
+			(click)="deleteRow(row)">
+				<ion-icon *ngIf="isDeleting != row.id" name="close" color="danger" class="options-icon"></ion-icon>
+				<ion-icon *ngIf="isDeleting == row.id" name="close" color="white" class="options-icon"></ion-icon>
 		</ion-col>
 		<ion-col class="table-cell" *ngFor="let column of columns">
 			<img 
 				*ngIf="column.name == 'Image'" 
-				[src]="item[column.id]" 
+				[src]="row[column.id]" 
 				class="table-img"
 				tappable
-				(click)="chooseImage(item.id)"/>
+				(click)="chooseImage(row.id)"/>
 			<ion-input 
 				#inputs
 				*ngIf="column.name != 'Image'"
-				[id]="column.id + '-' + item.id"
+				[id]="column.id + '-' + row.id"
 				class="table-input" 
-				[(ngModel)]="item[column.id]" 
+				[(ngModel)]="row[column.id]" 
 				(keyup.enter)="enterPressed()"
-				(ionChange)="itemChanged(item, column.id)"
+				(ionChange)="rowChanged(row, column.id)"
 				[debounce]="debounceLength"></ion-input>
 		</ion-col>
 		<ion-col class="table-column-hover"></ion-col>

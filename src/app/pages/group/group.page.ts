@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { ProjectsService } from '../../services/projects.service';
 import { FirestoreService } from '../../services/firestore.service';
 import { DatabaseService } from '../../services/database.service';
+import { FileService } from '../../services/file.service';
 
 @Component({
   selector: 'app-group',
@@ -14,8 +15,8 @@ import { DatabaseService } from '../../services/database.service';
 export class GroupPage implements OnInit {
 
   public group: any = {};
-  public items: any = [];
   public columns: any = [];
+  public rows: any = [];
   public slug: string;
   public isLoaded: boolean = false;
   private dbSub: any;
@@ -27,7 +28,8 @@ export class GroupPage implements OnInit {
     public authService: AuthService,
     public projectsService: ProjectsService,
     public firestoreService: FirestoreService,
-    public databaseService: DatabaseService
+    public databaseService: DatabaseService,
+    public fileService: FileService
   ) { }
 
   async ngOnInit() {
@@ -37,7 +39,7 @@ export class GroupPage implements OnInit {
     this.group = this.databaseService.groupFromSlug(this.slug);
     this.dbSub = this.databaseService.getDatabaseSub(this.group.id).subscribe(db => {
       this.columns = db[0];
-      this.items = db[1];
+      this.rows = db[1];
     })
     this.isLoaded = true;
   }
@@ -62,34 +64,46 @@ export class GroupPage implements OnInit {
 
   aiResult(result) {
     let columns = [
-      { id: "name", name: "Name" },
-      { id: "1", name: result.attribute }
+      { id: "1", name: "Name" },
+      { id: "2", name: result.attribute }
     ];
     let items = [];
     for(let item of result.data) {
       items.push({
-        name: item.name,
-        "1": item.attribute
+        "1": item.name,
+        "2": item.attribute
       })
     }
     this.columns = columns;
-    this.items = items;
+    this.rows = items;
 
     this.group.prompt = {name: result.name, attribute: result.attribute};
     return;
   }
 
   async clearGroup() {
-    this.items = [];
+    this.rows = [];
     this.columns = [
-      { id: "name", name: "Name"},
-      { id: "1", name: "Attribute" }
+      { id: "1", name: "Name"},
+      { id: "2", name: "Attribute" }
     ];
     return;
   }
 
   async save() {
-   this.databaseService.setDB(this.items, this.columns, this.group.id);
-   this.databaseService.updateGroupPrompt(this.group.prompt.name, this.group.prompt.attribute, this.group.id);
+   this.databaseService.setDB(this.rows, this.columns, this.group.id);
+   if(this.group.prompt) {
+    this.databaseService.updateGroupPrompt(this.group.prompt.name, this.group.prompt.attribute, this.group.id);
+   }
   }
+
+  async uploaded(files) {
+    // let files:any = document.getElementById("fileInput");
+    if(files){
+      let db:any = await this.fileService.process(files);
+      this.columns = db.columns;
+      this.rows = db.rows;
+    }
+  }
+
 }

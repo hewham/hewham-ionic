@@ -1,0 +1,12 @@
+<button class='img-button gradient-button' tappable ion-button icon-only>
+  <ion-icon name='cloud-upload-outline'></ion-icon>
+  <!-- <ion-label>CSV</ion-label> -->
+  <input 
+    tappable
+    ion-button 
+    [id]="customID"
+    type="file" 
+    accept=".csv" 
+    class="ghost-input" 
+    (change)='changed()'/>
+</button>

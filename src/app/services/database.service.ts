@@ -1,13 +1,11 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
 
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 
 import { AuthService } from './auth.service';
 import { DialogService } from './dialog.service';
-import { ImageService } from './image.service';
 import { HttpService } from './http.service';
 
 import { environment } from '../../environments/environment';
@@ -28,10 +26,8 @@ export class DatabaseService {
 
   constructor(
     private db: AngularFireDatabase,
-    private firestore: AngularFirestore,
     private authService: AuthService,
     private dialogService: DialogService,
-    private imageService: ImageService,
     private httpService: HttpService,
   ) {}
 
