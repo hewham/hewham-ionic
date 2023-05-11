@@ -1,9 +1,9 @@
 $padding-px: 3px;
 
 .gradient-button {
-	--background: linear-gradient(90deg, #ef89ef 0%, #70deeb 100%) !important;
-	background: linear-gradient(90deg, #ef89ef 0%, #70deeb 100%) !important;
-	--background-activated: linear-gradient(90deg, #ef89ef 0%, #70deeb 100%)!important;
+	--background: var(--gradient) !important;
+	background: var(--gradient) !important;
+	--background-activated: var(--gradient) !important;
 	--background-hover: white !important;
 	--background-hover-opacity: 0.3 !important;
 	color: white;

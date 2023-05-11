@@ -3,6 +3,10 @@
 
 /** Ionic CSS Variables **/
 :root {
+  --gradient-one: #e2e1e1;
+  --gradient-two: #838282;
+  --gradient: linear-gradient(118deg, var(--gradient-one) 0%,var(--gradient-two) 100%);
+
   /** primary **/
   // --ion-color-primary: #232323;
   // --ion-color-primary-rgb: 35,35,35;

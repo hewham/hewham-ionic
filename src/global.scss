@@ -63,6 +63,13 @@ ion-header, ion-toolbar {
   object-fit: cover;
 }
 
+.tiny-img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .item-box {
   // background: rgba(0,0,0,0.05);
   background: white;
